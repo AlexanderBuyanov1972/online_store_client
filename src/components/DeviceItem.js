@@ -2,6 +2,7 @@ import React from 'react';
 import {Card, Col, Image} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 import {DEVICE_ROUTE} from "../utils/consts";
+import star from "../assets/star_rating.png"
 
 const DeviceItem = ({device}) => {
     const history = useHistory()
@@ -13,7 +14,7 @@ const DeviceItem = ({device}) => {
                     <div>Samsung...</div>
                     <div className="d-flex align-items-center">
                         <div>{device.rating}</div>
-                        <Image width={18} height={18}/>
+                        <Image width={18} height={18} src={star}/>
                     </div>
                 </div>
                 <div>

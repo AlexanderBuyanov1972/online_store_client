@@ -2,20 +2,23 @@ import React, {useContext} from 'react';
 import {Context} from "../index";
 import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
-import {SHOP_ROUTE} from "../utils/consts";
-import {observable} from "mobx";
+import {ADMIN_ROUTE, LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
+import {useHistory} from "react-router-dom";
 
 const NavBar = observer(() => {
     const {user} = useContext(Context)
+    const history = useHistory()
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
                 <NavLink style={{color: 'white'}} to={SHOP_ROUTE}> Купи блядь девайс!!! </NavLink>
                 {user.isAuth ?
                     <Nav className="ml-auto" style={{color: "white"}}>
-                        <Button variant={'outline-light'} className="m-">АдминПанель</Button>
-                        <Button variant={'outline-light'} className="m-1">Войти</Button>
+                        <Button variant={'outline-light'} onClick={() => history.push(ADMIN_ROUTE)}
+                                className="m-">АдминПанель</Button>
+                        <Button variant={'outline-light'} onClick={() => history.push(LOGIN_ROUTE)}
+                                className="m-1">Выйти</Button>
                     </Nav> :
 
                     <Nav className="ml-auto" style={{color: "white"}}>
