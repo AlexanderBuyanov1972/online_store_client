@@ -1,23 +1,27 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Card, Container, Form, Row} from "react-bootstrap";
 import {NavLink, useLocation} from "react-router-dom";
 import {LOGIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 import {login, registration} from "../http/userAPI";
+import {observer} from "mobx-react-lite";
+import {Context} from "../index";
 
-const Auth = () => {
+const Auth = observer(() => {
+    const {user} = useContext(Context)
     const location = useLocation()
     const isLogin = location.pathname === LOGIN_ROUTE
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const click = async () => {
-        let response = {}
+        let data
         if (isLogin) {
-            response = await login()
+            data = await login(email, password)
         } else {
-            response = await registration(email, password)
+            data = await registration(email, password)
         }
-        console.log(response)
+        user.setUser(data)
+        user.setIsAuth(true)
     }
     return (
         <Container
@@ -31,13 +35,13 @@ const Auth = () => {
                         className="mt-3"
                         placeholder="Введите ваш e-mail ..."
                         value={email}
-                        onChange={e=> setEmail(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                     />
                     <Form.Control
                         className="mt-3"
                         placeholder="Введите ваш пароль ..."
                         value={password}
-                        onChange={e=> setPassword(e.target.value)}
+                        onChange={e => setPassword(e.target.value)}
                         type="password"
                     />
 
@@ -62,6 +66,6 @@ const Auth = () => {
             </Card>
         </Container>
     );
-};
+});
 
 export default Auth;
