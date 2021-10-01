@@ -7,17 +7,17 @@ import {observer} from "mobx-react-lite";
 import {useHistory} from "react-router-dom";
 
 const NavBar = observer(() => {
-    const {user} = useContext(Context)
+    const {userStore} = useContext(Context)
     const history = useHistory()
     const logOut = () => {
-        user.setUser({})
-        user.setIsAuth(false)
+        userStore.setUser({})
+        userStore.setIsAuth(false)
     }
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
-                <NavLink style={{color: 'white'}} to={SHOP_ROUTE}> Купи блядь девайс!!! </NavLink>
-                {user.isAuth ?
+                <NavLink style={{color: 'white'}} to={SHOP_ROUTE}> Купи Девайс!!! </NavLink>
+                {userStore.isAuth ?
                     <Nav className="ml-auto" style={{color: "white"}}>
                         <Button variant={'outline-light'} onClick={() => history.push(ADMIN_ROUTE)}
                                 className="m-1">АдминПанель</Button>

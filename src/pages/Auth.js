@@ -8,7 +8,7 @@ import {Context} from "../index";
 import Shop from "./Shop";
 
 const Auth = observer(() => {
-    const {user} = useContext(Context)
+    const {userStore} = useContext(Context)
     const location = useLocation()
     const history = useHistory()
     const isLogin = location.pathname === LOGIN_ROUTE
@@ -23,8 +23,8 @@ const Auth = observer(() => {
             } else {
                 data = await registration(email, password)
             }
-            user.setUser(data)
-            user.setIsAuth(true)
+            userStore.setUser(data)
+            userStore.setIsAuth(true)
             history.push(SHOP_ROUTE)
         } catch (e) {
             alert(e.response.data.message)

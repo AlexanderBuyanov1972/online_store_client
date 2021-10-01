@@ -8,14 +8,26 @@ import {Context} from "../index";
 import {fetchTypes} from "../http/typeAPI";
 import {fetchBrands} from "../http/brandAPI";
 import {fetchDevices} from "../http/deviceAPI";
+import Pages from "../components/Pages";
 
 const Shop = observer(() => {
-    const {device} = useContext(Context)
+    const {deviceStore} = useContext(Context)
     useEffect(() => {
-        fetchTypes().then(data => device.setTypes(data)).finally()
-        fetchBrands().then(data => device.setBrands(data)).finally()
-        fetchDevices().then(data => device.setDevices(data.rows)).finally()
+        fetchTypes().then(data => deviceStore.setTypes(data)).finally()
+        fetchBrands().then(data => deviceStore.setBrands(data)).finally()
+        fetchDevices(null, null, 1, 3).then(data => {
+            deviceStore.setDevices(data.rows)
+            deviceStore.setTotalCount(data.count)
+        })
     }, [])
+
+    useEffect(() => {
+        fetchDevices(deviceStore.selectedType.id, deviceStore.selectedBrand.id,
+            deviceStore.pageCurrent, 2).then(data => {
+            deviceStore.setDevices(data.rows)
+            deviceStore.setTotalCount(data.count)
+        })
+    }, [deviceStore.pageCurrent, deviceStore.selectedType, deviceStore.selectedBrand])
     return (
         <Container>
             <Row className="mt-2">
@@ -25,6 +37,7 @@ const Shop = observer(() => {
                 <Col md={9}>
                     <BrandBar/>
                     <DeviceList/>
+                    <Pages/>
                 </Col>
             </Row>
         </Container>
