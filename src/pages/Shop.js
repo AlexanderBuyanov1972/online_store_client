@@ -12,18 +12,20 @@ import Pages from "../components/Pages";
 
 const Shop = observer(() => {
     const {deviceStore} = useContext(Context)
-    useEffect(() => {
-        fetchTypes().then(data => deviceStore.setTypes(data)).finally()
-        fetchBrands().then(data => deviceStore.setBrands(data)).finally()
-        fetchDevices(null, null, 1, 3).then(data => {
+
+       useEffect(() => {
+        fetchTypes().then(data => deviceStore.setTypes(data))
+        fetchBrands().then(data => deviceStore.setBrands(data))
+        fetchDevices(null, null, 1, deviceStore.limit).then(data => {
             deviceStore.setDevices(data.rows)
             deviceStore.setTotalCount(data.count)
+
         })
     }, [])
 
     useEffect(() => {
         fetchDevices(deviceStore.selectedType.id, deviceStore.selectedBrand.id,
-            deviceStore.pageCurrent, 2).then(data => {
+            deviceStore.pageCurrent, deviceStore.limit).then(data => {
             deviceStore.setDevices(data.rows)
             deviceStore.setTotalCount(data.count)
         })

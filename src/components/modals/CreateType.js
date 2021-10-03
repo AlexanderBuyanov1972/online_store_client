@@ -5,7 +5,7 @@ import {createType} from "../../http/typeAPI";
 const CreateType = ({show, onHide}) => {
     const [value, setValue] = useState('')
     const addType = () => {
-        createType({name: value}).then(data => {
+        createType({name: value.trim()}).then(data => {
             setValue('')
             onHide()
         })

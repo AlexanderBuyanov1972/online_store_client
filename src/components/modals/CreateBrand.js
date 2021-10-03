@@ -6,7 +6,7 @@ import {createBrand} from "../../http/brandAPI";
 const CreateBrand = ({show, onHide}) => {
     const [value, setValue] = useState('')
     const addBrand = () => {
-        createBrand({name: value}).then(data => {
+        createBrand({name: value.trim()}).then(data => {
             setValue('')
             onHide()
         })

@@ -5,6 +5,7 @@ import {createDevice} from "../../http/deviceAPI";
 import {fetchTypes} from "../../http/typeAPI";
 import {fetchBrands} from "../../http/brandAPI";
 import {observer} from "mobx-react-lite";
+import object from "../../utils/formForType";
 
 const CreateDevice = observer(({show, onHide}) => {
     const {deviceStore} = useContext(Context)
@@ -16,7 +17,6 @@ const CreateDevice = observer(({show, onHide}) => {
     useEffect(() => {
         fetchTypes().then(data => deviceStore.setTypes(data))
         fetchBrands().then(data => deviceStore.setBrands(data))
-
     }, [])
 
     const addInfo = () => {
@@ -42,10 +42,19 @@ const CreateDevice = observer(({show, onHide}) => {
         formData.append('brandId', deviceStore.selectedBrand.id)
         formData.append('typeId', deviceStore.selectedType.id)
         formData.append('info', JSON.stringify(info))
-        console.log(formData)
         createDevice(formData).then(data =>
             onHide()
         )
+    }
+
+    const setFormForType = (name) => {
+        const array = object[name.trim()]
+        const newInfo = []
+        for (let i = 0; i < array.length; i++) {
+            newInfo.push({title: array[i], description: '', id: Date.now() + i})
+        }
+        console.log(newInfo)
+        setInfo(newInfo)
     }
     return (
         <Modal
@@ -67,7 +76,10 @@ const CreateDevice = observer(({show, onHide}) => {
                             {deviceStore.types.map(type =>
                                 <Dropdown.Item
                                     key={type.id}
-                                    onClick={() => deviceStore.setSelectedType(type)}
+                                    onClick={() => {
+                                        deviceStore.setSelectedType(type)
+                                        setFormForType(type.name);
+                                    }}
                                 >{type.name}</Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
@@ -121,7 +133,8 @@ const CreateDevice = observer(({show, onHide}) => {
                                     />
                                 </Col>
                                 <Col md={4}>
-                                    <Button variant={'outline-danger'} onClick={() => removeInfo(i.id)}>
+                                    <Button disabled={i.title !== ''} variant={'outline-danger'}
+                                            onClick={() => removeInfo(i.id)}>
                                         Удалить свойство
                                     </Button>
                                 </Col>

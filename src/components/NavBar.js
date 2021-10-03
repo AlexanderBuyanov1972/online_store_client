@@ -12,24 +12,25 @@ const NavBar = observer(() => {
     const logOut = () => {
         userStore.setUser({})
         userStore.setIsAuth(false)
+        userStore.setIsAdmin(false)
+        localStorage.removeItem('token')
     }
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
                 <NavLink style={{color: 'white'}} to={SHOP_ROUTE}> Купи Девайс!!! </NavLink>
-                {userStore.isAuth ?
-                    <Nav className="ml-auto" style={{color: "white"}}>
-                        <Button variant={'outline-light'} onClick={() => history.push(ADMIN_ROUTE)}
-                                className="m-1">АдминПанель</Button>
-                        <Button variant={'outline-light'} onClick={() => logOut()}
-                                className="m-1">Выйти</Button>
-                    </Nav> :
+                <Nav className="ml-auto" style={{color: "white"}}>
+                    {userStore.isAdmin &&
+                    <Button variant={'outline-light'} onClick={() => history.push(ADMIN_ROUTE)}
+                            className="m-1">АдминПанель</Button>}
 
-                    <Nav className="ml-auto" style={{color: "white"}}>
-                        <Button variant={'outline-light'} className="m-1"
-                                onClick={() => history.push(LOGIN_ROUTE)}>Авторизация</Button>
-                    </Nav>
-                }
+                    {userStore.isAuth &&
+                    <Button variant={'outline-light'} onClick={() => logOut()}
+                            className="m-1">Выйти</Button>}
+                    {!userStore.isAuth &&
+                    <Button variant={'outline-light'} className="m-1"
+                            onClick={() => history.push(LOGIN_ROUTE)}>Авторизация</Button>}
+                </Nav>
             </Container>
         </Navbar>
     );
