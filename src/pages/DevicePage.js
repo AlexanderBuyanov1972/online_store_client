@@ -7,7 +7,6 @@ import {fetchOneDevice} from "../http/deviceAPI";
 const DevicePage = () => {
     const [device, setDevice] = useState({info: []})
     const {id} = useParams()
-    console.log('device id ---> ', id)
     useEffect(()=> {
 fetchOneDevice(id).then(data => setDevice(data)).finally()
     }, [])

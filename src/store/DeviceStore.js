@@ -7,6 +7,7 @@ export default class DeviceStore {
         this._devices = []
         this._selectedType = {}
         this._selectedBrand = {}
+        this._selectedDevice = {}
         this._pageCurrent = 1
         this._totalCount = 0
         this._limit = 8
@@ -34,6 +35,9 @@ export default class DeviceStore {
 
     setSelectedBrand(brand) {
         this._selectedBrand = brand
+    }
+    setSelectedDevice(device) {
+        this._selectedDevice = device
     }
     setPageCurrent(page) {
         this._pageCurrent = page
@@ -63,6 +67,9 @@ export default class DeviceStore {
 
     get selectedBrand() {
         return this._selectedBrand
+    }
+    get selectedDevice() {
+        return this._selectedDevice
     }
     get pageCurrent() {
         return this._pageCurrent
