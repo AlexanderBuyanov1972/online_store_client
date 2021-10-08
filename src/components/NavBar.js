@@ -14,6 +14,7 @@ const NavBar = observer(() => {
         userStore.setIsAuth(false)
         userStore.setIsAdmin(false)
         localStorage.removeItem('token')
+        history.push(SHOP_ROUTE)
     }
     return (
         <Navbar bg="primary" variant="dark">

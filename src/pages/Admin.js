@@ -6,7 +6,7 @@ import CreateDevice from "../components/modals/CreateDevice";
 import {Context} from "../index";
 
 const Admin = () => {
-const {deviceStore} = useContext(Context)
+    const {deviceStore} = useContext(Context)
 
     const [brandVisible, setBrandVisible] = useState(false)
     const [typeVisible, setTypeVisible] = useState(false)
@@ -25,11 +25,9 @@ const {deviceStore} = useContext(Context)
             <hr/>
             <Button variant={'outline-dark'} className='mt-4 p-2' onClick={() => setDeviceVisible(true)}>Добавить
                 устройство</Button>
-            <Button variant={'outline-dark'} className='mt-4 p-2' onClick={() => setDeviceVisible(true)}>Обновить
-                устройство</Button>
             <hr/>
-            <CreateType selectedType={} show={typeVisible} onHide={() => setTypeVisible(false)}/>
-            <CreateBrand selectedBrand={} show={brandVisible} onHide={() => setBrandVisible(false)}/>
+            <CreateType show={typeVisible} onHide={() => setTypeVisible(false)}/>
+            <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)}/>
             <CreateDevice show={deviceVisible} onHide={() => setDeviceVisible(false)}/>
         </Container>
     );
