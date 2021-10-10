@@ -73,8 +73,8 @@ const DevicePage = () => {
             <hr/>
             <CreateDevice show={visible} onHide={() => setVisible(false)}/>
             <UpdateDevice device={device}
-                type={type}
-                brand={brand}
+                typeOld={type}
+                brandOld={brand}
                           show={visible} onHide={() => setVisible(false)}/>
         </Container>
     );

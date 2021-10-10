@@ -1,14 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Button, Col, Dropdown, Form, Modal, Row} from "react-bootstrap";
-import {Context} from "../../index";
-import {createDevice} from "../../http/deviceAPI";
-import {fetchTypes} from "../../http/typeAPI";
-import {fetchBrands} from "../../http/brandAPI";
-import {observer} from "mobx-react-lite";
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, Col, Dropdown, Form, Modal, Row } from "react-bootstrap";
+import { Context } from "../../index";
+import { createDevice } from "../../http/deviceAPI";
+import { fetchTypes } from "../../http/typeAPI";
+import { fetchBrands } from "../../http/brandAPI";
+import { observer } from "mobx-react-lite";
 import object from "../../utils/formForType";
 
-const CreateDevice = observer(({show, onHide}) => {
-    const {deviceStore} = useContext(Context)
+const CreateDevice = observer(({ show, onHide }) => {
+    const { deviceStore } = useContext(Context)
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
     const [file, setFile] = useState(null)
@@ -20,14 +20,14 @@ const CreateDevice = observer(({show, onHide}) => {
     }, [])
 
     const addInfo = () => {
-        setInfo([...info, {title: "", description: "", id: Date.now()}])
+        setInfo([...info, { title: "", description: "", id: Date.now() }])
     }
     const removeInfo = (number) => {
         setInfo(info.filter(i => i.id !== number))
     }
 
     const changeInfo = (key, value, number) => {
-        setInfo(info.map(item => item.id === number ? {...item, [key]: value} : item))
+        setInfo(info.map(item => item.id === number ? { ...item, [key]: value } : item))
     }
 
     const selectFile = (e) => {
@@ -51,9 +51,8 @@ const CreateDevice = observer(({show, onHide}) => {
         const array = object[name.trim()]
         const newInfo = []
         for (let i = 0; i < array.length; i++) {
-            newInfo.push({title: array[i], description: '', id: Date.now() + i})
+            newInfo.push({ title: array[i], description: '', id: Date.now() + i })
         }
-        console.log(newInfo)
         setInfo(newInfo)
     }
     return (
@@ -111,7 +110,7 @@ const CreateDevice = observer(({show, onHide}) => {
                         className='mt-3'
                         onChange={selectFile}
                     />
-                    <hr/>
+                    <hr />
                     <Button variant={'outline-dark'} onClick={addInfo}>Добавить новое свойство</Button>
                     {
                         info.map(i =>
@@ -134,7 +133,7 @@ const CreateDevice = observer(({show, onHide}) => {
                                 </Col>
                                 <Col md={4}>
                                     <Button disabled={i.title !== ''} variant={'outline-danger'}
-                                            onClick={() => removeInfo(i.id)}>
+                                        onClick={() => removeInfo(i.id)}>
                                         Удалить свойство
                                     </Button>
                                 </Col>
