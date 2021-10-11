@@ -19,7 +19,7 @@ const NavBar = observer(() => {
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
-                <NavLink style={{color: 'white'}} to={SHOP_ROUTE}> Купи Девайс!!! </NavLink>
+                <NavLink style={{color: 'white'}} to={SHOP_ROUTE}> Бытовая техника </NavLink>
                 <Nav className="ml-auto" style={{color: "white"}}>
                     {userStore.isAdmin &&
                     <Button variant={'outline-light'} onClick={() => history.push(ADMIN_ROUTE)}

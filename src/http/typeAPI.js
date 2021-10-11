@@ -1,5 +1,5 @@
 import {$host, $authHost} from "./index"
-import {API_BRAND, API_TYPE} from "./pathURL";
+import { API_TYPE} from "./pathURL";
 
 export const createType = async (type) => {
     const {data} = await $authHost.post(API_TYPE, type)

@@ -6,17 +6,16 @@ import { observer } from "mobx-react-lite";
 import object from "../../utils/formForType";
 
 const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
+
     const { deviceStore } = useContext(Context)
     const [name, setName] = useState('')
-    const [type, setType] = useState({})
-    const [brand, setBrand] = useState({})
-    const [price, setPrice] = useState(0)
+    const [type, setType] = useState({ id: 0, name: '' })
+    const [brand, setBrand] = useState({ id: 0, name: '' })
+    const [price, setPrice] = useState('')
+    const [rating, setRating] = useState('')
     const [file, setFile] = useState(null)
     const [info, setInfo] = useState([])
 
-    // useEffect(()=> {
-    //     setFormForType(type)
-    // }, [info])
 
     const initialData = () => {
         setName(device.name)
@@ -24,12 +23,13 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
         setBrand(brandOld)
         setPrice(device.price)
         setFile(device.img)
-        setInfo([...device.info])
-        setFormForType(typeOld)
+        setInfo(device.info)
+        setRating(device.rating)
     }
 
-    const setFormForType = (type) => {
-        if (type) {
+
+    const getFormForType = (type, length) => {
+        if (length === 0 && type) {
             const array = object[type.name.trim()]
             const newInfo = []
             for (let i = 0; i < array.length; i++) {
@@ -44,7 +44,9 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
     }
 
     const removeInfo = (number) => {
-        setInfo(info.filter(i => i.id !== number))
+        const array = [...info.filter(i => i.id !== number)]
+        setInfo(array)
+        getFormForType(type, array.length)
     }
 
     const changeInfo = (key, value, number) => {
@@ -59,6 +61,7 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
         const formData = new FormData()
         formData.append('name', name)
         formData.append('price', `${price}`)
+        formData.append('rating', `${rating}`)
         formData.append('img', file)
         formData.append('brandId', brand.id)
         formData.append('typeId', type.id)
@@ -91,7 +94,7 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
                                     key={type.id}
                                     onClick={() => {
                                         setType(type)
-                                        setFormForType(type)
+                                        getFormForType(type, info.length)
                                     }}
                                 >{type.name}</Dropdown.Item>)}
                         </Dropdown.Menu>
@@ -113,11 +116,18 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
                         onChange={event => setName(event.target.value)}
                     />
                     <Form.Control
-                        type="number"
+                       
                         className='mt-3'
                         placeholder='Введите стоимость устройства'
                         value={price}
                         onChange={event => setPrice(Number(event.target.value))}
+                    />
+                    <Form.Control
+                        
+                        className='mt-3'
+                        placeholder='Введите рейтинг устройства'
+                        value={rating}
+                        onChange={event => setRating(Number(event.target.value))}
                     />
                     <Form.Control
                         type="file"
@@ -125,7 +135,8 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
                         onChange={selectFile}
                     />
                     <hr />
-                    <Button variant={'outline-dark'} onClick={addInfo}>Добавить новое свойство</Button>
+                    <Button variant={'outline-dark'} onClick={() => addInfo()
+                    }>Добавить новое свойство</Button>
                     <hr />
                     {
                         info.map(i =>
@@ -147,7 +158,9 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
                                     />
                                 </Col>
                                 <Col md={4}>
-                                    <Button variant={'outline-danger'} onClick={() => removeInfo(i.id)}>
+                                    <Button variant={'outline-danger'} onClick={() => {
+                                        removeInfo(i.id)
+                                    }}>
                                         Удалить свойство
                                     </Button>
                                 </Col>
