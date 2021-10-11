@@ -7,14 +7,20 @@ import { Context } from "../index";
 import UpdateDevice from "../components/modals/UpdateDevice";
 import { fetchOneType } from "../http/typeAPI";
 import { fetchOneBrand } from "../http/brandAPI";
+import { Spinner } from "react-bootstrap";
+import { observer } from "mobx-react-lite";
 
-const DevicePage = () => {
+
+
+const DevicePage = observer(() => {
     const { id } = useParams()
     const [visible, setVisible] = useState(false)
     const { userStore } = useContext(Context)
     const [device, setDevice] = useState({ id: 0, name: '', img: '', rating: 0, info: [] })
     const [rating, setRating] = useState(0)
     const [flagRating, setFlagRating] = useState(false)
+
+    const [loading, setLoading] = useState(true)
 
     const [type, setType] = useState({})
     const [brand, setBrand] = useState({})
@@ -24,7 +30,7 @@ const DevicePage = () => {
             setRating(data.rating)
             fetchOneType(data.typeId).then(data => setType(data))
             fetchOneBrand(data.brandId).then(data => setBrand(data))
-        })
+        }).finally(() => setLoading(false))
 
     }, [])
 
@@ -36,6 +42,10 @@ const DevicePage = () => {
             setFlagRating(true)
             setRating(rating + 1)
         }
+    }
+
+    if (loading) {
+        return <Spinner animation={"grow"} />
     }
     return (
         <Container className="mt-3">
@@ -56,7 +66,7 @@ const DevicePage = () => {
                         >
                             <div style={{
                                 fontSize: 50,
-                                color: flagRating? 'red': 'black'
+                                color: flagRating ? 'red' : 'black'
                             }}>
                                 {rating}
                             </div>
@@ -95,6 +105,6 @@ const DevicePage = () => {
                 show={visible} onHide={() => setVisible(false)} />
         </Container>
     );
-};
+});
 
 export default DevicePage;

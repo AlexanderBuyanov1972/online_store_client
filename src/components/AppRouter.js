@@ -7,8 +7,6 @@ import {Context} from "../index";
 const AppRouter = () => {
     const {userStore} = useContext(Context)
 
-    console.log(userStore)
-
     return (
         <Switch>
             {

@@ -27,7 +27,7 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
         setRating(device.rating)
     }
 
-
+ 
     const getFormForType = (type, length) => {
         if (length === 0 && type) {
             const array = object[type.name.trim()]
@@ -66,9 +66,10 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
         formData.append('brandId', brand.id)
         formData.append('typeId', type.id)
         formData.append('info', JSON.stringify(info))
-        updateDevice(device.id, formData).then(data =>
+        updateDevice(device.id, formData).then(data => {
             onHide()
-        )
+            window.location.reload();
+        })
     }
 
     return (
@@ -116,14 +117,14 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
                         onChange={event => setName(event.target.value)}
                     />
                     <Form.Control
-                       
+
                         className='mt-3'
                         placeholder='Введите стоимость устройства'
                         value={price}
                         onChange={event => setPrice(Number(event.target.value))}
                     />
                     <Form.Control
-                        
+
                         className='mt-3'
                         placeholder='Введите рейтинг устройства'
                         value={rating}
@@ -170,7 +171,8 @@ const UpdateDevice = observer(({ show, onHide, device, typeOld, brandOld }) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant={'outline-danger'} onClick={onHide}>Закрывать</Button>
+                <Button variant={'outline-danger'} onClick={onHide}
+                >Закрывать</Button>
                 <Button variant={'outline-success'} onClick={addDevice}>Добавить</Button>
             </Modal.Footer>
         </Modal>
