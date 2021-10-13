@@ -1,29 +1,43 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Dropdown, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, Dropdown } from "react-bootstrap";
 import { Context } from "../../index";
-import { createDevice } from "../../http/deviceAPI";
+import { updateDevice } from "../../http/deviceAPI";
+import { observer } from "mobx-react-lite";
+import { getFormForType } from "../../utils/formForType";
 import { fetchTypes } from "../../http/typeAPI";
 import { fetchBrands } from "../../http/brandAPI";
-import { observer } from "mobx-react-lite";
-import object from "../../utils/formForType";
 
-const CreateDevice = observer(({ show, onHide }) => {
+const UpdateDevice = observer(({ show, onHide }) => {
     const { deviceStore } = useContext(Context)
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
-    const [file, setFile] = useState(null)
-    const [info, setInfo] = useState([])
+    const device = deviceStore.selectedDevice
+    const type = deviceStore.selectedType
+    const brand = deviceStore.selectedBrand
+    const [name, setName] = useState(device.name)
+    const [price, setPrice] = useState(device.price)
+    const [rating, setRating] = useState(device.rating)
+    const [file, setFile] = useState(device.img)
+    const [info, setInfo] = useState(device.info)
 
     useEffect(() => {
-        fetchTypes().then(data => deviceStore.setTypes(data))
-        fetchBrands().then(data => deviceStore.setBrands(data))
+        fetchTypes().then(data => deviceStore.setTypes(data.filter(i => i.id !== 1)))
+        fetchBrands().then(data => deviceStore.setBrands(data.filter(i => i.id !== 1)))
     }, [])
+
+    const selectType = (value) => {
+        deviceStore.setSelectedType(value)
+        setInfo(getFormForType(value, info));
+    }
+
+    const selectBrand = (value) => {
+        deviceStore.setSelectedBrand(value)
+    }
 
     const addInfo = () => {
         setInfo([...info, { title: "", description: "", id: Date.now() }])
     }
+
     const removeInfo = (number) => {
-        setInfo(info.filter(i => i.id !== number))
+        setInfo(getFormForType(type, [...info.filter(i => i.id !== number)]))
     }
 
     const changeInfo = (key, value, number) => {
@@ -38,23 +52,22 @@ const CreateDevice = observer(({ show, onHide }) => {
         const formData = new FormData()
         formData.append('name', name)
         formData.append('price', `${price}`)
+        formData.append('rating', `${rating}`)
         formData.append('img', file)
-        formData.append('brandId', deviceStore.selectedBrand.id)
-        formData.append('typeId', deviceStore.selectedType.id)
+        formData.append('brandId', brand.id)
+        formData.append('typeId', type.id)
         formData.append('info', JSON.stringify(info))
-        createDevice(formData).then(data =>
+        updateDevice(device.id, formData).then(data => {
             onHide()
-        )
+            window.location.reload();
+        })
     }
 
-    const setFormForType = (name) => {
-        const array = object[name.trim()]
-        const newInfo = []
-        for (let i = 0; i < array.length; i++) {
-            newInfo.push({ title: array[i], description: '', id: Date.now() + i })
-        }
-        setInfo(newInfo)
+    const closeModal = () => {
+        setInfo(device.info)
+        onHide()
     }
+
     return (
         <Modal
             show={show}
@@ -62,23 +75,30 @@ const CreateDevice = observer(({ show, onHide }) => {
             size="lg"
             centered
         >
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Добавить новое устройство
+                    Обновить выбранное устройство
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
+                    {/* <div>
+                        <Button className='mt-2 mb-2' variant={'outline-success'} disabled>
+                            {type.name}
+                        </Button>
+                    </div>
+                    <div>
+                        <Button className='mt-2 mb-2' variant={'outline-success'} disabled>
+                            {brand.name}
+                        </Button>
+                    </div> */}
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle>{deviceStore.selectedType.name || 'Выбери тип'}</Dropdown.Toggle>
                         <Dropdown.Menu>
                             {deviceStore.types.map(type =>
                                 <Dropdown.Item
                                     key={type.id}
-                                    onClick={() => {
-                                        deviceStore.setSelectedType(type)
-                                        setFormForType(type.name);
-                                    }}
+                                    onClick={() => selectType(type)}
                                 >{type.name}</Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
@@ -88,7 +108,7 @@ const CreateDevice = observer(({ show, onHide }) => {
                             {deviceStore.brands.map(brand =>
                                 <Dropdown.Item
                                     key={brand.id}
-                                    onClick={() => deviceStore.setSelectedBrand(brand)}
+                                    onClick={() => selectBrand(brand)}
                                 >{brand.name}</Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
@@ -99,19 +119,29 @@ const CreateDevice = observer(({ show, onHide }) => {
                         onChange={event => setName(event.target.value)}
                     />
                     <Form.Control
-                        type="number"
+
                         className='mt-3'
                         placeholder='Введите стоимость устройства'
                         value={price}
                         onChange={event => setPrice(Number(event.target.value))}
                     />
                     <Form.Control
+
+                        className='mt-3'
+                        placeholder='Введите рейтинг устройства'
+                        value={rating}
+                        onChange={event => setRating(Number(event.target.value))}
+                    />
+                    <Form.Control
                         type="file"
                         className='mt-3'
                         onChange={selectFile}
+                        placeholder={device.img}
                     />
                     <hr />
-                    <Button variant={'outline-dark'} onClick={addInfo}>Добавить новое свойство</Button>
+                    <Button variant={'outline-dark'} onClick={() => addInfo()
+                    }>Добавить новое свойство</Button>
+                    <hr />
                     {
                         info.map(i =>
                             <Row key={i.id} className='mt-3'>
@@ -132,8 +162,9 @@ const CreateDevice = observer(({ show, onHide }) => {
                                     />
                                 </Col>
                                 <Col md={4}>
-                                    <Button disabled={i.title !== ''} variant={'outline-danger'}
-                                        onClick={() => removeInfo(i.id)}>
+                                    <Button variant={'outline-danger'} onClick={() => {
+                                        removeInfo(i.id)
+                                    }}>
                                         Удалить свойство
                                     </Button>
                                 </Col>
@@ -143,11 +174,13 @@ const CreateDevice = observer(({ show, onHide }) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant={'outline-danger'} onClick={onHide}>Закрывать</Button>
+                <Button variant={'outline-danger'} onClick={closeModal}
+                >Закрывать</Button>
                 <Button variant={'outline-success'} onClick={addDevice}>Добавить</Button>
             </Modal.Footer>
         </Modal>
     );
-});
+})
 
-export default CreateDevice;
+
+export default UpdateDevice;

@@ -1,4 +1,4 @@
-module.exports = {
+const object = {
     "Холодильники": ["Тип холодильника", "Морозильная камера", "Размораживание холодильной камеры",
         "Цвет", "Гарантия"],
     "Стиральные машины":
@@ -28,4 +28,18 @@ module.exports = {
             "Гарантия"],
     "Телевизоры":
         ["Диагональ", "Разрешение", "Smart TV", "Частота развертки", "Гарантия"],
+
+}
+
+export const getFormForType = (type, arrayIn) => {
+    if (type && (arrayIn.length === 0 || undefined)) {
+        const array = object[type.name.trim()]
+        const arrayNew = []
+        for (let i = 0; i < array.length; i++) {
+            arrayNew.push({ title: array[i], description: '', id: Date.now() + i })
+        }
+        return arrayNew
+    }
+
+    return arrayIn
 }

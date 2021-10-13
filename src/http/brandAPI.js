@@ -1,5 +1,5 @@
 import {$host, $authHost} from "./index"
-import {API_BRAND, API_DEVICE} from "./pathURL";
+import {API_BRAND} from "./pathURL";
 
 export const createBrand = async (brand) => {
     const {data} = await $authHost.post(API_BRAND, brand)

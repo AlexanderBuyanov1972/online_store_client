@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
-import {createType} from "../../http/typeAPI";
 import {createBrand} from "../../http/brandAPI";
 
 const CreateBrand = ({show, onHide}) => {

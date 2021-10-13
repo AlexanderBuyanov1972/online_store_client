@@ -14,22 +14,21 @@ import { observer } from "mobx-react-lite";
 
 const DevicePage = observer(() => {
     const { id } = useParams()
-    const [visible, setVisible] = useState(false)
+    const [loading, setLoading] = useState(true)
     const { userStore } = useContext(Context)
-    const [device, setDevice] = useState({ id: 0, name: '', img: '', rating: 0, info: [] })
+    const { deviceStore } = useContext(Context)
+    const [visible, setVisible] = useState(false)
+    const [device, setDevice] = useState({})
     const [rating, setRating] = useState(0)
     const [flagRating, setFlagRating] = useState(false)
 
-    const [loading, setLoading] = useState(true)
-
-    const [type, setType] = useState({})
-    const [brand, setBrand] = useState({})
     useEffect(() => {
         fetchOneDevice(id).then(data => {
+            deviceStore.setSelectedDevice(data)
+            fetchOneType(data.typeId).then(data => deviceStore.setSelectedType(data))
+            fetchOneBrand(data.brandId).then(data => deviceStore.setSelectedBrand(data))
             setDevice(data)
             setRating(data.rating)
-            fetchOneType(data.typeId).then(data => setType(data))
-            fetchOneBrand(data.brandId).then(data => setBrand(data))
         }).finally(() => setLoading(false))
 
     }, [])
@@ -70,7 +69,6 @@ const DevicePage = observer(() => {
                             }}>
                                 {rating}
                             </div>
-
                         </div>
                     </Row>
                 </Col>
@@ -99,10 +97,7 @@ const DevicePage = observer(() => {
 
             </Row>
             <hr />
-            <UpdateDevice device={device}
-                typeOld={type}
-                brandOld={brand}
-                show={visible} onHide={() => setVisible(false)} />
+            <UpdateDevice show={visible} onHide={() => setVisible(false)} />
         </Container>
     );
 });

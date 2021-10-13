@@ -5,9 +5,11 @@ export default class DeviceStore {
         this._types = []
         this._brands = []
         this._devices = []
+
         this._selectedType = {}
         this._selectedBrand = {}
         this._selectedDevice = {}
+        
         this._pageCurrent = 1
         this._totalCount = 0
         this._limit = 8
