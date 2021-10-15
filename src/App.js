@@ -6,6 +6,7 @@ import {observer} from "mobx-react-lite";
 import {Context} from "./index";
 import {check} from "./http/userAPI";
 import {Spinner} from "react-bootstrap";
+import Footer from './components/footer/Footer';
 
 const App = observer(() => {
     const {userStore} = useContext(Context)
@@ -27,6 +28,7 @@ const App = observer(() => {
         <BrowserRouter>
             <NavBar/>
             <AppRouter/>
+            <Footer/>
         </BrowserRouter>
     );
 })

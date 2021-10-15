@@ -9,6 +9,7 @@ import { getFormForType } from "../../utils/formForType";
 
 const CreateDevice = observer(({ show, onHide }) => {
     const { deviceStore } = useContext(Context)
+
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [rating, setRating] = useState('')
@@ -47,7 +48,6 @@ const CreateDevice = observer(({ show, onHide }) => {
     const closeModal = () => {
         deviceStore.setSelectedType({})
         deviceStore.setSelectedBrand({})
-        setInfo([])
         onHide()
     }
 
@@ -60,9 +60,7 @@ const CreateDevice = observer(({ show, onHide }) => {
         formData.append('brandId', deviceStore.selectedBrand.id)
         formData.append('typeId', deviceStore.selectedType.id)
         formData.append('info', JSON.stringify(info))
-        createDevice(formData).then(data =>
-            onHide()
-        )
+        createDevice(formData).then( data => closeModal())
     }
 
 
@@ -86,7 +84,7 @@ const CreateDevice = observer(({ show, onHide }) => {
                             {deviceStore.types.map(type =>
                                 <Dropdown.Item
                                     key={type.id}
-                                    onClick={()=> selectType(type)}
+                                    onClick={() => selectType(type)}
                                 >{type.name}</Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
