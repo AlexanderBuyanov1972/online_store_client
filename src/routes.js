@@ -4,7 +4,7 @@ import Admin from "./pages/Admin";
 import Shop from "./pages/Shop";
 import DevicePage from "./pages/DevicePage";
 import Auth from "./pages/Auth";
-import Main from "./pages/Main";
+import Main from "./pages/main/Main";
 import NotFound from "./pages/NotFound";
 
 export const authRoutes = [
