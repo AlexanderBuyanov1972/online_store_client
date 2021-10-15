@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
+import styles from './DevicePage.module.css';
+import star from "../../assets/star_rating.png"
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
-import star from "../assets/star_rating.png"
 import { useParams } from "react-router-dom";
-import { fetchOneDevice } from "../http/deviceAPI";
-import { Context } from "../index";
-import UpdateDevice from "../components/modals/UpdateDevice";
-import { fetchOneType } from "../http/typeAPI";
-import { fetchOneBrand } from "../http/brandAPI";
+import { fetchOneDevice } from "../../http/deviceAPI";
+import { Context } from "../../index";
+import UpdateDevice from "../../components/modals/UpdateDevice";
+import { fetchOneType } from "../../http/typeAPI";
+import { fetchOneBrand } from "../../http/brandAPI";
 import { Spinner } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 
@@ -18,7 +19,7 @@ const DevicePage = observer(() => {
     const { userStore } = useContext(Context)
     const { deviceStore } = useContext(Context)
     const [visible, setVisible] = useState(false)
-    const [device, setDevice] = useState({})
+    const [device, setDevice] = useState({ name: '', price: '', info: [] })
     const [rating, setRating] = useState(0)
     const [flagRating, setFlagRating] = useState(false)
 
@@ -47,19 +48,18 @@ const DevicePage = observer(() => {
         return <Spinner animation={"grow"} />
     }
     return (
-        <Container className="mt-3">
+        <Container className={styles.container}>
             <Row>
                 <Col md={4}>
-                    <Image width={300} height={300} src={process.env.REACT_APP_API_URL + device.img} />
+                    <Image className={styles.col1_img} src={process.env.REACT_APP_API_URL + device.img} />
                 </Col>
                 <Col md={4}>
-                    <Row className='d-flex flex-column align-items-center'>
-                        <h2 className='text-center'>{device.name}</h2>
+                    <Row className={styles.col2_row}>
+                        <h2 className={styles.col2_h2}>{device.name}</h2>
                         <div
-                            className="d-flex justify-content-center align-items-center"
+                            className={styles.col2_div}
                             style={{
-                                background: `url(${star}) no-repeat center center`,
-                                width: 240, height: 240, backgroundSize: 'cover', fontSize: 64
+                                background: `url(${star}) no-repeat center center`
                             }}
                             onClick={() => clickRating()}
                         >
@@ -73,14 +73,13 @@ const DevicePage = observer(() => {
                     </Row>
                 </Col>
                 <Col md={4}>
-                    <Card className="d-flex flex-column align-items-center justify-content-around"
-                        style={{ width: 300, height: 300, fontSize: 32, border: '5px solid lightgray' }}>
+                    <Card className={styles.col3_card}>
                         <h3>{device.price} grn.</h3>
                         <Button variant={"outline-dark"}>Добавить в корзину</Button>
                     </Card>
                 </Col>
             </Row>
-            <Row className="d-flex flex-column m-3">
+            <Row className={styles.row2}>
                 <div></div>
                 <h1>Характеристики</h1>
                 {device.info.map((info, index) =>
@@ -91,7 +90,7 @@ const DevicePage = observer(() => {
             </Row>
             <Row>
 
-                <Button hidden={!userStore.isAdmin} variant={'outline-dark'} className='mt-4 p-2'
+                <Button hidden={!userStore.isAdmin} variant={'outline-dark'} className={styles.row3_button}
                     onClick={() => setVisible(true)}>Обновить
                     устройство</Button>
 

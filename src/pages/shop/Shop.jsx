@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
+import styles from './Shop.module.css';
 import { Col, Container, Row } from "react-bootstrap";
-import TypeBar from "../components/TypeBar";
-import BrandBar from "../components/BrandBar";
-import DeviceList from "../components/DeviceList";
+import TypeBar from "../../components/TypeBar";
+import BrandBar from "../../components/BrandBar";
+import DeviceList from "../../components/DeviceList";
 import { observer } from "mobx-react-lite";
-import { Context } from "../index";
-import { fetchTypes } from "../http/typeAPI";
-import { fetchBrands } from "../http/brandAPI";
-import { fetchDevices } from "../http/deviceAPI";
-import Pages from "../components/Pages";
+import { Context } from "../../index";
+import { fetchTypes } from "../../http/typeAPI";
+import { fetchBrands } from "../../http/brandAPI";
+import { fetchDevices } from "../../http/deviceAPI";
+import Pages from "../../components/Pages";
 import { Spinner } from "react-bootstrap";
 
 const Shop = observer(() => {
@@ -38,7 +39,7 @@ const Shop = observer(() => {
     }
     return (
         <Container>
-            <Row className="mt-2">
+            <Row className={styles.row}>
                 <Col md={3}>
                     <TypeBar />
                 </Col>

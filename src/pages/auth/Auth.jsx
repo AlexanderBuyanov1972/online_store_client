@@ -1,10 +1,11 @@
 import React, {useContext, useState} from 'react';
+import styles from './Auth.module.css'
 import {Button, Card, Container, Form, Row} from "react-bootstrap";
 import {NavLink, useHistory, useLocation} from "react-router-dom";
-import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../utils/consts";
-import {login, registration} from "../http/userAPI";
+import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../../utils/consts";
+import {login, registration} from "../../http/userAPI";
 import {observer} from "mobx-react-lite";
-import {Context} from "../index";
+import {Context} from "../../index";
 
 const Auth = observer(() => {
     const {userStore} = useContext(Context)
@@ -34,27 +35,27 @@ const Auth = observer(() => {
     }
     return (
         <Container
-            className="d-flex justify-content-center align-items-center"
+            className={styles.container}
             style={{height: window.innerHeight - 54}}
         >
-            <Card style={{width: 600}} className='p-5'>
-                <h2 className='m-auto'>{isLogin ? 'Авторизация' : 'Регистрация'}</h2>
-                <Form className="d-flex flex-column">
+            <Card style={styles.card} className='p-5'>
+                <h2 className={styles.h2}>{isLogin ? 'Авторизация' : 'Регистрация'}</h2>
+                <Form className={styles.form}>
                     <Form.Control
-                        className="mt-3"
+                        className={styles.control}
                         placeholder="Введите ваш e-mail ..."
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                     />
                     <Form.Control
-                        className="mt-3"
+                        className={styles.control}
                         placeholder="Введите ваш пароль ..."
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         type="password"
                     />
 
-                    <Row className="d-flex justify-content-end mt-3 pl-3 pr-3">
+                    <Row className={styles.row}>
                         {isLogin ?
                             <div>
                                 Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Регистрация</NavLink>

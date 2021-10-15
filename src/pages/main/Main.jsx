@@ -14,7 +14,6 @@ const Main = () => {
                         <Carousel.Item>
                             <img
                                 key={item.id}
-                                // className="d-block w-100"
                                 className={styles.item}
                                 src={item.img}
                                 alt={item.alt}
