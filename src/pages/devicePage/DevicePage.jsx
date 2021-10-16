@@ -4,6 +4,7 @@ import star from "../../assets/star_rating.png"
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { fetchOneDevice } from "../../http/deviceAPI";
+import { fetchOneBasket } from "../../http/basketAPI";
 import { Context } from "../../index";
 import UpdateDevice from "../../components/modals/UpdateDevice";
 import { fetchOneType } from "../../http/typeAPI";
@@ -47,6 +48,11 @@ const DevicePage = observer(() => {
     if (loading) {
         return <Spinner animation={"grow"} />
     }
+
+    const addDeviceToDasket = () => {
+       const userId = userStore.user.id
+        fetchOneBasket(userId).then(data => console.log('basket---> ', data))
+    }
     return (
         <Container className={styles.container}>
             <Row>
@@ -54,12 +60,13 @@ const DevicePage = observer(() => {
                     <Image className={styles.col1_img} src={process.env.REACT_APP_API_URL + device.img} />
                 </Col>
                 <Col md={4}>
-                    <Row className={styles.col2_row}>
-                        <h2 className={styles.col2_h2}>{device.name}</h2>
+                    <Row className='d-flex flex-column align-items-center'>
+                        <h2 className='text-center'>{device.name}</h2>
                         <div
-                            className={styles.col2_div}
+                            className="d-flex justify-content-center align-items-center"
                             style={{
-                                background: `url(${star}) no-repeat center center`
+                                background: `url(${star}) no-repeat center center`,
+                                width: 240, height: 240, backgroundSize: 'cover', fontSize: 64
                             }}
                             onClick={() => clickRating()}
                         >
@@ -75,7 +82,8 @@ const DevicePage = observer(() => {
                 <Col md={4}>
                     <Card className={styles.col3_card}>
                         <h3>{device.price} grn.</h3>
-                        <Button variant={"outline-dark"}>Добавить в корзину</Button>
+                        <Button
+                            variant={"outline-dark"} onClick={addDeviceToDasket}>Добавить в корзину</Button>
                     </Card>
                 </Col>
             </Row>

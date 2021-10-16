@@ -7,3 +7,5 @@ export const API_TYPE = 'api/type'
 export const API_BRAND = 'api/brand'
 
 export const API_DEVICE = 'api/device'
+
+export const API_BASKET = 'api/basket'
