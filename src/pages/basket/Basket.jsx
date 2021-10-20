@@ -14,13 +14,13 @@ import {beautifulViewPrice} from '../../utils/helpFunctions'
 const Basket = observer(() => {
     const { deviceStore, userStore } = useContext(Context)
     const [loading, setLoading] = useState(true)
-    const [totalPrice, setTotalPrice] = useState(0)
+    const totalPrice = deviceStore.totalPrice
 
     useEffect(() => {
         fetchAllBasketDevice(userStore.user.id)
             .then(data => {
                 deviceStore.setBasketDevices(data)
-                setTotalPrice(getTotalPrice(data))
+                deviceStore.setTotalPrice(getTotalPrice(data))
             })
             .finally(() => setLoading(false))
     }, [])

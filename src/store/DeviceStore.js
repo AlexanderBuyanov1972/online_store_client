@@ -1,4 +1,4 @@
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx";
 
 export default class DeviceStore {
     constructor() {
@@ -10,10 +10,12 @@ export default class DeviceStore {
         this._selectedType = {}
         this._selectedBrand = {}
         this._selectedDevice = {}
-        
+
         this._pageCurrent = 1
         this._totalCount = 0
         this._limit = 8
+
+        this._totalPrice = 0
 
         makeAutoObservable(this)
     }
@@ -55,6 +57,10 @@ export default class DeviceStore {
         this._limit = limit
     }
 
+    setTotalPrice(totalPrice) {
+        this._totalPrice = totalPrice
+    }
+
     get types() {
         return this._types
     }
@@ -88,5 +94,8 @@ export default class DeviceStore {
     }
     get limit() {
         return this._limit
+    }
+    get totalPrice() {
+        return this._totalPrice
     }
 }
