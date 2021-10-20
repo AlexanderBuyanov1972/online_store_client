@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Context } from "../index";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE } from "../utils/consts";
+import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import { useHistory, useLocation } from "react-router-dom";
 
@@ -59,6 +59,8 @@ const NavBar = observer(() => {
                     {!userStore.isAuth &&
                         <Button variant={'outline-light'} className="m-1"
                             onClick={() => history.push(LOGIN_ROUTE)}>Авторизация</Button>}
+                    <Button variant={'outline-light'} className="m-1"
+                        onClick={() => history.push(BASKET_ROUTE)}>Корзина</Button>
                 </Nav>
             </Container>
         </Navbar>

@@ -4,13 +4,16 @@ import star from "../../assets/star_rating.png"
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { fetchOneDevice } from "../../http/deviceAPI";
-import { fetchOneBasket } from "../../http/basketAPI";
 import { Context } from "../../index";
 import UpdateDevice from "../../components/modals/UpdateDevice";
 import { fetchOneType } from "../../http/typeAPI";
 import { fetchOneBrand } from "../../http/brandAPI";
 import { Spinner } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
+import { createBasketDevice } from '../../http/basketDeviceAPI';
+import { BASKET_ROUTE } from '../../utils/consts';
+import { useHistory } from "react-router-dom";
+import { beautifulViewPrice } from '../../utils/helpFunctions'
 
 
 
@@ -23,6 +26,7 @@ const DevicePage = observer(() => {
     const [device, setDevice] = useState({ name: '', price: '', info: [] })
     const [rating, setRating] = useState(0)
     const [flagRating, setFlagRating] = useState(false)
+    const history = useHistory()
 
     useEffect(() => {
         fetchOneDevice(id).then(data => {
@@ -45,14 +49,16 @@ const DevicePage = observer(() => {
         }
     }
 
+    const addDeviceToBasket = () => {
+        createBasketDevice(userStore.user.id, id)
+        .then(data => history.push(BASKET_ROUTE))
+        .catch(err => console.log(err.message))
+    }
+
     if (loading) {
         return <Spinner animation={"grow"} />
     }
 
-    const addDeviceToDasket = () => {
-       const userId = userStore.user.id
-        fetchOneBasket(userId).then(data => console.log('basket---> ', data))
-    }
     return (
         <Container className={styles.container}>
             <Row>
@@ -81,9 +87,9 @@ const DevicePage = observer(() => {
                 </Col>
                 <Col md={4}>
                     <Card className={styles.col3_card}>
-                        <h3>{device.price} grn.</h3>
+                        <h3>{beautifulViewPrice(device.price)}</h3>
                         <Button
-                            variant={"outline-dark"} onClick={addDeviceToDasket}>Добавить в корзину</Button>
+                            variant={"outline-dark"} onClick={addDeviceToBasket}>Добавить в корзину</Button>
                     </Card>
                 </Col>
             </Row>
