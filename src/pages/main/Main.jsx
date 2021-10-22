@@ -1,27 +1,18 @@
 import React from 'react';
-import { Carousel } from "react-bootstrap";
-import arrayImages from "../../utils/arrayPhotosForCarousel";
+import CarouselComponent from '../../components/carousel/CarouselComponent.jsx'
 import styles from "./Main.module.css"
 
+const array = ['carousel1', 'carousel2', 'carousel3']
 
 const Main = () => {
-
     return (
-        < Carousel className={styles.main}>
-            {
-                arrayImages.map(
-                    item =>
-                        <Carousel.Item>
-                            <img
-                                key={item.id}
-                                className={styles.item}
-                                src={item.img}
-                                alt={item.alt}
-                            />
-                        </Carousel.Item>
-                )
-            }
-        </Carousel >
+        <div className={styles.main}>
+            {array.map(i =>
+                <div className={styles.item}>
+                    <CarouselComponent carouselId={i} />
+                </div>
+            )}
+        </div>
     );
 };
 

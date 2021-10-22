@@ -15,6 +15,8 @@ import { Spinner } from "react-bootstrap";
 const Shop = observer(() => {
     const { deviceStore } = useContext(Context)
     const [loading, setLoading] = useState(true)
+    
+
 
     useEffect(() => {
         fetchTypes().then(data => deviceStore.setTypes(data))

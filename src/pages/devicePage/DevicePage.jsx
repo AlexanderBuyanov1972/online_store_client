@@ -1,31 +1,29 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './DevicePage.module.css';
 import star from "../../assets/star_rating.png"
-import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Button, Card, Col, Container, Image, Row, Spinner } from "react-bootstrap";
+import { useParams, useHistory } from "react-router-dom";
 import { fetchOneDevice } from "../../http/deviceAPI";
 import { Context } from "../../index";
-import UpdateDevice from "../../components/modals/UpdateDevice";
 import { fetchOneType } from "../../http/typeAPI";
 import { fetchOneBrand } from "../../http/brandAPI";
-import { Spinner } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import { createBasketDevice } from '../../http/basketDeviceAPI';
 import { BASKET_ROUTE } from '../../utils/consts';
-import { useHistory } from "react-router-dom";
 import { beautifulViewPrice } from '../../utils/helpFunctions'
+import ButtonUpdateDeviceAdmin from '../../components/buttonUpdateDeviceAdmin/ButtonUpdateDeviceAdmin.js';
+import NeedAuth from '../../components/modals/NeedAuth';
 
 
 
 const DevicePage = observer(() => {
     const { id } = useParams()
+    const { userStore, deviceStore } = useContext(Context)
     const [loading, setLoading] = useState(true)
-    const { userStore } = useContext(Context)
-    const { deviceStore } = useContext(Context)
-    const [visible, setVisible] = useState(false)
     const [device, setDevice] = useState({ name: '', price: '', info: [] })
     const [rating, setRating] = useState(0)
     const [flagRating, setFlagRating] = useState(false)
+    const [visible, setVisible] = useState(false)
     const history = useHistory()
 
     useEffect(() => {
@@ -50,9 +48,13 @@ const DevicePage = observer(() => {
     }
 
     const addDeviceToBasket = () => {
-        createBasketDevice(userStore.user.id, id)
-        .then(data => history.push(BASKET_ROUTE))
-        .catch(err => console.log(err.message))
+        if (userStore.isAuth) {
+            createBasketDevice(userStore.user.id, id)
+                .then(data => history.push(BASKET_ROUTE))
+                .catch(err => alert(err.message))
+        } else {
+            setVisible(true)
+        }
     }
 
     if (loading) {
@@ -89,7 +91,8 @@ const DevicePage = observer(() => {
                     <Card className={styles.col3_card}>
                         <h3>{beautifulViewPrice(device.price)}</h3>
                         <Button
-                            variant={"outline-dark"} onClick={addDeviceToBasket}>Добавить в корзину</Button>
+                            variant={"outline-dark"}
+                            onClick={addDeviceToBasket}>Добавить в корзину</Button>
                     </Card>
                 </Col>
             </Row>
@@ -102,15 +105,9 @@ const DevicePage = observer(() => {
                         {info.title} : {info.description}
                     </Row>)}
             </Row>
-            <Row>
-
-                <Button hidden={!userStore.isAdmin} variant={'outline-dark'} className={styles.row3_button}
-                    onClick={() => setVisible(true)}>Обновить
-                    устройство</Button>
-
-            </Row>
             <hr />
-            <UpdateDevice show={visible} onHide={() => setVisible(false)} />
+            <NeedAuth show={visible} onHide={() => setVisible(false)} />
+            <ButtonUpdateDeviceAdmin />
         </Container>
     );
 });
