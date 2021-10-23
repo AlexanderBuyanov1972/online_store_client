@@ -1,35 +1,43 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {BrowserRouter} from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react'
+import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import NavBar from "./components/NavBar";
-import {observer} from "mobx-react-lite";
-import {Context} from "./index";
-import {check} from "./http/userAPI";
-import {Spinner} from "react-bootstrap";
+import { observer } from "mobx-react-lite";
+import { Context } from "./index";
+import { check } from "./http/userAPI";
+import { Spinner } from "react-bootstrap";
 import Footer from './components/footer/Footer';
+import HeaderTop from './components/headerTop/HeaderTop'
 
 const App = observer(() => {
-    const {userStore} = useContext(Context)
+    const { userStore } = useContext(Context)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         check().then(data => {
             userStore.setUser(data)
             userStore.setIsAuth(true)
-            if(data.role === 'ADMIN'){
+            if (data.role === 'ADMIN') {
                 userStore.setIsAdmin(true)
             }
         }).finally(() => setLoading(false))
     }, [])
     if (loading) {
-        return <Spinner animation={"grow"}/>
+        return <Spinner animation = { "grow" }
+        />
     }
-    return (
-        <BrowserRouter>
-            <NavBar/>
-            <AppRouter/>
-            <Footer/>
-        </BrowserRouter>
+    return ( <
+        BrowserRouter >
+        <
+        HeaderTop / >
+        <
+        NavBar / >
+        <
+        AppRouter / >
+        <
+        Footer / >
+        <
+        /BrowserRouter>
     );
 })
 

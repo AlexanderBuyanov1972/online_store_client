@@ -103,23 +103,27 @@ const CreateDevice = observer(({ show, onHide }) => {
                         placeholder='Введите название устройства'
                         value={name}
                         onChange={event => setName(event.target.value)}
+                        required isInvalid
                     />
                     <Form.Control
                         className='mt-3'
                         placeholder='Введите стоимость устройства'
                         value={price}
                         onChange={event => setPrice(Number(event.target.value))}
+                        required isInvalid
                     />
                     <Form.Control
                         className='mt-3'
                         placeholder='Введите рейтинг устройства'
                         value={rating}
                         onChange={event => setRating(Number(event.target.value))}
+                        required isInvalid
                     />
                     <Form.Control
                         type="file"
                         className='mt-3'
                         onChange={selectFile}
+                        required isInvalid
                     />
                     <hr />
                     <Button variant={'outline-dark'} onClick={addInfo}>Добавить новое свойство</Button>
@@ -132,6 +136,7 @@ const CreateDevice = observer(({ show, onHide }) => {
                                         value={i.title}
                                         onChange={(event) =>
                                             changeInfo('title', event.target.value, i.id)}
+                                            required isInvalid
                                     />
                                 </Col>
                                 <Col md={4}>
@@ -140,6 +145,7 @@ const CreateDevice = observer(({ show, onHide }) => {
                                         value={i.description}
                                         onChange={(event) =>
                                             changeInfo('description', event.target.value, i.id)}
+                                            required isInvalid
                                     />
                                 </Col>
                                 <Col md={4}>

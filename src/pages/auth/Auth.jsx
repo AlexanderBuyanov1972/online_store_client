@@ -45,6 +45,7 @@ const Auth = observer(() => {
                         placeholder="Введите ваш e-mail ..."
                         value={email}
                         onChange={e => setEmail(e.target.value)}
+                        required isInvalid
                     />
                     <Form.Control
                         className="mt-3"
@@ -52,6 +53,7 @@ const Auth = observer(() => {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         type="password"
+                        required isInvalid
                     />
 
                     <Row className="d-flex justify-content-end mt-3 pl-3 pr-3">

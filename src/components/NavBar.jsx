@@ -59,8 +59,9 @@ const NavBar = observer(() => {
                     {!userStore.isAuth &&
                         <Button variant={'outline-light'} className="m-1"
                             onClick={() => history.push(LOGIN_ROUTE)}>Авторизация</Button>}
-                    <Button variant={'outline-light'} className="m-1"
-                        onClick={() => history.push(BASKET_ROUTE)}>Корзина</Button>
+                    {userStore.isAuth &&
+                        <Button variant={'outline-light'} className="m-1"
+                            onClick={() => history.push(BASKET_ROUTE)}>Корзина</Button>}
                 </Nav>
             </Container>
         </Navbar>

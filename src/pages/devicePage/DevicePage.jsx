@@ -20,7 +20,7 @@ const DevicePage = observer(() => {
     const { id } = useParams()
     const { userStore, deviceStore } = useContext(Context)
     const [loading, setLoading] = useState(true)
-    const [device, setDevice] = useState({ name: '', price: '', info: [] })
+    const [device, setDevice] = useState({ name: '', price: '', info: [], img: '' })
     const [rating, setRating] = useState(0)
     const [flagRating, setFlagRating] = useState(false)
     const [visible, setVisible] = useState(false)
