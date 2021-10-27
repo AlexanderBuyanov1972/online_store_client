@@ -6,14 +6,12 @@ import DeviceStore from "./store/DeviceStore";
 
 export const Context = createContext(null)
 
-ReactDOM.render( <
-    Context.Provider value = {
+ReactDOM.render( <Context.Provider value = {
         {
             userStore: new UserStore(),
             deviceStore: new DeviceStore()
         }
     } >
     <
-    App / > , <
-    /Context.Provider>,
+    App / > , </Context.Provider>,
     document.getElementById('root'));

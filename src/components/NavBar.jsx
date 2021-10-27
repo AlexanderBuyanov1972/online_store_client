@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Context } from "../index";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE } from "../utils/consts";
+import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE, FAVORITES_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import { useHistory, useLocation } from "react-router-dom";
+import BackCall from '../components/modals/backCall/BackCall'
 
 const NavBar = observer(() => {
     const { userStore } = useContext(Context)
@@ -14,6 +15,7 @@ const NavBar = observer(() => {
     const isShop = location.pathname === SHOP_ROUTE
     const isMain = location.pathname === MAIN_ROUTE
     const history = useHistory()
+    const [flagBackCall, setFlagBackCall] = useState(false)
 
     const logOut = () => {
         userStore.setUser({})
@@ -29,42 +31,50 @@ const NavBar = observer(() => {
     }
 
     return (
-        <Navbar bg="primary" variant="dark">
-            <Container>
-                <Nav className="ml-auto" style={{ color: "white" }}>
-                    <NavLink className="m-1"
-                        style={{ color: 'white', textDecoration: 'none' }}
-                        to={MAIN_ROUTE} onClick={resetTypeBrand}
-                    > {isMain ? '' : 'На главную'}
+        <div>
+            <Navbar bg="primary" variant="dark">
+                <Container>
+                    <Nav className="ml-auto" style={{ color: "white" }}>
+                        <NavLink className="m-1"
+                            style={{ color: 'white', textDecoration: 'none' }}
+                            to={MAIN_ROUTE} onClick={resetTypeBrand}
+                        > {isMain ? '' : 'На главную'}
 
-                    </NavLink>
-                    <NavLink className="m-1"
-                        style={{ color: 'white', textDecoration: 'none' }}
-                        to={SHOP_ROUTE} onClick={resetTypeBrand}
-                    > {isShop ? '' : 'В магазин'}
+                        </NavLink>
+                        <NavLink className="m-1"
+                            style={{ color: 'white', textDecoration: 'none' }}
+                            to={SHOP_ROUTE} onClick={resetTypeBrand}
+                        > {isShop ? '' : 'В магазин'}
 
-                    </NavLink>
-                </Nav>
-                <Nav className="ml-auto" style={{ color: "white" }}>
-                    {userStore.isAdmin &&
-                        <Button variant={'outline-light'} onClick={() => {
-                            resetTypeBrand()
-                            history.push(ADMIN_ROUTE)
-                        }}
-                            className="m-1">АдминПанель</Button>}
+                        </NavLink>
+                    </Nav>
+                    <Nav className="ml-auto" style={{ color: "white" }}>
+                        {userStore.isAdmin &&
+                            <Button variant={'outline-light'} onClick={() => {
+                                resetTypeBrand()
+                                history.push(ADMIN_ROUTE)
+                            }}
+                                className="m-1">АдминПанель</Button>}
 
-                    {userStore.isAuth &&
-                        <Button variant={'outline-light'} onClick={() => logOut()}
-                            className="m-1">Выйти</Button>}
-                    {!userStore.isAuth &&
+                        {userStore.isAuth &&
+                            <Button variant={'outline-light'} onClick={() => logOut()}
+                                className="m-1">Выйти</Button>}
+                        {!userStore.isAuth &&
+                            <Button variant={'outline-light'} className="m-1"
+                                onClick={() => history.push(LOGIN_ROUTE)}>Авторизация</Button>}
+                        {userStore.isAuth &&
+                            <Button variant={'outline-light'} className="m-1"
+                                onClick={() => history.push(BASKET_ROUTE)}>Корзина</Button>}
+                        {userStore.isAuth &&
+                            <Button variant={'outline-light'} className="m-1"
+                                onClick={() => history.push(FAVORITES_ROUTE)}>Избранное</Button>}
                         <Button variant={'outline-light'} className="m-1"
-                            onClick={() => history.push(LOGIN_ROUTE)}>Авторизация</Button>}
-                    {userStore.isAuth &&
-                        <Button variant={'outline-light'} className="m-1"
-                            onClick={() => history.push(BASKET_ROUTE)}>Корзина</Button>}
-                </Nav>
-            </Container>
-        </Navbar>
+                            onClick={() => setFlagBackCall(true)}>Обратный звонок</Button>
+                    </Nav>
+                </Container>
+            </Navbar>
+            <BackCall show={flagBackCall} onHide={() => setFlagBackCall(false)}/>
+        </div>
     );
 });
 

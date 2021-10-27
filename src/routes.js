@@ -10,7 +10,8 @@ import {
     SHIPPING_AND_PAYMENT_ROUTE,
     ARTICLES_ROUTE,
     ABOUT_STORE_ROUTE,
-    CABINET_ROUTE
+    CABINET_ROUTE,
+    FAVORITES_ROUTE
 } from "./utils/consts";
 import Basket from "./pages/basket/Basket";
 import Shop from "./pages/shop/Shop";
@@ -24,6 +25,7 @@ import ShippingAndPayment from './pages/shippingAndPayment/ShippingAndPayment'
 import Articles from './pages/articles/Articles'
 import AboutStore from './pages/aboutStore/AboutStore'
 import Cabinet from './pages/cabinet/Cabinet'
+import Favorites from './pages/favorites/Favorites'
 
 
 export const authRoutes = [
@@ -42,6 +44,7 @@ export const publicRoutes = [
     { path: ARTICLES_ROUTE, Component: Articles },
     { path: ABOUT_STORE_ROUTE, Component: AboutStore },
     { path: CABINET_ROUTE, Component: Cabinet },
+    { path: FAVORITES_ROUTE, Component: Favorites },
     { path: "", Component: NotFound },
 
 ]
