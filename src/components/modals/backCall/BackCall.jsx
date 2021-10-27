@@ -16,25 +16,30 @@ const BackCall = ({ show, onHide }) => {
 
     const [flagButtonSubmit, setFlagButtonSubmit] = useState(false)
 
-    useEffect(() => {
-        validFieldName(name).then(data => {
+    const onChangeName = (value) => {
+        setName(value)
+        validFieldName(value).then(data =>
             setValidName(data)
-            if (!data.flag)
-                setFlagButtonSubmit(false)
-        })
-        validFieldPhoneNumber(phoneNumber).then(data => {
+        )
+    }
+
+    const onChangePhoneNumber = (value) => {
+        setPhoneNumber(value)
+        validFieldPhoneNumber(value).then(data =>
             setValidPhoneNumber(data)
-            if (!data.flag)
-                setFlagButtonSubmit(false)
-        })
-        validFieldText(text).then(data => {
+        )
+    }
+
+    const onChangeText = (value) => {
+        setText(value)
+        validFieldText(value).then(data =>
             setValidText(data)
-            if (!data.flag)
-                setFlagButtonSubmit(false)
-        })
-        if (validName.flag && validPhoneNumber.flag && validText.flag)
-            setFlagButtonSubmit(true)
-    }, [name, phoneNumber, text])
+        )
+    }
+
+    useEffect(() => {
+        setFlagButtonSubmit(validName.flag && validPhoneNumber.flag && validText.flag)
+    }, [validName, validPhoneNumber, validText])
 
     const submit = () => {
         alert(JSON.stringify({ name, phoneNumber, text }))
@@ -60,14 +65,14 @@ const BackCall = ({ show, onHide }) => {
                     placeholder="Ваше имя"
                     type='text'
                     value={name}
-                    onChange={(event) => setName(event.target.value)}
+                    onChange={(event) => onChangeName(event.target.value.trim())}
                 />
                 <Validation validField={validName} field={name} message={'Имя с заглавной буквы не более 25 символов.'} />
                 <FormControl
                     className={styles.control}
                     placeholder="Телефон"
                     value={phoneNumber}
-                    onChange={(event) => setPhoneNumber(event.target.value)}
+                    onChange={(event) => onChangePhoneNumber(event.target.value.trim())}
                 />
                 <Validation validField={validPhoneNumber} field={phoneNumber}
                     message={'Номер телефона только в формате +38 0XX XXXXXXX или 0XX XXXXXXX без пробелов.'} />
@@ -76,7 +81,7 @@ const BackCall = ({ show, onHide }) => {
                     placeholder="Текст сообщения"
                     as="textarea"
                     value={text}
-                    onChange={(event) => setText(event.target.value)}
+                    onChange={(event) => onChangeText(event.target.value)}
                 />
                 <Validation validField={validText} field={text} message={'Длина текста не более 300 символов.'} />
             </Modal.Body>

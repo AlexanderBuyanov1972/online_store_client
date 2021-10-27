@@ -82,16 +82,6 @@ const UpdateDevice = observer(({ show, onHide }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    {/* <div>
-                        <Button className='mt-2 mb-2' variant={'outline-success'} disabled>
-                            {type.name}
-                        </Button>
-                    </div>
-                    <div>
-                        <Button className='mt-2 mb-2' variant={'outline-success'} disabled>
-                            {brand.name}
-                        </Button>
-                    </div> */}
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle>{deviceStore.selectedType.name || 'Выбери тип'}</Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -126,7 +116,6 @@ const UpdateDevice = observer(({ show, onHide }) => {
                         onChange={event => setPrice(Number(event.target.value))}
                     />
                     <Form.Control
-
                         className='mt-3'
                         placeholder='Введите рейтинг устройства'
                         value={rating}

@@ -22,14 +22,16 @@ const Auth = observer(() => {
     const [validEmail, setValidEmail] = useState({ flag: false, message: '' })
     const [validPassword, setValidPassword] = useState({ flag: false, message: '' })
     const [validConfirmPassword, setValidConfirmPassword] = useState({ flag: false, message: '' })
-    const [validFlagButtonSubmit, setValidFlagButtonSubmit] = useState(true)
+
+    const [flagButtonSubmit, setFlagButtonSubmit] = useState(true)
 
     useEffect(() => {
-        setValidEmail(validFieldEmail(email))
-        setValidPassword(validFieldPassword(password))
-        setValidConfirmPassword(validFieldConfirmPassword(password, confirmPassword))
-        setValidFlagButtonSubmit(validEmail.flag && validPassword.flag)
-    }, [email, password, confirmPassword])
+        if (isLogin) {
+            setFlagButtonSubmit(validEmail.flag && validPassword.flag)
+        } else {
+            setFlagButtonSubmit(validEmail.flag && validPassword.flag && validConfirmPassword.flag)
+        }
+    }, [validEmail, validPassword, validConfirmPassword])
 
 
     const submit = async () => {
@@ -52,15 +54,24 @@ const Auth = observer(() => {
     }
 
     const onChangeEmail = async (value) => {
-        setEmail(value.trim())
+        setEmail(value)
+        validFieldEmail(value).then(data =>
+            setValidEmail(data)
+        )
     }
 
     const onChangePassword = async (value) => {
-        setPassword(value.trim())
+        setPassword(value)
+        validFieldPassword(value).then(data =>
+            setValidPassword(data)
+        )
     }
 
     const onChangeConfirmPassword = async (value) => {
-        setConfirmPassword(value.trim())
+        setConfirmPassword(value)
+        validFieldConfirmPassword(password,value).then(data =>
+            setValidConfirmPassword(data)
+        )
     }
 
     return (
@@ -76,7 +87,7 @@ const Auth = observer(() => {
                         className={styles.control}
                         placeholder="Введите ваш e-mail ..."
                         value={email}
-                        onChange={event => onChangeEmail(event.target.value)}
+                        onChange={event => onChangeEmail(event.target.value.trim())}
                         type="text"
                     />
                     <Validation validField={validEmail} field={email} message={''} />
@@ -84,7 +95,7 @@ const Auth = observer(() => {
                         className={styles.control}
                         placeholder="Введите ваш пароль ..."
                         value={password}
-                        onChange={event => onChangePassword(event.target.value)}
+                        onChange={event => onChangePassword(event.target.value.trim())}
                         type="text"
                     />
                     <Validation validField={validPassword} field={password}
@@ -93,7 +104,7 @@ const Auth = observer(() => {
                         className={styles.control}
                         placeholder="Подтвердите ваш пароль ..."
                         value={confirmPassword}
-                        onChange={event => onChangeConfirmPassword(event.target.value)}
+                        onChange={event => onChangeConfirmPassword(event.target.value.trim())}
                         type="text"
                         hidden={isLogin}
                     />
@@ -109,10 +120,7 @@ const Auth = observer(() => {
                         }
                         <div>
                             <Button onClick={submit}
-                                disabled={isLogin ?
-                                    !(validFlagButtonSubmit)
-                                    :
-                                    !(validFlagButtonSubmit && validConfirmPassword.flag)}
+                                disabled={!flagButtonSubmit}
                                 className='mt-3'
                                 variant={"outline-success"}
                             >

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styles from './Admin.module.css'
 import { Button, Container } from "react-bootstrap";
-import CreateType from "../../components/modals/CreateType";
-import CreateBrand from "../../components/modals/CreateBrand";
 import CreateDevice from "../../components/modals/CreateDevice";
+import CreateTypeBrand from '../../components/modals/CreateTypeBrand';
+import { createType } from '../../http/typeAPI';
+import { createBrand } from '../../http/brandAPI';
 
 
 const Admin = () => {
@@ -25,8 +26,11 @@ const Admin = () => {
             <Button variant={'outline-dark'} className={styles.button} onClick={() => setDeviceVisible(true)}>Добавить
                 устройство</Button>
             <hr />
-            <CreateType show={typeVisible} onHide={() => setTypeVisible(false)} />
-            <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)} />
+
+            <CreateTypeBrand show={typeVisible} onHide={() => setTypeVisible(false)}
+                createTypeBrand={createType} textTypeBrand={'type'} />
+            <CreateTypeBrand show={brandVisible} onHide={() => setBrandVisible(false)}
+                createTypeBrand={createBrand} textTypeBrand={'brand'} />
             <CreateDevice show={deviceVisible} onHide={() => setDeviceVisible(false)} />
         </Container>
     );

@@ -1,25 +1,65 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Dropdown, Form, Modal, Row } from "react-bootstrap";
-import { Context } from "../../index";
-import { createDevice } from "../../http/deviceAPI";
-import { fetchTypes } from "../../http/typeAPI";
-import { fetchBrands } from "../../http/brandAPI";
+import styles from './CreateUpdateDevice.module.css'
+import { Button, Col, Form, Modal, Row, Dropdown } from "react-bootstrap";
+import { Context } from "../../../index";
+import { updateDevice } from "../../../http/deviceAPI";
 import { observer } from "mobx-react-lite";
-import { getFormForType } from "../../utils/formForType";
+import { getFormForType } from "../../../utils/formForType";
+import { fetchTypes } from "../../../http/typeAPI";
+import { fetchBrands } from "../../../http/brandAPI";
+import { validFieldNameDevice, validFieldPrice, validFieldRating } from '../../validation/Validation'
 
-const CreateDevice = observer(({ show, onHide }) => {
+const CreateUpdateDevice = observer(({ show, onHide, device, title }) => {
     const { deviceStore } = useContext(Context)
+    const type = deviceStore.selectedType
+    const brand = deviceStore.selectedBrand
 
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState('')
-    const [rating, setRating] = useState('')
-    const [file, setFile] = useState(null)
-    const [info, setInfo] = useState([])
+    const [name, setName] = useState(device.name)
+    const [price, setPrice] = useState(device.price)
+    const [rating, setRating] = useState(device.rating)
+    const [file, setFile] = useState(device.img)
+    const [info, setInfo] = useState(device.info)
+
+    const [validName, setValidName] = useState({ flag: false, message: '' })
+    const [validPrice, setValidPrice] = useState({ flag: false, message: '' })
+    const [validRating, setValidRating] = useState({ flag: false, message: '' })
+    const [validFile, setValidFile] = useState({ flag: false, message: '' })
+    const [validInfo, setValidInfo] = useState({ flag: false, message: '' })
+
+    const [flagSubmitButton, setFlagSubmitButton] = useState(false)
 
     useEffect(() => {
         fetchTypes().then(data => deviceStore.setTypes(data.filter(i => i.id !== 1)))
-        fetchBrands().then(data => deviceStore.setBrands(data.filter((i => i.id !== 1))))
+        fetchBrands().then(data => deviceStore.setBrands(data.filter(i => i.id !== 1)))
     }, [])
+
+    useEffect(() => {
+        setFlagSubmitButton(validName.flag && validPrice.flag && validRating.flag && validFile.flag && validInfo.flag)
+    }, [validName, validPrice, validRating, validFile, validInfo])
+
+    const onChangeName = (value) => {
+        setName(value)
+        validFieldNameDevice(value).then(data => setValidName(data))
+    }
+    const onChangePrice = (value) => {
+        setPrice(value)
+        validFieldPrice(value).then(data => setValidPrice(data))
+    }
+    const onChangeRating = (value) => {
+        setRating(value)
+        validFieldRating(value).then(data => setValidRating(data))
+    }
+    const onChangeFile = (value) => {
+        setFile(value)
+        if(value){
+            setValidFile({flag: true, message: ''})
+        } else {
+            setValidFile({flag: false, message: 'Файл не существует или повреждён'})
+        }
+    }
+
+    
+
 
     const selectType = (value) => {
         deviceStore.setSelectedType(value)
@@ -33,23 +73,16 @@ const CreateDevice = observer(({ show, onHide }) => {
     const addInfo = () => {
         setInfo([...info, { title: "", description: "", id: Date.now() }])
     }
-    const removeInfo = (number, value) => {
-        setInfo(getFormForType(value, [...info.filter(i => i.id !== number)]))
+
+    const removeInfo = (number) => {
+        setInfo(getFormForType(type, [...info.filter(i => i.id !== number)]))
     }
 
     const changeInfo = (key, value, number) => {
         setInfo(info.map(item => item.id === number ? { ...item, [key]: value } : item))
     }
 
-    const selectFile = (e) => {
-        setFile(e.target.files[0])
-    }
 
-    const closeModal = () => {
-        deviceStore.setSelectedType({})
-        deviceStore.setSelectedBrand({})
-        onHide()
-    }
 
     const addDevice = () => {
         const formData = new FormData()
@@ -57,24 +90,24 @@ const CreateDevice = observer(({ show, onHide }) => {
         formData.append('price', `${price}`)
         formData.append('rating', `${rating}`)
         formData.append('img', file)
-        formData.append('brandId', deviceStore.selectedBrand.id)
-        formData.append('typeId', deviceStore.selectedType.id)
+        formData.append('brandId', brand.id)
+        formData.append('typeId', type.id)
         formData.append('info', JSON.stringify(info))
-        createDevice(formData).then(data => closeModal())
+        updateDevice(device.id, formData).then(data => {
+            onHide()
+            window.location.reload();
+        })
     }
 
+    const closeModal = () => {
+        setInfo(device.info)
+        onHide()
+    }
 
     return (
-        <Modal
-            show={show}
-            onHide={onHide}
-            size="lg"
-            centered
-        >
+        <Modal show={show} onHide={onHide} size="lg" centered>
             <Modal.Header>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Добавить новое устройство
-                </Modal.Title>
+                <Modal.Title id="contained-modal-title-vcenter">{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
@@ -99,44 +132,42 @@ const CreateDevice = observer(({ show, onHide }) => {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Form.Control
-                        className='mt-3'
+                        className={styles.control}
                         placeholder='Введите название устройства'
                         value={name}
-                        onChange={event => setName(event.target.value)}
-
+                        onChange={event => onChangeName(event.target.value)}
                     />
                     <Form.Control
-                        className='mt-3'
+                        className={styles.control}
                         placeholder='Введите стоимость устройства'
                         value={price}
-                        onChange={event => setPrice(Number(event.target.value))}
-
+                        onChange={event => onChangePrice(Number(event.target.value))}
                     />
                     <Form.Control
-                        className='mt-3'
+                        className={styles.control}
                         placeholder='Введите рейтинг устройства'
                         value={rating}
-                        onChange={event => setRating(Number(event.target.value))}
-
+                        onChange={event => onChangeRating(Number(event.target.value))}
                     />
                     <Form.Control
                         type="file"
-                        className='mt-3'
-                        onChange={selectFile}
-                        required isInvalid
+                        className={styles.control}
+                        onChange={(event)=> onChangeFile(event.target.files[0])}
+                        placeholder={device.img}
                     />
                     <hr />
-                    <Button variant={'outline-dark'} onClick={addInfo}>Добавить новое свойство</Button>
+                    <Button variant={'outline-dark'} onClick={() => addInfo()
+                    }>Добавить новое свойство</Button>
+                    <hr />
                     {
                         info.map(i =>
-                            <Row key={i.id} className='mt-3'>
+                            <Row key={i.id} className={styles.control}>
                                 <Col md={4}>
                                     <Form.Control
                                         placeholder='Введите название свойства'
                                         value={i.title}
                                         onChange={(event) =>
                                             changeInfo('title', event.target.value, i.id)}
-                                        required isInvalid
                                     />
                                 </Col>
                                 <Col md={4}>
@@ -145,12 +176,12 @@ const CreateDevice = observer(({ show, onHide }) => {
                                         value={i.description}
                                         onChange={(event) =>
                                             changeInfo('description', event.target.value, i.id)}
-                                        required isInvalid
                                     />
                                 </Col>
                                 <Col md={4}>
-                                    <Button variant={'outline-danger'}
-                                        onClick={() => removeInfo(i.id, deviceStore.selectedType)}>
+                                    <Button variant={'outline-danger'} onClick={() => {
+                                        removeInfo(i.id)
+                                    }}>
                                         Удалить свойство
                                     </Button>
                                 </Col>
@@ -160,11 +191,12 @@ const CreateDevice = observer(({ show, onHide }) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant={'outline-danger'} onClick={closeModal}>Закрывать</Button>
-                <Button variant={'outline-success'} onClick={addDevice}>Добавить</Button>
+                <Button variant={'outline-danger'} onClick={closeModal}>Закрыть</Button>
+                <Button variant={'outline-success'} onClick={addDevice} disabled={!flagSubmitButton}>Ок</Button>
             </Modal.Footer>
         </Modal>
     );
-});
+})
 
-export default CreateDevice;
+
+export default CreateUpdateDevice;
