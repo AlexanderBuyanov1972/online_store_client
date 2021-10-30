@@ -1,6 +1,11 @@
-.valid {
+.invalid {
     margin: 2px;
     padding: 2px;
     color: red;
 }
 
+.valid {
+    margin: 2px;
+    padding: 2px;
+    color: #0cf594;
+}

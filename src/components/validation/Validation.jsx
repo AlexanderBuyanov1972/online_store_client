@@ -2,17 +2,23 @@ import React from 'react'
 import styles from './Validation.module.css'
 
 const Validation = ({ validField, field, message }) => {
-
+    console.log('field--->', field)
+    console.log('validField--->', validField)
     return (
         <div>
             {!validField.flag
-                && field.length >= 1 && <div className={styles.valid}>
+                && field.length >= 1
+                && <div className={styles.invalid}>
                     {validField.message}
                 </div>}
-            {field.length === 0
-                && <div className={styles.valid}>
+            {!validField.flag
+                && field.length === 0
+                && <div className={styles.invalid}>
                     {message}
                 </div>}
+            {validField.flag && <div className={styles.valid}>
+                {validField.message}
+            </div>}
         </div>
     )
 }
