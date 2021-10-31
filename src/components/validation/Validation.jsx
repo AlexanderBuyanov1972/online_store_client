@@ -2,8 +2,6 @@ import React from 'react'
 import styles from './Validation.module.css'
 
 const Validation = ({ validField, field, message }) => {
-    console.log('field--->', field)
-    console.log('validField--->', validField)
     return (
         <div>
             {!validField.flag

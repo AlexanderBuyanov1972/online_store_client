@@ -15,11 +15,9 @@ import {
     validFieldProperties
 } from '../../../utils/validations'
 import Validation from '../../validation/Validation'
-import { Spinner } from "react-bootstrap";
 
 const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, brandIn, cb }) => {
     const { deviceStore } = useContext(Context)
-    const [loading, setLoading] = useState(true)
 
     const [type, setType] = useState(typeIn)
     const [brand, setBrand] = useState(brandIn)
@@ -37,8 +35,8 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, bran
     const [validRating, setValidRating] = useState({ flag: false, message: '' })
     const [validFile, setValidFile] = useState({ flag: false, message: '' })
 
-    const [vaildInfoTitle, setValidInfoTitle] = useState([])
-    const [vaildInfoDescription, setValidInfoDescription] = useState([])
+    const [validInfoTitle, setValidInfoTitle] = useState([])
+    const [validInfoDescription, setValidInfoDescription] = useState([])
 
     const [flagSubmitButton, setFlagSubmitButton] = useState(false)
     // ---------------------useEffect()----------------------------------
@@ -48,19 +46,20 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, bran
         fillInArrayValids(info)
     }, [])
 
-    const fillInArrayValids = async (value) => {
-        if (value && value.length > 0) {
+    const fillInArrayValids = async (array) => {
+        if (array.length > 0) {
             const arrayTitle = []
             const arrayDescription = []
-            for (let i = 0; i < value.length; i++) {
-                arrayTitle.push({ id: value.id, flag: false, message: '' })
-                arrayDescription.push({ id: value.id, flag: false, message: '' })
+            for (let i = 0; i < array.length; i++) {
+                arrayTitle.push({ id: array[i].id, flag: true, message: 'Ok' })
+                arrayDescription.push({ id: array[i].id, flag: false, message: '' })
             }
             setValidInfoTitle(arrayTitle)
             setValidInfoDescription(arrayDescription)
+        } else {
+            setValidInfoTitle([])
+            setValidInfoDescription([])
         }
-        setValidInfoTitle([])
-        setValidInfoDescription([])
     }
 
     useEffect(() => {
@@ -71,6 +70,8 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, bran
             && validPrice.flag
             && validRating.flag
             && validFile.flag
+            && functionFlagValidInfo(validInfoTitle)
+            && functionFlagValidInfo(validInfoDescription)
         )
     }, [validType,
         validBrand,
@@ -78,21 +79,17 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, bran
         validPrice,
         validRating,
         validFile,
-
+        validInfoTitle,
+        validInfoDescription
     ])
-
-
 
     // ---------------------onChange()------------------------------------
     const onChangeType = (value) => {
         setType(value)
         validIdTypeBrand(value).then(data => setValidType(data))
-
-        //-------------------------------------
-        getFormForType(value)
-            .then(data => console.log('data ---> ',data))
-            // .then(()=> setInfo([...data]))
-            .finally(() => console.log('info ---> ',info))
+        const data = getFormForType(value)
+        setInfo(data)
+        fillInArrayValids(data)
     }
 
     const onChangeBrand = (value) => {
@@ -119,27 +116,49 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, bran
     }
     //--------------------- functions info ---------------------------------------------------------
     const addInfo = () => {
-        setInfo([...info, { title: "", description: "", id: Date.now() }])
+        const numberId = Date.now()
+        setInfo([...info, { title: "", description: "", id: numberId }])
+        const object = { id: numberId, flag: false, message: '' }
+        setValidInfoTitle([...validInfoTitle, object])
+        setValidInfoDescription([...validInfoDescription, object])
     }
 
-    const removeInfo = (number) => {
-        if (info.length <= 1)
-            return getFormForType(type).then(data => setInfo(data))
-        return setInfo([...info.filter(i => i.id !== number)])
+    const removeInfo = (numberId) => {
+        if (info.length <= 1) {
+            fillInArrayValids(getFormForType(type))
+        } else {
+            setInfo([...info.filter(i => i.id !== numberId)])
+            setValidInfoTitle([...validInfoTitle.filter(i => i.id !== numberId)])
+            setValidInfoDescription([...validInfoDescription.filter(i => i.id !== numberId)])
+        }
     }
 
-    const changeInfo = (key, value, number, index) => {
+    const changeInfo = (key, value, number) => {
         setInfo(info.map(item => item.id === number ? { ...item, [key]: value } : item))
+        validFieldProperties(value).then(data => {
+            let newData = { id: number, flag: data.flag, message: data.message }
+            if (key === 'title') {
+                setValidInfoTitle([...validInfoTitle.filter(i => i.id !== number), newData])
+            } else {
+                setValidInfoDescription([...validInfoDescription.filter(i => i.id !== number), newData])
+            }
+        })
     }
 
+    const functionFlagValidInfo = (arrayValid) => {
+        for (let i = 0; i < arrayValid.length; i++) {
+            if (arrayValid[i].flag === false)
+                return false
+        }
+        return true
+    }
 
-    // const functionFlagValidInfo = (array) => {
-    //     let flag = false
-    //     for (let i = 0; i < array.length; i++) {
-    //         flag *= array[i].flag
-    //     }
-    //     return flag
-    // }
+    const getValidFieldTitle = (numberId) => {
+        return validInfoTitle.find(i => i.id === numberId)
+    }
+    const getValidFieldDescription = (numberId) => {
+        return validInfoDescription.find(i => i.id === numberId)
+    }
     // --------------------- functions buttons ---------------------------
     const addDevice = () => {
         const formData = new FormData()
@@ -152,21 +171,18 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, bran
         formData.append('info', JSON.stringify(info))
 
         if (title === 'Создать устройство') {
-            console.log('formData--->', formData)
-            // cb(formData).then(data => onHide())
+            cb(formData).then(data => onHide())
         }
 
         if (title === 'Обновить устройство') {
-            console.log('formData--->', formData)
-            // cb(device.id, formData).then(data => {
-            //     onHide()
-            //     window.location.reload();
-            // })
+            cb(device.id, formData).then(data => {
+                onHide()
+                window.location.reload();
+            })
         }
     }
 
     const closeModal = () => {
-        setInfo(device.info)
         onHide()
     }
     const cleanModal = () => {
@@ -242,7 +258,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, bran
                     <Form.Control
                         type="file"
                         className={styles.control}
-                        onChange={(event) => onChangeFile(event.target.files[0])}
+                        onChange={event => onChangeFile(event.target.files[0])}
                         placeholder={device.img}
                     />
                     < Validation validField={validFile} field={file} message={''} />
@@ -257,20 +273,28 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, bran
                                     <Form.Control
                                         placeholder='Введите название свойства'
                                         value={i.title}
-                                        onChange={(event) =>
+                                        onChange={event =>
                                             changeInfo('title', event.target.value, i.id)}
                                     />
-                                    <Validation validField={vaildInfoTitle.find(item => item.id === i.id)} field={i.title} message={''} />
+                                    <div>
+                                        <Validation validField={getValidFieldTitle(i.id)} field={i.title} message={''} />
+                                    </div>
+
+
                                 </Col>
+
                                 <Col md={4}>
                                     <Form.Control
                                         placeholder='Введите описание свойства'
                                         value={i.description}
-                                        onChange={(event) =>
+                                        onChange={event =>
                                             changeInfo('description', event.target.value, i.id)}
                                     />
-                                    <Validation validField={vaildInfoDescription.find(item => item.id === i.id)} field={i.description} message={''} />
+                                    <div>
+                                        <Validation validField={getValidFieldDescription(i.id)} field={i.description} message={''} />
+                                    </div>
                                 </Col>
+
                                 <Col md={4}>
                                     <Button variant={'outline-danger'} onClick={() =>
                                         removeInfo(i.id)}>Удалить свойство</Button>

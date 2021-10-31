@@ -2,7 +2,7 @@ const validFieldMinMaxPattern = (field, min, max, pattern) => {
     if (field.length > max)
         return { flag: false, message: `Значение должно быть меньше ${max + 1} символов` }
     if (field.length < min)
-        return { flag: false, message: `Значение должно быть больше ${min + 1} символов` }
+        return { flag: false, message: `Значение должно быть больше ${min - 1} символов` }
     if (!pattern.test(field))
         return { flag: false, message: 'Значение не соответствует шаблону' }
     return { flag: true, message: 'Ок' }

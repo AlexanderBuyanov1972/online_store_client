@@ -23,14 +23,14 @@ const object = {
 
 }
 
-export const getFormForType = async(type) => {
+export const getFormForType = (type) => {
     if (type.name) {
         const array = object[type.name.trim()]
-        const arrayNew = []
+        const newInfo = []
         for (let i = 0; i < array.length; i++) {
-            arrayNew.push({ title: array[i], description: '', id: Date.now() + i })
+            newInfo.push({ title: array[i], description: '', id: Date.now() + i })
         }
-        return arrayNew
+        return newInfo
     }
     if (type.name === '' || undefined)
         return []
