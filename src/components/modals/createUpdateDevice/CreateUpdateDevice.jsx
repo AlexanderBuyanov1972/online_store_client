@@ -4,8 +4,8 @@ import { Button, Col, Form, Modal, Row, Dropdown } from "react-bootstrap";
 import { Context } from "../../../index";
 import { observer } from "mobx-react-lite";
 import { getFormForType } from "../../../utils/formForType";
-import { fetchTypes } from "../../../http/typeAPI";
-import { fetchBrands } from "../../../http/brandAPI";
+import { fetchOneType, fetchTypes } from "../../../http/typeAPI";
+import { fetchBrands, fetchOneBrand } from "../../../http/brandAPI";
 import {
     validFieldNameDevice,
     validFieldPrice,
@@ -16,11 +16,11 @@ import {
 } from '../../../utils/validations'
 import Validation from '../../validation/Validation'
 
-const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, brandIn, cb }) => {
+const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
     const { deviceStore } = useContext(Context)
 
-    const [type, setType] = useState(typeIn)
-    const [brand, setBrand] = useState(brandIn)
+    const [type, setType] = useState({})
+    const [brand, setBrand] = useState({})
 
     const [name, setName] = useState(device.name)
     const [price, setPrice] = useState(device.price)
@@ -43,6 +43,24 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, typeIn, bran
     useEffect(() => {
         fetchTypes().then(data => deviceStore.setTypes(data.filter(i => i.id !== 1)))
         fetchBrands().then(data => deviceStore.setBrands(data.filter(i => i.id !== 1)))
+        if(device.typeId)
+        fetchOneType(device.typeId).then(data => {
+            setType(data)
+            validIdTypeBrand(data).then(data => setValidType(data))
+        })
+        if(device.brandId)
+        fetchOneBrand(device.brandId).then(data => {
+            setBrand(data)
+        validIdTypeBrand(data).then(data => setValidBrand(data))
+        })
+        if(device.name)
+        validFieldNameDevice(device.name).then(data => setValidName(data))
+        if(device.price)
+        validFieldPrice(device.price).then(data => setValidPrice(data))
+        if(device.rating)
+        validFieldRating(device.rating).then(data => setValidRating(data))
+        if(device.img)
+        validFieldFile(device.img).then(data => setValidFile(data))
         fillInArrayValids(info)
     }, [])
 

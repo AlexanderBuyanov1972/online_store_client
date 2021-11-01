@@ -37,8 +37,6 @@ const Admin = () => {
                 onHide={() => setDeviceVisible(false)}
                 device={{ name: '', price: '', rating: '', img: '', info: [] }}
                 title={'Создать устройство'}
-                typeIn={{}}
-                brandIn={{}}
                 cb={createDevice}
             />
         </Container>

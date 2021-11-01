@@ -3,7 +3,7 @@ import styles from './DevicePage.module.css';
 import star from "../../assets/star_rating.png"
 import { Button, Card, Col, Container, Image, Row, Spinner } from "react-bootstrap";
 import { useParams, useHistory } from "react-router-dom";
-import { fetchOneDevice } from "../../http/deviceAPI";
+import { fetchOneDevice, updateDevice } from "../../http/deviceAPI";
 import { Context } from "../../index";
 import { fetchOneType } from "../../http/typeAPI";
 import { fetchOneBrand } from "../../http/brandAPI";
@@ -107,7 +107,10 @@ const DevicePage = observer(() => {
             </Row>
             <hr />
             <NeedAuth show={visible} onHide={() => setVisible(false)} />
-            <ButtonUpdateDeviceAdmin />
+            <ButtonUpdateDeviceAdmin
+                device={device}
+                title={'Обновить устройство'}
+                cb={updateDevice} />
         </Container>
     );
 });

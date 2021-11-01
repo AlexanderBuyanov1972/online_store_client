@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Button, Row } from "react-bootstrap";
 import { Context } from "../../index";
-import UpdateDevice from "../modals/UpdateDevice";
+import CreateUpdateDevice from "../modals/createUpdateDevice/CreateUpdateDevice";
 import styles from './ButtonUpdateDeviceAdmin.module.css'
 
-const ButtonUpdateDeviceAdmin = () => {
+const ButtonUpdateDeviceAdmin = ({ device, title, cb }) => {
     const { userStore } = useContext(Context)
     const [visible, setVisible] = useState(false)
 
@@ -16,7 +16,12 @@ const ButtonUpdateDeviceAdmin = () => {
                     className={styles.button}
                     onClick={() => setVisible(true)}>Обновить устройство</Button>
             </Row>
-            <UpdateDevice show={visible} onHide={() => setVisible(false)} />
+            <CreateUpdateDevice
+                show={visible}
+                onHide={() => setVisible(false)}
+                device={device}
+                title={title}
+                cb={cb} />
         </div>
     )
 }
