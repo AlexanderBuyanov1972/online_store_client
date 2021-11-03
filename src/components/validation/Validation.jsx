@@ -11,7 +11,7 @@ const Validation = ({ validField, field, message }) => {
                 </div>}
             {!validField.flag
                 && field.length === 0
-                && <div className={styles.invalid}>
+                && <div className={styles.nutral}>
                     {message}
                 </div>}
             {validField.flag && <div className={styles.valid}>

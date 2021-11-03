@@ -2,36 +2,43 @@ import React, { useState } from 'react';
 import styles from './Admin.module.css'
 import { Button, Container } from "react-bootstrap";
 import CreateUpdateDevice from "../../components/modals/createUpdateDevice/CreateUpdateDevice";
-import CreateTypeBrand from '../../components/modals/CreateTypeBrand';
-import { createType } from '../../http/typeAPI';
-import { createBrand } from '../../http/brandAPI';
+import CreateUpdateTypeBrand from '../../components/modals/createUpdateTypeBrand/CreateUpdateTypeBrand';
+import { createType, updateType } from '../../http/typeAPI';
+import { createBrand, updateBrand } from '../../http/brandAPI';
 import { createDevice } from '../../http/deviceAPI'
+import { observer } from 'mobx-react-lite';
 
 
-const Admin = () => {
-    const [brandVisible, setBrandVisible] = useState(false)
-    const [typeVisible, setTypeVisible] = useState(false)
+const Admin = observer(() => {
+    const [brandVisibleCreate, setBrandVisibleCreate] = useState(false)
+    const [brandVisibleUpdate, setBrandVisibleUpdate] = useState(false)
+    const [typeVisibleCreate, setTypeVisibleCreate] = useState(false)
+    const [typeVisibleUpdate, setTypeVisibleUpdate] = useState(false)
     const [deviceVisible, setDeviceVisible] = useState(false)
     return (
         <Container className="d-flex flex-column">
-            <Button variant={'outline-dark'} className={styles.button} onClick={() => setTypeVisible(true)}>Добавить
+            <Button variant={'outline-dark'} className={styles.button} onClick={() => setTypeVisibleCreate(true)}>Добавить
                 тип</Button>
-            <Button variant={'outline-dark'} className={styles.button} onClick={() => setTypeVisible(true)}>Обновить
+            <Button variant={'outline-dark'} className={styles.button} onClick={() => setTypeVisibleUpdate(true)}>Обновить
                 тип</Button>
             <hr />
-            <Button variant={'outline-dark'} className={styles.button} onClick={() => setBrandVisible(true)}>Добавить
+            <Button variant={'outline-dark'} className={styles.button} onClick={() => setBrandVisibleCreate(true)}>Добавить
                 брэнд</Button>
-            <Button variant={'outline-dark'} className={styles.button} onClick={() => setBrandVisible(true)}>Обновить
+            <Button variant={'outline-dark'} className={styles.button} onClick={() => setBrandVisibleUpdate(true)}>Обновить
                 брэнд</Button>
             <hr />
             <Button variant={'outline-dark'} className={styles.button} onClick={() => setDeviceVisible(true)}>Добавить
                 устройство</Button>
             <hr />
 
-            <CreateTypeBrand show={typeVisible} onHide={() => setTypeVisible(false)}
-                createTypeBrand={createType} textTypeBrand={'type'} />
-            <CreateTypeBrand show={brandVisible} onHide={() => setBrandVisible(false)}
-                createTypeBrand={createBrand} textTypeBrand={'brand'} />
+            <CreateUpdateTypeBrand show={typeVisibleCreate} onHide={() => setTypeVisibleCreate(false)}
+                cb={createType} textTitle={'Добавить тип'} textButton={'Добавить'} />
+            <CreateUpdateTypeBrand show={typeVisibleUpdate} onHide={() => setTypeVisibleUpdate(false)}
+                cb={updateType} textTitle={'Обновить тип'} textButton={'Обновить'} />
+            <CreateUpdateTypeBrand show={brandVisibleCreate} onHide={() => setBrandVisibleCreate(false)}
+                cb={createBrand} textTitle={'Добавить бренд'} textButton={'Добавить'} />
+            <CreateUpdateTypeBrand show={brandVisibleUpdate} onHide={() => setBrandVisibleUpdate(false)}
+                cb={updateBrand} textTitle={'Обновить бренд'} textButton={'Обновить'} />
             <CreateUpdateDevice
                 show={deviceVisible}
                 onHide={() => setDeviceVisible(false)}
@@ -41,6 +48,6 @@ const Admin = () => {
             />
         </Container>
     );
-};
+});
 
 export default Admin;

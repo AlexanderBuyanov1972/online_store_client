@@ -6,13 +6,14 @@ import Validation from '../../validation/Validation'
 
 
 const BackCall = ({ show, onHide }) => {
+    const objectValidStart = { flag: false, message: '' }
     const [name, setName] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [text, setText] = useState('')
 
-    const [validName, setValidName] = useState({ flag: false, message: '' })
-    const [validPhoneNumber, setValidPhoneNumber] = useState({ flag: false, message: '' })
-    const [validText, setValidText] = useState({ flag: false, message: '' })
+    const [validName, setValidName] = useState(objectValidStart)
+    const [validPhoneNumber, setValidPhoneNumber] = useState(objectValidStart)
+    const [validText, setValidText] = useState(objectValidStart)
 
     const [flagButtonSubmit, setFlagButtonSubmit] = useState(false)
 
@@ -51,7 +52,15 @@ const BackCall = ({ show, onHide }) => {
         setName('')
         setPhoneNumber('')
         setText('')
+        setValidName(objectValidStart)
+        setValidPhoneNumber(objectValidStart)
+        setValidText(objectValidStart)
         setFlagButtonSubmit(false)
+
+    }
+
+    const close = () => {
+        onHide()
     }
 
     return (
@@ -86,9 +95,9 @@ const BackCall = ({ show, onHide }) => {
                 <Validation validField={validText} field={text} message={'Длина текста не более 300 символов.'} />
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>Закрыть</Button>
+                <Button variant="secondary" onClick={close}>Закрыть</Button>
                 <Button variant="warning" onClick={clean}>Очистить</Button>
-                <Button disabled={!flagButtonSubmit} variant="primary" onClick={submit}>Отправить</Button>
+                <Button variant="primary" onClick={submit} disabled={!flagButtonSubmit}>Отправить</Button>
             </Modal.Footer>
         </Modal>
     )

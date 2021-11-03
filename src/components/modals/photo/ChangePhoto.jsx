@@ -2,6 +2,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react'
 import { createPhoto, updatePhoto, deletePhoto, deleteGroupPhoto } from '../../../http/photoAPI';
+import styles from './ChangePhoto.module.css'
 
 const ChangePhoto = observer(({ show, onHide, carouselId, id }) => {
     const [file, setFile] = useState(null)

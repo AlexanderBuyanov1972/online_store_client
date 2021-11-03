@@ -66,7 +66,7 @@ export const validFieldName = async(name) => {
 export const validFieldProperties = async(name) => {
     const min = 3
     const max = 50
-    const pattern = /^[А-ЯA-Z][а-яА-Яa-zA-Z0-9-(),. ]+$/
+    const pattern = /^[а-яА-Яa-zA-Z0-9-(),.+" ]+$/
     return validFieldMinMaxPattern(name, min, max, pattern)
 }
 

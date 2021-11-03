@@ -7,5 +7,12 @@
 .valid {
     margin: 2px;
     padding: 2px;
-    color: #0cf594;
+    color: forestgreen;
+}
+
+.nutral {
+    margin: 5px;
+    padding: 5px;
+    color:deepskyblue
+    
 }

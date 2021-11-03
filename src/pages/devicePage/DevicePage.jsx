@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './DevicePage.module.css';
 import star from "../../assets/star_rating.png"
-import { Button, Card, Col, Container, Image, Row, Spinner } from "react-bootstrap";
+import { Button, ButtonGroup, Card, Col, Container, Image, Row, Spinner } from "react-bootstrap";
 import { useParams, useHistory } from "react-router-dom";
 import { fetchOneDevice, updateDevice } from "../../http/deviceAPI";
 import { Context } from "../../index";
@@ -9,12 +9,11 @@ import { fetchOneType } from "../../http/typeAPI";
 import { fetchOneBrand } from "../../http/brandAPI";
 import { observer } from "mobx-react-lite";
 import { createBasketDevice } from '../../http/basketDeviceAPI';
-import { BASKET_ROUTE } from '../../utils/consts';
+import { createFavoriteDevice } from '../../http/favoriteDeviceAPI';
+import { BASKET_ROUTE, FAVORITE_ROUTE } from '../../utils/consts';
 import { beautifulViewPrice } from '../../utils/helpFunctions'
 import ButtonUpdateDeviceAdmin from '../../components/buttonUpdateDeviceAdmin/ButtonUpdateDeviceAdmin.js';
-import NeedAuth from '../../components/modals/NeedAuth';
-
-
+import NeedAuth from '../../components/modals/needAuth/NeedAuth';
 
 const DevicePage = observer(() => {
     const { id } = useParams()
@@ -35,7 +34,7 @@ const DevicePage = observer(() => {
             setRating(data.rating)
         }).finally(() => setLoading(false))
 
-    }, [])
+    }, [deviceStore.flagReload])
 
     const clickRating = () => {
         if (flagRating) {
@@ -55,6 +54,12 @@ const DevicePage = observer(() => {
         } else {
             setVisible(true)
         }
+    }
+    const addDeviceToFavorites = () => {
+        createFavoriteDevice(userStore.user.id, id)
+            .then(data =>
+                data.message ? alert(data.message) : history.push(FAVORITE_ROUTE))
+            .catch(err => alert(err.message))
     }
 
     if (loading) {
@@ -90,9 +95,17 @@ const DevicePage = observer(() => {
                 <Col md={4}>
                     <Card className={styles.col3_card}>
                         <h3>{beautifulViewPrice(device.price)}</h3>
-                        <Button
-                            variant={"outline-dark"}
-                            onClick={addDeviceToBasket}>Добавить в корзину</Button>
+                        <ButtonGroup vertical>
+                            <Button className={styles.button}
+                                variant={"outline-dark"}
+                                onClick={addDeviceToBasket}>Добавить в корзину
+                            </Button>
+                            <Button className={styles.button}
+                                variant={"outline-dark"}
+                                onClick={addDeviceToFavorites}>Добавить в избранное
+                            </Button>
+                        </ButtonGroup>
+
                     </Card>
                 </Col>
             </Row>
@@ -110,7 +123,8 @@ const DevicePage = observer(() => {
             <ButtonUpdateDeviceAdmin
                 device={device}
                 title={'Обновить устройство'}
-                cb={updateDevice} />
+                cb={updateDevice}
+            />
         </Container>
     );
 });

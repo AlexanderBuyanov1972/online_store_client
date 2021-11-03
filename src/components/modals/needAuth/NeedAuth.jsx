@@ -1,10 +1,15 @@
 import { Button, Modal } from "react-bootstrap";
 import React from 'react'
 import { useHistory } from "react-router";
-import {REGISTRATION_ROUTE} from '../../utils/consts'
+import { REGISTRATION_ROUTE } from '../../../utils/consts'
+import styles from './NeedAuth.module.css'
 
 const NeedAuth = ({ show, onHide }) => {
     const history = useHistory()
+
+    const close = () => {
+        onHide()
+    }
 
     const goToAuth = () => {
         onHide()
@@ -22,7 +27,7 @@ const NeedAuth = ({ show, onHide }) => {
             <hr />
             <Modal.Footer>
                 <Button variant={'outline-secondary'}
-                    onClick={onHide}>Закрыть окно</Button>
+                    onClick={close}>Закрыть окно</Button>
                 <Button variant={'outline-danger'}
                     onClick={goToAuth}>Авторизироваться</Button>
             </Modal.Footer>

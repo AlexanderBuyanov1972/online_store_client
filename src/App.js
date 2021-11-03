@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar";
 import { observer } from "mobx-react-lite";
 import { Context } from "./index";
 import { check } from "./http/userAPI";
-import { Spinner } from "react-bootstrap";
+import { Container, Col, Row, Spinner } from "react-bootstrap";
 import Footer from './components/footer/Footer';
 import HeaderTop from './components/headerTop/HeaderTop'
 
@@ -23,22 +23,31 @@ const App = observer(() => {
         }).finally(() => setLoading(false))
     }, [])
     if (loading) {
-        return <Spinner animation = { "grow" }
+        return <Spinner animation={"grow"}
         />
     }
-    return ( <
-        BrowserRouter >
-        <
-        HeaderTop / >
-        <
-        NavBar / >
-        <
-        AppRouter / >
-        <
-        Footer / >
-        <
-        /BrowserRouter>
+    return (
+        <BrowserRouter>
+            <Container>
+                <Row>
+                    <Col>< HeaderTop /></Col>
+                </Row>
+                <Row>
+                    <Col>< NavBar /></Col>
+                </Row>
+                <Row>
+                    <Col>< AppRouter /></Col>
+                </Row>
+                <Row>
+                    <Col>< Footer /></Col>
+                </Row>
+            </Container>
+
+
+
+
+        </BrowserRouter>
     );
 })
 
-export default App;
+export default App

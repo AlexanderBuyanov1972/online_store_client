@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Context } from "../index";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE, FAVORITES_ROUTE } from "../utils/consts";
+import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE, FAVORITE_ROUTE } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 import { useHistory, useLocation } from "react-router-dom";
 import BackCall from '../components/modals/backCall/BackCall'
@@ -67,7 +67,7 @@ const NavBar = observer(() => {
                                 onClick={() => history.push(BASKET_ROUTE)}>Корзина</Button>}
                         {userStore.isAuth &&
                             <Button variant={'outline-light'} className="m-1"
-                                onClick={() => history.push(FAVORITES_ROUTE)}>Избранное</Button>}
+                                onClick={() => history.push(FAVORITE_ROUTE)}>Избранное</Button>}
                         <Button variant={'outline-light'} className="m-1"
                             onClick={() => setFlagBackCall(true)}>Обратный звонок</Button>
                     </Nav>

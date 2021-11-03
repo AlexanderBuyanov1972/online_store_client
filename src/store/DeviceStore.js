@@ -6,6 +6,7 @@ export default class DeviceStore {
         this._brands = []
         this._devices = []
         this._basketDevices = []
+        this._favoriteDevices = []
 
         this._selectedType = {}
         this._selectedBrand = {}
@@ -16,6 +17,7 @@ export default class DeviceStore {
         this._limit = 8
 
         this._totalPrice = 0
+        this._flagReload = false
 
         makeAutoObservable(this)
     }
@@ -35,6 +37,9 @@ export default class DeviceStore {
     }
     setBasketDevices(basketDevices) {
         this._basketDevices = basketDevices
+    }
+    setFavoriteDevices(favoriteDevices) {
+        this._favoriteDevices = favoriteDevices
     }
 
     setSelectedType(type) {
@@ -61,6 +66,11 @@ export default class DeviceStore {
         this._totalPrice = totalPrice
     }
 
+    setFlagReload(flagReload) {
+        this._flagReload = flagReload
+    }
+
+
     get types() {
         return this._types
     }
@@ -74,6 +84,9 @@ export default class DeviceStore {
     }
     get basketDevices() {
         return this._basketDevices
+    }
+    get favoriteDevices() {
+        return this._favoriteDevices
     }
 
     get selectedType() {
@@ -97,5 +110,8 @@ export default class DeviceStore {
     }
     get totalPrice() {
         return this._totalPrice
+    }
+    get flagReload() {
+        return this._flagReload
     }
 }

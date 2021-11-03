@@ -39,41 +39,49 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
     const [validInfoDescription, setValidInfoDescription] = useState([])
 
     const [flagSubmitButton, setFlagSubmitButton] = useState(false)
-    // ---------------------useEffect()----------------------------------
+
     useEffect(() => {
         fetchTypes().then(data => deviceStore.setTypes(data.filter(i => i.id !== 1)))
         fetchBrands().then(data => deviceStore.setBrands(data.filter(i => i.id !== 1)))
-        if(device.typeId)
-        fetchOneType(device.typeId).then(data => {
-            setType(data)
-            validIdTypeBrand(data).then(data => setValidType(data))
-        })
-        if(device.brandId)
-        fetchOneBrand(device.brandId).then(data => {
-            setBrand(data)
-        validIdTypeBrand(data).then(data => setValidBrand(data))
-        })
-        if(device.name)
-        validFieldNameDevice(device.name).then(data => setValidName(data))
-        if(device.price)
-        validFieldPrice(device.price).then(data => setValidPrice(data))
-        if(device.rating)
-        validFieldRating(device.rating).then(data => setValidRating(data))
-        if(device.img)
-        validFieldFile(device.img).then(data => setValidFile(data))
-        fillInArrayValids(info)
+        if (device.typeId)
+            fetchOneType(device.typeId).then(data => {
+                setType(data)
+                validIdTypeBrand(data).then(data => setValidType(data))
+            })
+        if (device.brandId)
+            fetchOneBrand(device.brandId).then(data => {
+                setBrand(data)
+                validIdTypeBrand(data).then(data => setValidBrand(data))
+            })
+        if (device.name)
+            validFieldNameDevice(device.name).then(data => setValidName(data))
+        if (device.price)
+            validFieldPrice(device.price).then(data => setValidPrice(data))
+        if (device.rating)
+            validFieldRating(device.rating).then(data => setValidRating(data))
+        if (device.img)
+            validFieldFile(device.img).then(data => setValidFile(data))
+        fillInArrayValids(device.info)
     }, [])
 
     const fillInArrayValids = async (array) => {
-        if (array.length > 0) {
+        if (array && array.length > 0) {
             const arrayTitle = []
             const arrayDescription = []
             for (let i = 0; i < array.length; i++) {
-                arrayTitle.push({ id: array[i].id, flag: true, message: 'Ok' })
-                arrayDescription.push({ id: array[i].id, flag: false, message: '' })
+                if (array[i].title === '') {
+                    arrayTitle.push({ id: array[i].id, flag: false, message: '' })
+                } else {
+                    arrayTitle.push({ id: array[i].id, flag: true, message: 'Ok' })
+                }
+                if (array[i].description === '') {
+                    arrayDescription.push({ id: array[i].id, flag: false, message: '' })
+                } else {
+                    arrayDescription.push({ id: array[i].id, flag: true, message: 'Ok' })
+                }
             }
-            setValidInfoTitle(arrayTitle)
-            setValidInfoDescription(arrayDescription)
+            setValidInfoTitle([...arrayTitle])
+            setValidInfoDescription([...arrayDescription])
         } else {
             setValidInfoTitle([])
             setValidInfoDescription([])
@@ -82,26 +90,12 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
 
     useEffect(() => {
         setFlagSubmitButton(
-            validType.flag
-            && validBrand.flag
-            && validName.flag
-            && validPrice.flag
-            && validRating.flag
-            && validFile.flag
-            && functionFlagValidInfo(validInfoTitle)
-            && functionFlagValidInfo(validInfoDescription)
+            validType.flag && validBrand.flag && validName.flag && validPrice.flag && validRating.flag
+            && validFile.flag && functionFlagValidInfo(validInfoTitle) && functionFlagValidInfo(validInfoDescription)
         )
-    }, [validType,
-        validBrand,
-        validName,
-        validPrice,
-        validRating,
-        validFile,
-        validInfoTitle,
-        validInfoDescription
-    ])
+    }, [validType, validBrand, validName, validPrice, validRating, validFile, validInfoTitle, validInfoDescription])
 
-    // ---------------------onChange()------------------------------------
+
     const onChangeType = (value) => {
         setType(value)
         validIdTypeBrand(value).then(data => setValidType(data))
@@ -132,7 +126,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
         setFile(value)
         validFieldFile(value).then(data => setValidFile(data))
     }
-    //--------------------- functions info ---------------------------------------------------------
+
     const addInfo = () => {
         const numberId = Date.now()
         setInfo([...info, { title: "", description: "", id: numberId }])
@@ -142,8 +136,10 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
     }
 
     const removeInfo = (numberId) => {
-        if (info.length <= 1) {
-            fillInArrayValids(getFormForType(type))
+        if (info.length === 1) {
+            const newInfo = getFormForType(type)
+            setInfo([...newInfo])
+            fillInArrayValids(newInfo)
         } else {
             setInfo([...info.filter(i => i.id !== numberId)])
             setValidInfoTitle([...validInfoTitle.filter(i => i.id !== numberId)])
@@ -177,7 +173,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
     const getValidFieldDescription = (numberId) => {
         return validInfoDescription.find(i => i.id === numberId)
     }
-    // --------------------- functions buttons ---------------------------
+
     const addDevice = () => {
         const formData = new FormData()
         formData.append('name', name)
@@ -188,19 +184,20 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
         formData.append('typeId', type.id)
         formData.append('info', JSON.stringify(info))
 
-        if (title === 'Создать устройство') {
+        if (title === 'Создать устройство')
             cb(formData).then(data => onHide())
-        }
 
         if (title === 'Обновить устройство') {
             cb(device.id, formData).then(data => {
-                onHide()
-                window.location.reload();
+                deviceStore.setFlagReload(true)
+                closeModal()
+                //window.location.reload();
             })
         }
     }
 
     const closeModal = () => {
+        deviceStore.setFlagReload(false)
         onHide()
     }
     const cleanModal = () => {
@@ -324,7 +321,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant={'outline-danger'} onClick={closeModal}>Закрыть</Button>
-                <Button variant={'outline-info'} onClick={cleanModal}>Очистить</Button>
+                <Button variant={'outline-info'} onClick={cleanModal} hidden={title === 'Обновить устройство'}>Очистить</Button>
                 <Button variant={'outline-success'} onClick={addDevice} disabled={!flagSubmitButton}>Ок</Button>
             </Modal.Footer>
         </Modal>

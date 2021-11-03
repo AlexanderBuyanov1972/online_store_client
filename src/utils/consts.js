@@ -11,6 +11,6 @@ export const SHIPPING_AND_PAYMENT_ROUTE = '/shipping_and_payment'
 export const ARTICLES_ROUTE = '/articles'
 export const ABOUT_STORE_ROUTE = '/about_store'
 export const CABINET_ROUTE = '/cabinet'
-export const FAVORITES_ROUTE = '/favorites'
+export const FAVORITE_ROUTE = '/favorite'
 
 export const NOT_FOUND_ROUTE = '/notfound'

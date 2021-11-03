@@ -5,6 +5,10 @@ export const createBrand = async (brand) => {
     const {data} = await $authHost.post(API_BRAND, brand)
     return data
 }
+export const updateBrand = async (id, brand) => {
+    const {data} = await $authHost.put(API_BRAND + '/' + id, brand)
+    return data
+}
 export const fetchBrands = async () => {
     const {data} = await $host.get(API_BRAND)
     return data

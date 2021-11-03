@@ -11,7 +11,7 @@ import {
     ARTICLES_ROUTE,
     ABOUT_STORE_ROUTE,
     CABINET_ROUTE,
-    FAVORITES_ROUTE
+    FAVORITE_ROUTE
 } from "./utils/consts";
 import Basket from "./pages/basket/Basket";
 import Shop from "./pages/shop/Shop";
@@ -44,7 +44,7 @@ export const publicRoutes = [
     { path: ARTICLES_ROUTE, Component: Articles },
     { path: ABOUT_STORE_ROUTE, Component: AboutStore },
     { path: CABINET_ROUTE, Component: Cabinet },
-    { path: FAVORITES_ROUTE, Component: Favorites },
+    { path: FAVORITE_ROUTE, Component: Favorites },
     { path: "", Component: NotFound },
 
 ]
