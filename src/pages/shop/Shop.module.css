@@ -1,35 +1,39 @@
-.container {
-    display: grid;
-    grid-template-areas:
-        "BrandBar BrandBar"
-        "TypeBar DeviceList"
-        "TypeBar Pages";
-    grid-gap             : 10px;
-    grid-template-rows   : 50px 1fr 50px;
-    grid-template-columns: 150px 1fr;
-
-    border               : 2px solid red;
-}
-
-.box1 {
-    grid-area: TypeBar;
-    border   : 2px solid red;
-    justify-self: flex-start;
-
-}
-
-.box2 {
-    width: 50px;
-    grid-area: BrandBar;
-    border   : 2px solid red;
-}
-
-.box3 {
-    grid-area: DeviceList;
-    border   : 2px solid red;
-}
-
-.box4 {
-    grid-area: Pages;
-    border   : 2px solid red;
-}
+    .container {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-areas: 'type brand''type list''pages pages';
+        grid-template-rows: auto 1fr auto;
+        grid-template-columns: 300px 1fr;
+        border: 2px solid red;
+        margin-top: 10px;
+    }
+    
+    .box1 {
+        grid-area: brand;
+        border: 2px solid red;
+        margin-top: 10px;
+        padding: 5px;
+    }
+    
+    .box2 {
+        grid-area: type;
+        border: 2px solid red;
+        margin-top: 10px;
+        padding: 5px;
+        align-self: flex-start;
+    }
+    
+    .box3 {
+        grid-area: list;
+        border: 2px solid red;
+        margin-top: 10px;
+        padding: 5px;
+    }
+    
+    .box4 {
+        grid-area: pages;
+        border: 2px solid red;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 5px;
+    }

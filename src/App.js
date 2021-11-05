@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./components/AppRouter";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/navBar/NavBar";
 import { observer } from "mobx-react-lite";
 import { Context } from "./index";
 import { check } from "./http/userAPI";
@@ -24,22 +24,23 @@ const App = observer(() => {
         }).finally(() => setLoading(false))
     }, [])
     if (loading) {
-        return <Spinner animation={"grow"}
+        return <Spinner animation = { "grow" }
         />
     }
-    return (
-        <BrowserRouter>
-            <Container className={styles.container}>
-                <HeaderTop className={styles.headertop}/>
-                < NavBar  className={styles.navbar}/>
-                < AppRouter  className={styles.approuter}/>
-                < Footer  className={styles.footer}/>
-            </Container>
-
-
-
-
-        </BrowserRouter>
+    return ( <
+        BrowserRouter >
+        <
+        Container >
+        <
+        HeaderTop / >
+        <
+        NavBar / >
+        <
+        AppRouter / >
+        <
+        Footer / >
+        <
+        /Container>        </BrowserRouter >
     );
 })
 

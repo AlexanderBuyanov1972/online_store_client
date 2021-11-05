@@ -1,0 +1,9 @@
+.item {
+    margin-top: 1%;
+    width: 23%;
+    min-height: 38vh;
+    cursor: pointer;
+    border: 2px solid green;
+    margin: 1%;
+    padding: 1%;
+}
