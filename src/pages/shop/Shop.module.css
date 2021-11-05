@@ -1,3 +1,35 @@
-.row {
-    margin-top: 2px;
+.container {
+    display: grid;
+    grid-template-areas:
+        "BrandBar BrandBar"
+        "TypeBar DeviceList"
+        "TypeBar Pages";
+    grid-gap             : 10px;
+    grid-template-rows   : 50px 1fr 50px;
+    grid-template-columns: 150px 1fr;
+
+    border               : 2px solid red;
+}
+
+.box1 {
+    grid-area: TypeBar;
+    border   : 2px solid red;
+    justify-self: flex-start;
+
+}
+
+.box2 {
+    width: 50px;
+    grid-area: BrandBar;
+    border   : 2px solid red;
+}
+
+.box3 {
+    grid-area: DeviceList;
+    border   : 2px solid red;
+}
+
+.box4 {
+    grid-area: Pages;
+    border   : 2px solid red;
 }

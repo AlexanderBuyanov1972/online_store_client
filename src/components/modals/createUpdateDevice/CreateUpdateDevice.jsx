@@ -3,7 +3,7 @@ import styles from './CreateUpdateDevice.module.css'
 import { Button, Col, Form, Modal, Row, Dropdown } from "react-bootstrap";
 import { Context } from "../../../index";
 import { observer } from "mobx-react-lite";
-import { getFormForType } from "../../../utils/formForType";
+import { getStartFormInfoByType } from "../../../utils/getStartFormInfoByType";
 import { fetchOneType, fetchTypes } from "../../../http/typeAPI";
 import { fetchBrands, fetchOneBrand } from "../../../http/brandAPI";
 import {
@@ -99,7 +99,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
     const onChangeType = (value) => {
         setType(value)
         validIdTypeBrand(value).then(data => setValidType(data))
-        const data = getFormForType(value)
+        const data = getStartFormInfoByType(value)
         setInfo(data)
         fillInArrayValids(data)
     }
@@ -137,7 +137,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
 
     const removeInfo = (numberId) => {
         if (info.length === 1) {
-            const newInfo = getFormForType(type)
+            const newInfo = getStartFormInfoByType(type)
             setInfo([...newInfo])
             fillInArrayValids(newInfo)
         } else {

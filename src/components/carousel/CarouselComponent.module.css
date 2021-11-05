@@ -1,14 +1,14 @@
 .carousel{
     width: 100%;
-    height: auto;
-    margin: 5px;
-    padding: 5px;
+    height: 200px;
+    /* margin: 5px;
+    padding: 5px; */
     }
 
 .photo{
     width: 100%;
-    height: auto;
+    height: 200px;
     border: 1px solid rgb(23, 201, 103);
-    margin: 5px;
-    padding: 5px;
+    /* margin: 5px;
+    padding: 5px; */
 }

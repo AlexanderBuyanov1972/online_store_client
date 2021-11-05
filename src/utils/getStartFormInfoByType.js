@@ -23,7 +23,7 @@ const object = {
 
 }
 
-export const getFormForType = (type) => {
+export const getStartFormInfoByType = (type) => {
     if (type.name) {
         const array = object[type.name.trim()]
         const newInfo = []

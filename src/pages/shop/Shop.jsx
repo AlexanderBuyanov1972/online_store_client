@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './Shop.module.css';
-import { Col, Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import TypeBar from "../../components/TypeBar";
 import BrandBar from "../../components/BrandBar";
 import DeviceList from "../../components/DeviceList";
@@ -15,7 +15,7 @@ import { Spinner } from "react-bootstrap";
 const Shop = observer(() => {
     const { deviceStore } = useContext(Context)
     const [loading, setLoading] = useState(true)
-    
+
 
 
     useEffect(() => {
@@ -40,17 +40,11 @@ const Shop = observer(() => {
         return <Spinner animation={"grow"} />
     }
     return (
-        <Container>
-            <Row className={styles.row}>
-                <Col md={3}>
-                    <TypeBar />
-                </Col>
-                <Col md={9}>
-                    <BrandBar />
-                    <DeviceList />
-                    <Pages />
-                </Col>
-            </Row>
+        <Container className={styles.container}>
+            <BrandBar className={styles.box2} />
+            <TypeBar className={styles.box1} />
+            <DeviceList className={styles.box3} />
+            <Pages className={styles.box4} />
         </Container>
     );
 });

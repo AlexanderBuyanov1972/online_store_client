@@ -5,9 +5,10 @@ import NavBar from "./components/NavBar";
 import { observer } from "mobx-react-lite";
 import { Context } from "./index";
 import { check } from "./http/userAPI";
-import { Container, Col, Row, Spinner } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 import Footer from './components/footer/Footer';
 import HeaderTop from './components/headerTop/HeaderTop'
+import styles from './App.css'
 
 const App = observer(() => {
     const { userStore } = useContext(Context)
@@ -28,19 +29,11 @@ const App = observer(() => {
     }
     return (
         <BrowserRouter>
-            <Container>
-                <Row>
-                    <Col>< HeaderTop /></Col>
-                </Row>
-                <Row>
-                    <Col>< NavBar /></Col>
-                </Row>
-                <Row>
-                    <Col>< AppRouter /></Col>
-                </Row>
-                <Row>
-                    <Col>< Footer /></Col>
-                </Row>
+            <Container className={styles.container}>
+                <HeaderTop className={styles.headertop}/>
+                < NavBar  className={styles.navbar}/>
+                < AppRouter  className={styles.approuter}/>
+                < Footer  className={styles.footer}/>
             </Container>
 
 
