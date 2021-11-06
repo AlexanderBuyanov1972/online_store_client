@@ -14,20 +14,23 @@ const TypeBar = observer(() => {
         deviceStore.setPageCurrent(1)
     }
     return (
-        <ListGroup>
-            {deviceStore.types.map(type =>
-                <ListGroup.Item
-                    style={{ cursor: 'pointer' }}
-                    className="p-3"
-                    active={type.id === deviceStore.selectedType.id
-                        || type.name === deviceStore.selectedType.name}
-                    key={type.id}
-                    onClick={() => selectType(type)}
-                >
-                    {type.name}
-                </ListGroup.Item>
-            )}
-        </ListGroup>
+        <div className={styles.container}>
+            <ListGroup>
+                {deviceStore.types.map(type =>
+                    <ListGroup.Item
+                        style={{ cursor: 'pointer' }}
+                        className="p-3"
+                        active={type.id === deviceStore.selectedType.id
+                            || type.name === deviceStore.selectedType.name}
+                        key={type.id}
+                        onClick={() => selectType(type)}
+                    >
+                        {type.name}
+                    </ListGroup.Item>
+                )}
+            </ListGroup>
+        </div>
+
     );
 });
 

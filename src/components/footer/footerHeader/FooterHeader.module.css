@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    background-color: blue;
+    height: 70px;
+}
+
+.text {
+    width: 24%;
+    align-self: center;
+    text-align: end;
+    font-family: 'Courier New', Courier, monospace;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: lighter;
+    font-size: small;
+    color: white;
+}
+
+.email {
+    width: 24%;
+    align-self: center;
+}
+
+.buttom {
+    width: 10%;
+    align-self: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    font-size: medium;
+    color: black;
+}
+
+.badges {
+    width: 38%;
+    align-self: center;
+    text-align: center;
+}
+
+.badge {
+    margin: 2px;
+}

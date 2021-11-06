@@ -1,5 +1,20 @@
-.title{
-    text-align: center;
-    color: crimson;
-    font-size: larger;
+.container {
+    display: grid;
+    grid-template-areas: "h" "c" "f";
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr;
+    margin-top: 2px;
+    padding: 0px;
+}
+
+.header {
+    grid-area: h;
+}
+
+.content {
+    grid-area: c;
+}
+
+.footer {
+    grid-area: f;
 }

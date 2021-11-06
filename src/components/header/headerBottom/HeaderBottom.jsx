@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
-import styles from './NavBar.module.css';
-import { Context } from "../../index";
+import styles from './HeaderBottom.module.css'
+import { Context } from "../../../index";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE, FAVORITE_ROUTE } from "../../utils/consts";
+import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE, FAVORITE_ROUTE } from "../../../utils/consts";
 import { observer } from "mobx-react-lite";
 import { useHistory, useLocation } from "react-router-dom";
-import BackCall from '../modals/backCall/BackCall'
+import BackCall from '../../modals/backCall/BackCall'
 
-const NavBar = observer(() => {
+const HeaderBottom = observer(() => {
     const { userStore } = useContext(Context)
     const { deviceStore } = useContext(Context)
 
@@ -32,7 +32,7 @@ const NavBar = observer(() => {
     }
 
     return (
-        <div className={styles.main}>
+        <div className={styles.container}>
             <Navbar bg="primary" variant="dark">
                 <Container>
                     <Nav className="ml-auto" style={{ color: "white" }}>
@@ -79,4 +79,4 @@ const NavBar = observer(() => {
     );
 });
 
-export default NavBar;
+export default HeaderBottom

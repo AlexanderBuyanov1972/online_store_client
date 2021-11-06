@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./components/AppRouter";
-import NavBar from "./components/navBar/NavBar";
 import { observer } from "mobx-react-lite";
 import { Context } from "./index";
 import { check } from "./http/userAPI";
 import { Container, Spinner } from "react-bootstrap";
 import Footer from './components/footer/Footer';
-import HeaderTop from './components/headerTop/HeaderTop'
+import Header from './components/header/Header'
 import styles from './App.css'
 
 const App = observer(() => {
@@ -32,15 +31,14 @@ const App = observer(() => {
         <
         Container >
         <
-        HeaderTop / >
-        <
-        NavBar / >
+        Header / >
         <
         AppRouter / >
         <
         Footer / >
         <
-        /Container>        </BrowserRouter >
+        /Container>  < /
+        BrowserRouter >
     );
 })
 
