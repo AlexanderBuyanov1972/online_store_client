@@ -2,3 +2,13 @@
     margin: 0px;
     padding: 0px;
 }
+
+.listitem {
+    padding: 5px;
+    background-color: blanchedalmond;
+}
+
+.listitemactive {
+    padding: 5px;
+    background-color: darkgrey;
+}

@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
+import styles from "./BasketDeviceList.module.css"
 import { observer } from "mobx-react-lite";
-import { Context } from "../index";
+import { Context } from "../../index";
 import { Row } from "react-bootstrap";
-import BasketDeviceItem from "./basketDeviceItem/BasketDeviceItem";
+import BasketDeviceItem from "../basketDeviceItem/BasketDeviceItem";
 
 const BasketDeviceList = observer(() => {
     const { deviceStore } = useContext(Context)

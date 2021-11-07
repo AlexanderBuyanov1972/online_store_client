@@ -36,9 +36,9 @@ const Shop = observer(() => {
     }, [deviceStore.pageCurrent, deviceStore.selectedType, deviceStore.selectedBrand])
 
 
-    if (loading) {
-        return <Spinner animation={"grow"} />
-    }
+    if (loading) 
+        return <Spinner animation={"white"} />
+    
     return (
         <Container className={styles.container}>
             <div className={styles.box1}><BrandBar /></div>

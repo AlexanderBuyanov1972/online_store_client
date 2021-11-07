@@ -4,7 +4,6 @@ import { Context } from "../../index";
 import { Container, Button } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { Spinner } from "react-bootstrap";
-import { beautifulViewPrice } from '../../utils/helpFunctions'
 import { fetchAllFavoriteDevice } from '../../http/favoriteDeviceAPI';
 import FavoriteDeviceList from '../../components/favoriteDeviceList/FavoriteDeviceList';
 

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './Basket.module.css'
-import BasketDeviceList from '../../components/BasketDeviceList'
+import BasketDeviceList from '../../components/basketDeviceList/BasketDeviceList'
 import { fetchAllBasketDevice } from '../../http/basketDeviceAPI';
 import { Context } from "../../index";
 import { Container, Button } from 'react-bootstrap';

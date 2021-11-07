@@ -63,14 +63,15 @@ const HeaderBottom = observer(() => {
                         {!userStore.isAuth &&
                             <Button variant={'outline-light'} className="m-1"
                                 onClick={() => history.push(LOGIN_ROUTE)}>Авторизация</Button>}
-                        {userStore.isAuth &&
+                        {userStore.isAuth && !userStore.isAdmin &&
                             <Button variant={'outline-light'} className="m-1"
                                 onClick={() => history.push(BASKET_ROUTE)}>Корзина</Button>}
-                        {userStore.isAuth &&
+                        {userStore.isAuth && !userStore.isAdmin &&
                             <Button variant={'outline-light'} className="m-1"
                                 onClick={() => history.push(FAVORITE_ROUTE)}>Избранное</Button>}
-                        <Button variant={'outline-light'} className="m-1"
-                            onClick={() => setFlagBackCall(true)}>Обратный звонок</Button>
+                        {userStore.isAuth && !userStore.isAdmin &&
+                            <Button variant={'outline-light'} className="m-1"
+                                onClick={() => setFlagBackCall(true)}>Обратный звонок</Button>}
                     </Nav>
                 </Container>
             </Navbar>

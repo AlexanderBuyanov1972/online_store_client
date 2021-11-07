@@ -1,9 +1,38 @@
-.item {
-    width: 23%;
-    min-height: 38vh;
-    cursor: pointer;
-    border: 2px solid green;
-    margin: 1%;
-    padding: 1%;
-    background-color: mistyrose
-}
+    .container {
+        display: grid;
+        grid-template-areas: 'a' 'b' 'c' 'd';
+        grid-row-gap: 5px;
+        grid-template-rows: 210px 25px 100px 30px;
+        grid-template-columns: 232px;
+        cursor: pointer;
+        border: 2px solid green;
+        /* margin: 1%;
+        padding: 1%; */
+        background-color: mistyrose;
+    }
+    
+    .img {
+        grid-area: a;
+        padding: 0px;
+        margin: 0px;
+        width: 200px;
+        height: 200px;
+        align-self: center;
+        justify-self: center;
+    }
+    
+    .rating {
+        grid-area: b;
+        padding: 5px;
+    }
+    
+    .name {
+        grid-area: c;
+        padding: 5px;
+    }
+    
+    .price {
+        grid-area: d;
+        color: orangered;
+        text-align: center;
+    }

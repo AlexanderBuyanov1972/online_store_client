@@ -7,7 +7,7 @@ import ChangePhoto from '../modals/photo/ChangePhoto'
 import notphoto from '../../assets/notfound.jpg'
 import { Spinner } from "react-bootstrap";
 
-const CarouselComponent = ({ carouselId }) => {
+const CarouselComponent = ({ title }) => {
     const [images, setImages] = useState([])
     const [visible, setVisible] = useState(false)
     const [photoId, setPhotoId] = useState(0)
@@ -16,10 +16,10 @@ const CarouselComponent = ({ carouselId }) => {
 
 
     useEffect(() => {
-        fetchGroupPhoto(carouselId)
+        fetchGroupPhoto(title)
             .then(data => setImages(data))
             .catch(e => alert(e.message))
-            .finally(()=> setLoading(false))
+            .finally(() => setLoading(false))
     }, [visible])
 
     const getPhoto = (id) => {
@@ -28,12 +28,14 @@ const CarouselComponent = ({ carouselId }) => {
             setPhotoId(id)
         }
     }
-    if (loading){
-        return <Spinner animation={"grow"} />
-    }
+    if (loading)
+        return <Spinner animation={"white"} />
 
     return (
-        <div>
+        <div className={styles.container}>
+            <div className={styles.title}>
+                <h1>{title}</h1>
+            </div>
             < Carousel className={styles.carousel}>
                 {!images || images.length === 0 ?
                     <Image className={styles.photo}
@@ -54,10 +56,9 @@ const CarouselComponent = ({ carouselId }) => {
             <ChangePhoto
                 show={visible}
                 onHide={() => setVisible(false)}
-                carouselId={carouselId}
+                carouselId={title}
                 id={photoId} />
         </div>
-
     )
 }
 

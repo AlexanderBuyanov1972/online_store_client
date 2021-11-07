@@ -7,6 +7,7 @@ import { createType, updateType } from '../../http/typeAPI';
 import { createBrand, updateBrand } from '../../http/brandAPI';
 import { createDevice } from '../../http/deviceAPI'
 import { observer } from 'mobx-react-lite';
+import CreateAdmin from '../../components/modals/createAdmin/CreateAdmin';
 
 
 const Admin = observer(() => {
@@ -15,8 +16,9 @@ const Admin = observer(() => {
     const [typeVisibleCreate, setTypeVisibleCreate] = useState(false)
     const [typeVisibleUpdate, setTypeVisibleUpdate] = useState(false)
     const [deviceVisible, setDeviceVisible] = useState(false)
+    const [adminVisible, setAdminVisible] = useState(false)
     return (
-        <Container className="d-flex flex-column">
+        <Container className={styles.container}>
             <Button variant={'outline-dark'} className={styles.button} onClick={() => setTypeVisibleCreate(true)}>Добавить
                 тип</Button>
             <Button variant={'outline-dark'} className={styles.button} onClick={() => setTypeVisibleUpdate(true)}>Обновить
@@ -29,6 +31,9 @@ const Admin = observer(() => {
             <hr />
             <Button variant={'outline-dark'} className={styles.button} onClick={() => setDeviceVisible(true)}>Добавить
                 устройство</Button>
+            <hr />
+            <Button variant={'outline-dark'} className={styles.button} onClick={() => setAdminVisible(true)}>Добавить
+                админа</Button>
             <hr />
 
             <CreateUpdateTypeBrand show={typeVisibleCreate} onHide={() => setTypeVisibleCreate(false)}
@@ -44,8 +49,8 @@ const Admin = observer(() => {
                 onHide={() => setDeviceVisible(false)}
                 device={{ name: '', price: '', rating: '', img: '', info: [] }}
                 title={'Создать устройство'}
-                cb={createDevice}
-            />
+                cb={createDevice} />
+            <CreateAdmin show={adminVisible} onHide={() => setAdminVisible(false)} />
         </Container>
     );
 });
