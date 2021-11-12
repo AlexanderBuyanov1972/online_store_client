@@ -8,7 +8,7 @@ class HelpFunction {
         ]
     }
 
-    async getArraydeviceCount(arrayDevices) {
+    async getArrayDeviceCount(arrayDevices) {
         const map = new Map()
         for (let i = 0; i < arrayDevices.length; i++) {
             if (!map.has(arrayDevices[i].deviceId)) {

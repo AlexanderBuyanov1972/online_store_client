@@ -1,0 +1,84 @@
+.container {
+    padding : 0px;
+    margin  : 0px;
+    display : grid;
+    grid-gap: 15px;
+    grid-template-areas:
+        'a1 b1 c1'
+        'a2 b2 c2'
+        'a3 b3 c3'
+        'a4 b4 c4'
+        'a5 b5 c5';
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows   : repeat(5, 90px);
+}
+
+.col {
+    padding: 0px;
+    margin : 0px;
+    width: 80%;
+}
+
+.a1 {
+    grid-area: a1;
+}
+
+.b1 {
+    grid-area: b1;
+}
+
+.c1 {
+    grid-area: c1;
+}
+
+.a2 {
+    grid-area: a2;
+}
+
+.b2 {
+    grid-area: b2;
+}
+
+.c2 {
+    grid-area: c2;
+}
+
+.a3 {
+    grid-area: a3;
+}
+
+.b3 {
+    grid-area: b3;
+}
+
+.c3 {
+    grid-area: c3;
+}
+
+.a4 {
+    grid-area: a4;
+}
+
+.b4 {
+    grid-area: b4;
+}
+
+.c4 {
+    grid-area: c4;
+}
+
+.a5 {
+    grid-area: a5;
+}
+
+.b5 {
+    grid-area: b5;
+}
+
+.c5 {
+    grid-area: c5;
+}
+
+.button {
+    width: 100%;
+}

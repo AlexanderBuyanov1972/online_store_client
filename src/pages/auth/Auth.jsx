@@ -3,7 +3,7 @@ import styles from './Auth.module.css'
 import { Button, Card, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../../utils/consts";
-import { login, registration } from "../../http/userAPI";
+import { login, registration } from "../../http/authAPI";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
 import { validFieldEmail, validFieldPassword, validFieldConfirmPassword } from '../../utils/validations'

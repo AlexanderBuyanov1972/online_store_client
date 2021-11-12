@@ -1,9 +1,10 @@
-import React from 'react';
+import React from 'react'
 import styles from './DeviceItem.module.css'
 import { Card, Image } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { DEVICE_ROUTE } from "../../utils/consts";
 import star from "../../assets/star_rating.png"
+import { beautifulViewPrice } from '../../utils/helpFunctions';
 
 const DeviceItem = ({ device }) => {
     const history = useHistory()
@@ -26,7 +27,7 @@ const DeviceItem = ({ device }) => {
                 {device.name}
             </div>
             <div className={styles.price}>
-                Цена: {device.price} UAH
+                Цена: {beautifulViewPrice(device.price)}
             </div>
             </div>
         </Card>

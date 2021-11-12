@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
 import { Context } from '../../..';
-import { registration } from '../../../http/userAPI';
+import { registration } from '../../../http/authAPI';
 import { validFieldConfirmPassword, validFieldEmail, validFieldPassword } from '../../../utils/validations';
 import Validation from '../../validation/Validation';
 import styles from './CreateAdmin.module.css'

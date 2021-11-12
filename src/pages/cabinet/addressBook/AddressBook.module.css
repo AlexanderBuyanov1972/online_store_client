@@ -1,0 +1,120 @@
+.container {
+    padding : 0px;
+    margin  : 0px;
+    display : grid;
+    grid-gap: 10px;
+    grid-template-areas:
+        'a b1 c1'
+        'a b2 c2'
+        'a b3 c3'
+        'a b4 c4'
+        'a b5 c5'
+        'a b6 c6';
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows   : repeat(6, 80px);
+}
+
+.col {
+    padding: 0px;
+    margin : 0px;
+    width  : 90%;
+}
+
+.a1 {
+    grid-area: a;
+    display: flex;
+    justify-content: space-between;
+}
+
+.b1 {
+    grid-area: b1;
+}
+
+.c1 {
+    grid-area: c1;
+}
+
+.a2 {
+    grid-area: a2;
+}
+
+.b2 {
+    grid-area: b2;
+}
+
+.c2 {
+    grid-area: c2;
+}
+
+.a3 {
+    grid-area: a3;
+}
+
+.b3 {
+    grid-area: b3;
+}
+
+.c3 {
+    grid-area: c3;
+}
+
+.a4 {
+    grid-area: a4;
+}
+
+.b4 {
+    grid-area: b4;
+}
+
+.c4 {
+    grid-area: c4;
+}
+
+.a5 {
+    grid-area: a5;
+}
+
+.b5 {
+    grid-area: b5;
+}
+
+.c5 {
+    grid-area: c5;
+    display  : grid;
+    grid-gap : 5px;
+    grid-template-areas:
+        'c51 c52 c53';
+    grid-template-columns: 34% 33% 34%;
+    grid-template-rows   : 1fr 35px 35px;
+}
+
+.c51 {
+    grid-area: c51;
+}
+
+.c52 {
+    grid-area: c52;
+}
+
+.c53 {
+    grid-area: c53;
+}
+
+.a6 {
+    grid-area: a6;
+}
+
+.b6 {
+    grid-area: b6;
+}
+
+.c6 {
+    grid-area: c6;
+}
+
+.button {
+    width: 100%;
+}
+.control {
+    width: 100%;
+}

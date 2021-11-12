@@ -15,9 +15,8 @@ const HeaderTop = () => {
         <Container>
           <Nav className="me-auto">
             <NavLink onClick={() => history.push(STOKE_ROUTE)}>Акции</NavLink>
-            <NavLink onClick={() => history.push(SHIPPING_AND_PAYMENT_ROUTE)}>Доставка и Оплата</NavLink>
-            <NavLink onClick={() => history.push(ARTICLES_ROUTE)}>Статьи</NavLink>
             <NavLink onClick={() => history.push(ABOUT_STORE_ROUTE)}>О Магазине</NavLink>
+            <NavLink onClick={() => history.push(SHIPPING_AND_PAYMENT_ROUTE)}>Доставка и Оплата</NavLink>
             <NavLink onClick={() => history.push(CABINET_ROUTE)}>Личный кабинет</NavLink>
           </Nav>
         </Container>

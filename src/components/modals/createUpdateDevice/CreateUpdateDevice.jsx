@@ -19,8 +19,8 @@ import Validation from '../../validation/Validation'
 const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
     const { deviceStore } = useContext(Context)
 
-    const [type, setType] = useState({})
-    const [brand, setBrand] = useState({})
+    const [type, setType] = useState({ id: '', name: '' })
+    const [brand, setBrand] = useState({ id: '', name: '' })
 
     const [name, setName] = useState(device.name)
     const [price, setPrice] = useState(device.price)
