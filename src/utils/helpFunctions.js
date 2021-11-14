@@ -13,3 +13,15 @@ export const beautifulViewPrice = (price) => {
     }
     return newPrice.reverse().join('') + ' UAH'
 }
+
+export const getClassForList = (value, styles) => {
+    if (value === 'shopList')
+        return styles.shopList
+    if (value === 'wishList')
+        return styles.wishList
+    if (value === 'basketList')
+        return styles.basketList
+    if (value === 'orderList')
+        return styles.orderList
+    alert('Проблема с определоением класса листа')
+}

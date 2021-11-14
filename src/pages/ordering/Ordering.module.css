@@ -1,0 +1,46 @@
+.container {
+    margin: 0px;
+    padding: 0px;
+    display: grid;
+    grid-template-areas: 'h h h' 'a a a' 'b1 b2 b3' 'c c c';
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 50px 50px 600px 100px;
+    grid-gap: 5px;
+}
+
+.text {
+    text-align: center;
+}
+
+.h {
+    grid-area: h;
+}
+
+.a {
+    grid-area: a;
+    display: flex;
+    justify-content: space-around;
+    font-size: 20px;
+}
+
+.b1 {
+    grid-area: b1;
+}
+
+.b2 {
+    grid-area: b2;
+}
+
+.b3 {
+    grid-area: b3;
+}
+
+.c {
+    grid-area: c;
+}
+
+.col {
+    padding: 0px;
+    margin: 0px;
+    width: 90%;
+}

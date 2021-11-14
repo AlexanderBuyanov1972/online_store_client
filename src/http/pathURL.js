@@ -21,3 +21,6 @@ export const API_FAVORITE_DEVICE_GROUP = 'api/favorite_device/group'
 
 export const API_PHOTO = 'api/photo'
 export const API_PHOTO_GROUP = 'api/photo/group'
+
+export const API_ORDERING = 'api/ordering'
+export const API_ORDERING_GROUP = 'api/ordering/group'

@@ -1,7 +1,7 @@
 import { Button, Modal } from "react-bootstrap";
 import React from 'react'
 import { useHistory } from "react-router";
-import { REGISTRATION_ROUTE } from '../../../utils/consts'
+import { REGISTRATION_ROUTE } from '../../../routes/routesConsts'
 import styles from './NeedAuth.module.css'
 
 const NeedAuth = ({ show, onHide }) => {

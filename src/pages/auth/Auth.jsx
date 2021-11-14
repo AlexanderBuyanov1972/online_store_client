@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './Auth.module.css'
-import { Button, Card, Container, Form, Row } from "react-bootstrap";
+import { Alert, Button, Card, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
-import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../../utils/consts";
+import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../../routes/routesConsts";
 import { login, registration } from "../../http/authAPI";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
@@ -13,7 +13,10 @@ const Auth = observer(() => {
     const { userStore } = useContext(Context)
     const location = useLocation()
     const history = useHistory()
-    const isLogin = location.pathname === LOGIN_ROUTE
+    const isPathLogin = location.pathname === LOGIN_ROUTE
+
+    const [message, setMessage] = useState('')
+    const [hiddenAlert, setHiddenAlert] = useState(true)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -26,7 +29,7 @@ const Auth = observer(() => {
     const [flagButtonSubmit, setFlagButtonSubmit] = useState(true)
 
     useEffect(() => {
-        if (isLogin) {
+        if (isPathLogin) {
             setFlagButtonSubmit(validEmail.flag && validPassword.flag)
         } else {
             setFlagButtonSubmit(validEmail.flag && validPassword.flag && validConfirmPassword.flag)
@@ -35,21 +38,27 @@ const Auth = observer(() => {
 
 
     const submit = async () => {
+        let data
         try {
-            let data
-            if (isLogin) {
+            if (isPathLogin) {
                 data = await login(email, password)
             } else {
                 data = await registration(email, password)
             }
-            userStore.setUser(data)
-            userStore.setIsAuth(true)
-            if (data.role === 'ADMIN') {
-                userStore.setIsAdmin(true)
+            if (!data.message) {
+                userStore.setUser(data)
+                userStore.setIsAuth(true)
+                if (data.role === 'ADMIN')
+                    userStore.setIsAdmin(true)
+                history.push(SHOP_ROUTE)
+                window.location.reload()
+            } else {
+                setHiddenAlert(false)
+                setMessage(data.message)
+                return
             }
-            history.push(SHOP_ROUTE)
         } catch (e) {
-            alert(e.response.data.message)
+            setMessage(e.message)
         }
     }
 
@@ -61,6 +70,8 @@ const Auth = observer(() => {
     }
 
     const onChangePassword = async (value) => {
+        if (value === '')
+            setHiddenAlert(true)
         setPassword(value)
         validFieldPassword(value).then(data =>
             setValidPassword(data)
@@ -69,7 +80,7 @@ const Auth = observer(() => {
 
     const onChangeConfirmPassword = async (value) => {
         setConfirmPassword(value)
-        validFieldConfirmPassword(password,value).then(data =>
+        validFieldConfirmPassword(password, value).then(data =>
             setValidConfirmPassword(data)
         )
     }
@@ -80,7 +91,7 @@ const Auth = observer(() => {
             style={{ height: window.innerHeight - 54 }}
         >
             <Card style={{ width: 600 }} className='p-5'>
-                <h2 className='m-auto'>{isLogin ? 'Авторизация' : 'Регистрация'}</h2>
+                <h2 className='m-auto'>{isPathLogin ? 'Авторизация' : 'Регистрация'}</h2>
                 <Form className="d-flex flex-column"
                 >
                     <Form.Control
@@ -106,11 +117,14 @@ const Auth = observer(() => {
                         value={confirmPassword}
                         onChange={event => onChangeConfirmPassword(event.target.value.trim())}
                         type="text"
-                        hidden={isLogin}
+                        hidden={isPathLogin}
                     />
                     <Validation validField={validConfirmPassword} field={confirmPassword} message={''} />
+
+                    <Alert variant='danger' hidden={hiddenAlert}>{message}</Alert>
+
                     <Row className="d-flex justify-content-end mt-3 pl-3 pr-3">
-                        {isLogin ?
+                        {isPathLogin ?
                             <div>
                                 Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Регистрация</NavLink>
                             </div> :
@@ -124,7 +138,7 @@ const Auth = observer(() => {
                                 className='mt-3'
                                 variant={"outline-success"}
                             >
-                                {isLogin ? 'Войти' : 'Регистрация'} </Button>
+                                {isPathLogin ? 'Войти' : 'Регистрация'} </Button>
                         </div>
                     </Row>
                 </Form>

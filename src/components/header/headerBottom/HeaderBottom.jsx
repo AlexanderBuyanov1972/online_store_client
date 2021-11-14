@@ -3,14 +3,13 @@ import styles from './HeaderBottom.module.css'
 import { Context } from "../../../index";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE, FAVORITE_ROUTE } from "../../../utils/consts";
+import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE} from "../../../routes/routesConsts";
 import { observer } from "mobx-react-lite";
 import { useHistory, useLocation } from "react-router-dom";
 import BackCall from '../../modals/backCall/BackCall'
 
 const HeaderBottom = observer(() => {
-    const { userStore } = useContext(Context)
-    const { deviceStore } = useContext(Context)
+    const { userStore, deviceStore } = useContext(Context)
 
     const location = useLocation()
     const isShop = location.pathname === SHOP_ROUTE
@@ -24,6 +23,7 @@ const HeaderBottom = observer(() => {
         userStore.setIsAdmin(false)
         localStorage.removeItem('token')
         history.push(MAIN_ROUTE)
+        window.location.reload()
     }
 
     const resetTypeBrand = () => {
@@ -48,6 +48,7 @@ const HeaderBottom = observer(() => {
                         > {isShop ? '' : 'В магазин'}
 
                         </NavLink>
+
                     </Nav>
                     <Nav className="ml-auto" style={{ color: "white" }}>
                         {userStore.isAdmin &&
@@ -56,10 +57,6 @@ const HeaderBottom = observer(() => {
                                 history.push(ADMIN_ROUTE)
                             }}
                                 className="m-1">АдминПанель</Button>}
-
-                        {userStore.isAuth &&
-                            <Button variant={'outline-light'} onClick={() => logOut()}
-                                className="m-1">Выйти</Button>}
                         {!userStore.isAuth &&
                             <Button variant={'outline-light'} className="m-1"
                                 onClick={() => history.push(LOGIN_ROUTE)}>Авторизация</Button>}
@@ -68,10 +65,10 @@ const HeaderBottom = observer(() => {
                                 onClick={() => history.push(BASKET_ROUTE)}>Корзина</Button>}
                         {userStore.isAuth && !userStore.isAdmin &&
                             <Button variant={'outline-light'} className="m-1"
-                                onClick={() => history.push(FAVORITE_ROUTE)}>Избранное</Button>}
-                        {userStore.isAuth && !userStore.isAdmin &&
-                            <Button variant={'outline-light'} className="m-1"
                                 onClick={() => setFlagBackCall(true)}>Обратный звонок</Button>}
+                        {userStore.isAuth &&
+                            <Button variant={'outline-light'} onClick={() => logOut()}
+                                className="m-1">Выйти</Button>}
                     </Nav>
                 </Container>
             </Navbar>

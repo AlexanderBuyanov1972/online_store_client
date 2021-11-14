@@ -13,22 +13,22 @@ const Cabinet = () => {
             <h1 className={styles.title}>Личный кабинет</h1>
             <div className={styles.body}>
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
-                    <Tab eventKey="contact" title="Контактная информация">
+                    <Tab eventKey="profile" title="Контактная информация">
                         <div>
                             <ContactInformation/>
                         </div>
                     </Tab>
-                    <Tab eventKey="address" title="Адрессная книга">
+                    <Tab eventKey="addresslist" title="Адрессная книга">
                         <div>
                             <AddressBook/>
                         </div>
                     </Tab>
-                    <Tab eventKey="list" title="Список желаний">
+                    <Tab eventKey="wishlist" title="Список желаний">
                         <div>
                             <WishList/>
                         </div>
                     </Tab>
-                    <Tab eventKey="orders" title="История заказов">
+                    <Tab eventKey="orderslist" title="История заказов">
                         <div>
                             <HistoryOrders/>
                         </div>

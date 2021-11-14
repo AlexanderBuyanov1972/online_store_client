@@ -1,0 +1,39 @@
+.container {
+    padding: 0px;
+    margin: 0px;
+    display: grid;
+    grid-template-areas: 'a' 'b' 'c';
+    grid-gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 50px 50px;
+}
+
+.a {
+    grid-area: a;
+    display: flex;
+    justify-content: center;
+}
+
+.b {
+    grid-area: b;
+    display: flex;
+    justify-content: space-around;
+}
+
+.c {
+    grid-area: c;
+}
+
+.col {
+    padding: 0px;
+    margin: 0px;
+}
+
+.text {
+    color: rgb(24, 224, 141);
+    font-size: 25px;
+}
+
+.button {
+    margin-left: 70px;
+}

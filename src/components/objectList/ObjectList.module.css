@@ -1,0 +1,25 @@
+.shopList {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.wishList {
+    margin: 0px;
+    padding: 0px;
+    width: 90%;
+}
+
+.basketList {
+    margin: 0px;
+    padding: 0px;
+    width: 90%;
+}
+
+.orderList {
+    margin: 0px;
+    padding: 0px;
+    width: 90%;
+}

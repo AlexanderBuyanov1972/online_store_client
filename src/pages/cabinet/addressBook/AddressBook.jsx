@@ -30,6 +30,7 @@ const AddressBook = () => {
         house: '',
         apatment: ','
     }])
+    const [addressId, setAddressId] = useState('')
     const [nameRecipient, setNameRecipient] = useState('')
     const [familyRecipient, setFamilyRecipient] = useState('')
     const [phoneNumberRecipient, setPhoneNumberRecipient] = useState('')
@@ -133,17 +134,23 @@ const AddressBook = () => {
         formData.append('apatment', apatment)
         formData.append('index', index)
         formData.append('userId', userStore.user.id)
-        createAddress(formData).then(data => {
-            setReloader(!reloader)
-            cleanItem()
-        })
+
+        if (addressId && addressId !== '') {
+            updateAddress(addressId, formData).then(data => {
+                setReloader(!reloader)
+                cleanItem()
+            })
+        } else {
+            createAddress(formData).then(data => {
+                setReloader(!reloader)
+                cleanItem()
+            })
+        }
     }
 
     const deleteItem = (id) => {
         deleteAddress(id).then(data => setReloader(!reloader))
     }
-
-    // updateAddress(id).then(data => setReloader(!reloader))
 
     const selectItem = (item) => {
         setValues(item)
@@ -155,6 +162,7 @@ const AddressBook = () => {
     }
 
     const setValues = (item) => {
+        setAddressId(item.id)
         setNameRecipient(item.nameRecipient)
         setFamilyRecipient(item.familyRecipient)
         setPhoneNumberRecipient(item.phoneNumberRecipient)
@@ -165,6 +173,7 @@ const AddressBook = () => {
         setIndex(item.index)
     }
     const cleanValues = () => {
+        setAddressId('')
         setNameRecipient('')
         setFamilyRecipient('')
         setPhoneNumberRecipient('')
@@ -208,7 +217,7 @@ const AddressBook = () => {
                     </ListGroup.Item>)}
             </ListGroup>
             <div className={styles.col + ' ' + styles.b1}>
-                <h5>Добавление нового адреса</h5>
+                {addressId? <h5>Обновление адресса</h5> : <h5>Добавление нового адресса</h5>}
             </div>
             <div className={styles.col + ' ' + styles.b2}>
                 <Form.Control
@@ -231,7 +240,7 @@ const AddressBook = () => {
             <div className={styles.col + ' ' + styles.b4}></div>
             <div className={styles.col + ' ' + styles.b5}></div>
             <div className={styles.col + ' ' + styles.b6}>
-            <Button variant="outline-info" onClick={cleanItem} className={styles.button}
+                <Button variant="outline-info" onClick={cleanItem} className={styles.button}
                     hidden={nameRecipient === ''}>Очистить</Button>
             </div>
 
@@ -299,7 +308,7 @@ const AddressBook = () => {
             </div>
             <div className={styles.col + ' ' + styles.c6}>
                 <Button variant="outline-success" onClick={save} className={styles.button}
-                    disabled={!flagButton}>Сохранить</Button>
+                    disabled={!flagButton}>{addressId? 'Обновить' : 'Сохранить'}</Button>
             </div>
         </div>
     )

@@ -51,7 +51,6 @@ const ContactInformation = () => {
     }, [])
 
     useEffect(() => {
-        console.log(userStore.user)
         setFlagButtom(validName.flag && validFamily.flag && validEmail.flag && validDateBirth.flag &&
             validPhoneNumber.flag && validPasswordOld.flag && validPasswordNew.flag && validPasswordConfirm.flag)
     }, [

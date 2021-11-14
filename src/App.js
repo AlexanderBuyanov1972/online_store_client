@@ -23,10 +23,9 @@ const App = observer(() => {
             }
         }).finally(() => setLoading(false))
     }, [])
-    if (loading) {
+    if (loading)
         return <Spinner animation = { "grow" }
-        />
-    }
+    />
     return ( <
         BrowserRouter >
         <

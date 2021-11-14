@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import styles from './AppRouter.module.css'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { authRoutes, publicRoutes } from "../../routes"
-import { SHOP_ROUTE } from "../../utils/consts"
+import { authRoutes, publicRoutes } from "../../routes/routes"
+import { SHOP_ROUTE } from "../../routes/routesConsts"
 import { Context } from "../../index"
 
 const AppRouter = () => {

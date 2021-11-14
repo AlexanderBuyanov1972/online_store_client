@@ -9,14 +9,15 @@ import { fetchOneType } from "../../http/typeAPI";
 import { fetchOneBrand } from "../../http/brandAPI";
 import { observer } from "mobx-react-lite";
 import { createBasketDevice } from '../../http/basketDeviceAPI';
-import { createFavoriteDevice } from '../../http/favoriteDeviceAPI';
-import { BASKET_ROUTE, FAVORITE_ROUTE } from '../../utils/consts';
+import { createFavoriteDevice, fetchOneFavoriteDevice } from '../../http/favoriteDeviceAPI';
+import { BASKET_ROUTE } from '../../routes/routesConsts';
 import { beautifulViewPrice } from '../../utils/helpFunctions'
 import ButtonUpdateDeviceAdmin from '../../components/buttonUpdateDeviceAdmin/ButtonUpdateDeviceAdmin.js';
 import NeedAuth from '../../components/modals/needAuth/NeedAuth';
 
 const DevicePage = observer(() => {
     const { id } = useParams()
+    const [isFavotite, setIsFavorite] = useState(false)
     const { userStore, deviceStore } = useContext(Context)
     const [loading, setLoading] = useState(true)
     const [device, setDevice] = useState({ name: '', price: '', info: [], img: '' })
@@ -30,6 +31,13 @@ const DevicePage = observer(() => {
             deviceStore.setSelectedDevice(data)
             fetchOneType(data.typeId).then(data => deviceStore.setSelectedType(data))
             fetchOneBrand(data.brandId).then(data => deviceStore.setSelectedBrand(data))
+            fetchOneFavoriteDevice(userStore.user.id, id).then(data => {
+                if (data === null) {
+                    setIsFavorite(false)
+                } else {
+                    setIsFavorite(true)
+                }
+            })
             setDevice(data)
             setRating(data.rating)
         }).finally(() => setLoading(false))
@@ -57,8 +65,13 @@ const DevicePage = observer(() => {
     }
     const addDeviceToFavorites = () => {
         createFavoriteDevice(userStore.user.id, id)
-            .then(data =>
-                data.message ? alert(data.message) : history.push(FAVORITE_ROUTE))
+            .then(data => {
+                if (data.message) {
+                    alert(data.message)
+                } else {
+                    setIsFavorite(true)
+                }
+            })
             .catch(err => alert(err.message))
     }
 
@@ -100,7 +113,7 @@ const DevicePage = observer(() => {
                                 variant={"outline-dark"}
                                 onClick={addDeviceToBasket}>Добавить в корзину
                             </Button>
-                            <Button className={styles.button}
+                            <Button className={styles.button} hidden={isFavotite}
                                 variant={"outline-dark"}
                                 onClick={addDeviceToFavorites}>Добавить в избранное
                             </Button>

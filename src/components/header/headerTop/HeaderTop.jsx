@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import styles from './HeaderTop.module.css'
 import { Container, Nav, Navbar, NavLink } from 'react-bootstrap'
-import { STOKE_ROUTE, SHIPPING_AND_PAYMENT_ROUTE, ARTICLES_ROUTE, ABOUT_STORE_ROUTE, CABINET_ROUTE } from '../../../utils/consts'
+import { STOKE_ROUTE, SHIPPING_AND_PAYMENT_ROUTE, ABOUT_STORE_ROUTE, CABINET_ROUTE } from '../../../routes/routesConsts'
 import { useHistory } from 'react-router'
+import { Context } from '../../..'
 
 
 
 const HeaderTop = () => {
+  const { userStore } = useContext(Context)
   const history = useHistory()
-
   return (
     <div className={styles.container}>
       <Navbar bg="dark" variant="dark">
@@ -17,7 +18,9 @@ const HeaderTop = () => {
             <NavLink onClick={() => history.push(STOKE_ROUTE)}>Акции</NavLink>
             <NavLink onClick={() => history.push(ABOUT_STORE_ROUTE)}>О Магазине</NavLink>
             <NavLink onClick={() => history.push(SHIPPING_AND_PAYMENT_ROUTE)}>Доставка и Оплата</NavLink>
-            <NavLink onClick={() => history.push(CABINET_ROUTE)}>Личный кабинет</NavLink>
+            {userStore.isAuth &&
+              <NavLink onClick={() => history.push(CABINET_ROUTE)}>Личный кабинет</NavLink>
+            }
           </Nav>
         </Container>
       </Navbar>
