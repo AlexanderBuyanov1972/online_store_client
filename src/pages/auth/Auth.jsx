@@ -101,7 +101,7 @@ const Auth = observer(() => {
                         onChange={event => onChangeEmail(event.target.value.trim())}
                         type="text"
                     />
-                    <Validation validField={validEmail} field={email} message={''} />
+                    <Validation valid={validEmail} value={email} message={''} />
                     <Form.Control
                         className={styles.control}
                         placeholder="Введите ваш пароль ..."
@@ -109,7 +109,7 @@ const Auth = observer(() => {
                         onChange={event => onChangePassword(event.target.value.trim())}
                         type="text"
                     />
-                    <Validation validField={validPassword} field={password}
+                    <Validation valid={validPassword} value={password}
                         message={'Пароль может содержать цифры, английские буквы верхнего и нижнего регистров, точку.'} />
                     <Form.Control
                         className={styles.control}
@@ -119,7 +119,7 @@ const Auth = observer(() => {
                         type="text"
                         hidden={isPathLogin}
                     />
-                    <Validation validField={validConfirmPassword} field={confirmPassword} message={''} />
+                    <Validation valid={validConfirmPassword} value={confirmPassword} message={''} />
 
                     <Alert variant='danger' hidden={hiddenAlert}>{message}</Alert>
 

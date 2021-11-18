@@ -6,10 +6,11 @@ import styles from './BasketDeviceItem.module.css'
 import { createBasketDevice, removeGroupBasketDevice, removeOneBasketDevice } from '../../../http/basketDeviceAPI'
 
 
-const BasketDeviceItem = ({ object }) => {
+const BasketDeviceItem = ({ object, typeItem }) => {
     const [count, setCount] = useState(object.count)
     const [visible, setVisible] = useState(false)
     const { userStore, deviceStore } = useContext(Context)
+    const flag = typeItem === 'typeItem'
 
     const plusCount = () => {
         createBasketDevice(userStore.user.id, object.device.id)
@@ -17,7 +18,7 @@ const BasketDeviceItem = ({ object }) => {
                 setCount(count + 1)
                 deviceStore.setTotalPrice(deviceStore.totalPrice + object.device.price)
             })
-            .catch(err => console.log(err.message))
+            .catch(err => alert(err.message))
     }
 
     const minusCount = () => {
@@ -47,7 +48,7 @@ const BasketDeviceItem = ({ object }) => {
             </div>
             <div className={styles.col + " " + styles.b}>
                 <p>Наименование: {object.device.name}</p>
-                <p>Количество: {object.count}     Цена: {beautifulViewPrice(object.device.price)}</p>
+                <div  hidden={flag}>Количество: {object.count}  Цена: {beautifulViewPrice(object.device.price)}</div>
                 <p>Цена за {count} шт. : {beautifulViewPrice(object.device.price * count)}</p>
             </div>
             <div className={styles.col + " " + styles.c}>

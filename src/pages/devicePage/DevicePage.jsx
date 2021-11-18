@@ -12,7 +12,7 @@ import { createBasketDevice } from '../../http/basketDeviceAPI';
 import { createFavoriteDevice, fetchOneFavoriteDevice } from '../../http/favoriteDeviceAPI';
 import { BASKET_ROUTE } from '../../routes/routesConsts';
 import { beautifulViewPrice } from '../../utils/helpFunctions'
-import ButtonUpdateDeviceAdmin from '../../components/buttonUpdateDeviceAdmin/ButtonUpdateDeviceAdmin.js';
+import ButtonUpdateDeviceAdmin from '../../components/buttonUpdateDeviceAdmin/ButtonUpdateDeviceAdmin.jsx';
 import NeedAuth from '../../components/modals/needAuth/NeedAuth';
 
 const DevicePage = observer(() => {
@@ -108,7 +108,7 @@ const DevicePage = observer(() => {
                 <Col md={4}>
                     <Card className={styles.col3_card}>
                         <h3>{beautifulViewPrice(device.price)}</h3>
-                        <ButtonGroup vertical>
+                        <ButtonGroup vertical hidden={!userStore.isAuth}>
                             <Button className={styles.button}
                                 variant={"outline-dark"}
                                 onClick={addDeviceToBasket}>Добавить в корзину

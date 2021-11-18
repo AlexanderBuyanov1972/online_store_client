@@ -161,7 +161,7 @@ const ContactInformation = () => {
                     onChange={event => onChangeName(event.target.value.trim())}
                     type="text"
                 />
-                <Validation validField={validName} field={name} message={''} />
+                <Validation valid={validName} value={name} message={''} />
             </div>
             <div className={styles.col + ' ' + styles.a3}>
                 <Form.Control
@@ -170,7 +170,7 @@ const ContactInformation = () => {
                     onChange={event => onChangeFamily(event.target.value.trim())}
                     type="text"
                 />
-                <Validation validField={validFamily} field={family} message={''} />
+                <Validation valid={validFamily} value={family} message={''} />
             </div>
             <div className={styles.col + ' ' + styles.a4}>
                 <Form.Control
@@ -179,7 +179,7 @@ const ContactInformation = () => {
                     onChange={event => onChangeEmail(event.target.value.trim())}
                     type="text"
                 />
-                <Validation validField={validEmail} field={email} message={''} />
+                <Validation valid={validEmail} value={email} message={''} />
                 <div className={styles.col + ' ' + styles.a5}>
                 </div>
             </div>
@@ -192,7 +192,7 @@ const ContactInformation = () => {
                     onChange={event => onChangeDateBirth(event.target.value.trim())}
                     type="text"
                 />
-                <Validation validField={validDateBirth} field={dateBirth} message='Шаблон для ввода даты: YYYY-MM-DD' />
+                <Validation valid={validDateBirth} value={dateBirth} message='Шаблон для ввода даты: YYYY-MM-DD' />
             </div>
             <div className={styles.col + ' ' + styles.b3}>
                 <Form.Control
@@ -201,7 +201,7 @@ const ContactInformation = () => {
                     onChange={event => onChangePhoneNumber(event.target.value.trim())}
                     type="text"
                 />
-                <Validation validField={validPhoneNumber} field={phoneNumber} message={''} />
+                <Validation valid={validPhoneNumber} value={phoneNumber} message={''} />
             </div>
             <div className={styles.col + ' ' + styles.b4}></div>
             <div className={styles.col + ' ' + styles.b5}></div>
@@ -216,7 +216,7 @@ const ContactInformation = () => {
                     onChange={event => onChangePasswordOld(event.target.value.trim())}
                     type="text"
                 />
-                <Validation validField={validPasswordOld} field={passwordOld} message={''} />
+                <Validation valid={validPasswordOld} value={passwordOld} message={''} />
             </div>
             <div className={styles.col + ' ' + styles.c3}>
                 <Form.Control
@@ -225,7 +225,7 @@ const ContactInformation = () => {
                     onChange={event => onChangePasswordNew(event.target.value.trim())}
                     type="text"
                 />
-                <Validation validField={validPasswordNew} field={passwordNew} message=
+                <Validation valid={validPasswordNew} value={passwordNew} message=
                     {'Пароль может содержать цифры, английские буквы верхнего и нижнего регистров, точку.'} />
             </div>
             <div className={styles.col + ' ' + styles.c4}>
@@ -235,7 +235,7 @@ const ContactInformation = () => {
                     onChange={event => onChangePasswordConfirm(event.target.value.trim())}
                     type="text"
                 />
-                <Validation validField={validPasswordConfirm} field={passwordConfirm} message={''} />
+                <Validation valid={validPasswordConfirm} value={passwordConfirm} message={''} />
             </div>
             <div className={styles.col + ' ' + styles.c5}>
                 <Button variant="outline-success" onClick={save}

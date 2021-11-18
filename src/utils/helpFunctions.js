@@ -21,7 +21,9 @@ export const getClassForList = (value, styles) => {
         return styles.wishList
     if (value === 'basketList')
         return styles.basketList
+    if (value === 'orderingBasketList')
+        return styles.orderingBasketList
     if (value === 'orderList')
         return styles.orderList
-    alert('Проблема с определоением класса листа')
+    alert('Проблема с определением класса листа')
 }

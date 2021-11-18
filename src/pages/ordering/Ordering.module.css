@@ -1,46 +1,57 @@
 .container {
-    margin: 0px;
-    padding: 0px;
-    display: grid;
-    grid-template-areas: 'h h h' 'a a a' 'b1 b2 b3' 'c c c';
-    grid-template-columns: 33% 33% 33%;
-    grid-template-rows: 50px 50px 600px 100px;
-    grid-gap: 5px;
+    margin               : 0px;
+    padding              : 0px;
+    display              : grid;
+    grid-template-areas  : 'a b';
+    grid-template-columns: 50% 50%;
+    grid-template-rows   : 1fr;
+    grid-gap             : 5px;
 }
 
 .text {
     text-align: center;
 }
 
-.h {
-    grid-area: h;
-}
-
 .a {
     grid-area: a;
-    display: flex;
-    justify-content: space-around;
-    font-size: 20px;
 }
 
-.b1 {
-    grid-area: b1;
-}
-
-.b2 {
-    grid-area: b2;
-}
-
-.b3 {
-    grid-area: b3;
-}
-
-.c {
-    grid-area: c;
+.b {
+    grid-area: b;
 }
 
 .col {
     padding: 0px;
-    margin: 0px;
-    width: 90%;
+    margin : 0px;
+    width  : 100%;
+}
+
+.select {
+    margin-bottom: 10px;
+}
+
+.input {
+    margin-bottom: 10px;
+}
+
+.courier {
+    display              : grid;
+    grid-template-areas  : 'street house apatment';
+    grid-gap             : 10px;
+    grid-template-columns: 50% 24% 22%;
+    grid-template-rows   : 50px;
+    margin-top           : 30px;
+
+}
+
+.street {
+    grid-area: street;
+}
+
+.house {
+    grid-area: house;
+}
+
+.apatment {
+    grid-area: apatment;
 }

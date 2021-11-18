@@ -104,7 +104,7 @@ const CreateUpdateTypeBrand = ({ show, onHide, cb, textTitle, textButton }) => {
                         onChange={(e) => onChangeName(e.target.value)}
                     />
                 </Form>
-                <Validation validField={validName} field={name} message={''} />
+                <Validation valid={validName} value={name} message={''} />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant={'outline-danger'} onClick={close}>Закрыть</Button>

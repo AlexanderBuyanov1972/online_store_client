@@ -34,8 +34,8 @@ const CreateAdmin = ({ show, onHide }) => {
             if (data.role === role)
                 userStore.setIsAdmin(true)
             close()
-        } catch (e) {
-            alert(e.message)
+        } catch (err) {
+            alert(err.message)
         }
     }
 
@@ -86,7 +86,7 @@ const CreateAdmin = ({ show, onHide }) => {
                         onChange={event => onChangeEmail(event.target.value.trim())}
                         type="text"
                     />
-                    <Validation validField={validEmail} field={email} message={''} />
+                    <Validation valid={validEmail} value={email} message={''} />
                     <Form.Control
                         className={styles.control}
                         placeholder="Введите пароль ..."
@@ -94,7 +94,7 @@ const CreateAdmin = ({ show, onHide }) => {
                         onChange={event => onChangePassword(event.target.value.trim())}
                         type="text"
                     />
-                    <Validation validField={validPassword} field={password}
+                    <Validation valid={validPassword} value={password}
                         message={'Пароль может содержать цифры, английские буквы верхнего и нижнего регистров, точку.'} />
                     <Form.Control
                         className={styles.control}
@@ -103,7 +103,7 @@ const CreateAdmin = ({ show, onHide }) => {
                         onChange={event => onChangeConfirmPassword(event.target.value.trim())}
                         type="text"
                     />
-                    <Validation validField={validConfirmPassword} field={confirmPassword} message={''} />
+                    <Validation valid={validConfirmPassword} value={confirmPassword} message={''} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={close}>Закрыть</Button>

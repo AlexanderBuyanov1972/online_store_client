@@ -10,7 +10,7 @@ export const updateAddress = async (id, address) => {
     return data
 }
 export const getAddress = async (id) => {
-    const {data} = await $host.get((API_ADDRESS + '/' + id))
+    const {data} = await $authHost.get((API_ADDRESS + '/' + id))
     return data
 }
 export const deleteAddress = async (id) => {

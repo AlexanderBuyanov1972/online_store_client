@@ -1,21 +1,21 @@
 import React from 'react'
 import styles from './Validation.module.css'
 
-const Validation = ({ validField, field, message }) => {
+const Validation = ({ valid, value, message }) => {
     return (
         <div>
-            {!validField.flag
-                && field.length >= 1
+            {!valid.flag
+                && value.length >= 1
                 && <div className={styles.invalid}>
-                    {validField.message}
+                    {valid.message}
                 </div>}
-            {!validField.flag
-                && field.length === 0
+            {!valid.flag
+                && value.length === 0
                 && <div className={styles.nutral}>
                     {message}
                 </div>}
-            {validField.flag && <div className={styles.valid}>
-                {validField.message}
+            {valid.flag && <div className={styles.valid}>
+                {valid.message}
             </div>}
         </div>
     )

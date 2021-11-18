@@ -242,7 +242,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
                                 >{brand.name}</Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
-                    < Validation validField={validBrand} field={brand} message={''} />
+                    < Validation valid={validBrand} value={brand} message={''} />
                     <hr />
                     <Form.Control
                         className={styles.control}
@@ -251,7 +251,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
                         onChange={event => onChangeName(event.target.value)}
 
                     />
-                    < Validation validField={validName} field={name} message={''} />
+                    < Validation valid={validName} value={name} message={''} />
                     <hr />
                     <Form.Control
                         className={styles.control}
@@ -260,7 +260,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
                         onChange={event => onChangePrice(event.target.value)}
 
                     />
-                    < Validation validField={validPrice} field={price} message={''} />
+                    < Validation valid={validPrice} value={price} message={''} />
                     <hr />
                     <Form.Control
                         className={styles.control}
@@ -268,7 +268,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
                         value={rating}
                         onChange={event => onChangeRating(event.target.value)}
                     />
-                    < Validation validField={validRating} field={rating} message={''} />
+                    < Validation valid={validRating} value={rating} message={''} />
                     <hr />
                     <Form.Control
                         type="file"
@@ -276,7 +276,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
                         onChange={event => onChangeFile(event.target.files[0])}
                         placeholder={device.img}
                     />
-                    < Validation validField={validFile} field={file} message={''} />
+                    < Validation valid={validFile} value={file} message={''} />
                     <hr />
                     <Button variant={'outline-dark'} onClick={() => addInfo()
                     }>Добавить новое свойство</Button>
@@ -292,7 +292,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
                                             changeInfo('title', event.target.value, i.id)}
                                     />
                                     <div>
-                                        <Validation validField={getValidFieldTitle(i.id)} field={i.title} message={''} />
+                                        <Validation valid={getValidFieldTitle(i.id)} value={i.title} message={''} />
                                     </div>
 
 
@@ -306,7 +306,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
                                             changeInfo('description', event.target.value, i.id)}
                                     />
                                     <div>
-                                        <Validation validField={getValidFieldDescription(i.id)} field={i.description} message={''} />
+                                        <Validation valid={getValidFieldDescription(i.id)} value={i.description} message={''} />
                                     </div>
                                 </Col>
 

@@ -22,7 +22,7 @@ const NeedAuth = ({ show, onHide }) => {
             </Modal.Header>
             <hr />
             <Modal.Body>
-                Чтобы добавить товар в корзину нужно авторизироваться.
+                `Чтобы сохранить товар в нужно авторизироваться.`
             </Modal.Body>
             <hr />
             <Modal.Footer>

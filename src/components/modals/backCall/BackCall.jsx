@@ -76,14 +76,14 @@ const BackCall = ({ show, onHide }) => {
                     value={name}
                     onChange={(event) => onChangeName(event.target.value.trim())}
                 />
-                <Validation validField={validName} field={name} message={'Имя с заглавной буквы не более 25 символов.'} />
+                <Validation valid={validName} valid={name} message={'Имя с заглавной буквы не более 25 символов.'} />
                 <FormControl
                     className={styles.control}
                     placeholder="Телефон"
                     value={phoneNumber}
                     onChange={(event) => onChangePhoneNumber(event.target.value.trim())}
                 />
-                <Validation validField={validPhoneNumber} field={phoneNumber}
+                <Validation valid={validPhoneNumber} value={phoneNumber}
                     message={'Номер телефона только в формате +38 0XX XXXXXXX или 0XX XXXXXXX без пробелов.'} />
                 <FormControl
                     className={styles.control}
@@ -92,7 +92,7 @@ const BackCall = ({ show, onHide }) => {
                     value={text}
                     onChange={(event) => onChangeText(event.target.value)}
                 />
-                <Validation validField={validText} field={text} message={'Длина текста не более 300 символов.'} />
+                <Validation valid={validText} value={text} message={'Длина текста не более 300 символов.'} />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={close}>Закрыть</Button>

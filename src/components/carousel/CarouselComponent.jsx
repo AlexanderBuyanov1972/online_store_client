@@ -7,8 +7,8 @@ import ChangePhoto from '../modals/photo/ChangePhoto'
 import notphoto from '../../assets/notfound.jpg'
 import { Spinner } from "react-bootstrap";
 
-const CarouselComponent = ({ title }) => {
-    const [images, setImages] = useState([])
+const CarouselComponent = ({ id, title }) => {
+    const [images, setImages] = useState([{ id: '', img: '', group: '' }])
     const [visible, setVisible] = useState(false)
     const [photoId, setPhotoId] = useState(0)
     const { userStore } = useContext(Context)
@@ -44,8 +44,8 @@ const CarouselComponent = ({ title }) => {
                         onClick={() => getPhoto()} />
                     :
                     images.map(photo =>
-                        <CarouselItem>
-                            <Image key={photo.id}
+                        <CarouselItem key={photo.id}>
+                            <Image
                                 className={styles.photo}
                                 src={process.env.REACT_APP_API_URL + 'photos/' + photo.img}
                                 alt="Not Found"

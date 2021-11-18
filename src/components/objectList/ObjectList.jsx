@@ -6,7 +6,7 @@ import { getClassForList } from '../../utils/helpFunctions';
 const ObjectList = observer(({ objectsJSX, list }) => {
     return (
         <div className={getClassForList(list, styles)}>
-            {objectsJSX.map(objJSX => <div>{objJSX}</div>)}
+            {objectsJSX.map(objJSX => <div key={objJSX.id}>{objJSX}</div>)}
         </div>
     );
 });

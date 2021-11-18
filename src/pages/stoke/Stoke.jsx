@@ -4,7 +4,7 @@ import styles from './Stoke.module.css'
 const Stoke =() => {
 
     return(
-        <div>
+        <div className={styles.container}>
             To Stoke
         </div>
     )

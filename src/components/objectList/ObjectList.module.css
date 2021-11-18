@@ -1,25 +1,34 @@
 .shopList {
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-    flex-wrap: wrap;
+    margin         : 0px;
+    padding        : 0px;
+    display        : flex;
+    flex-wrap      : wrap;
     justify-content: start;
 }
 
 .wishList {
-    margin: 0px;
-    padding: 0px;
-    width: 90%;
-}
+    margin        : 0px;
+    padding       : 0px;
+    width         : 100%;
+    display       : flex;
+    flex-direction: column;
+    align-items: center;
+ }
 
 .basketList {
-    margin: 0px;
+    margin : 0px;
     padding: 0px;
-    width: 90%;
+    width  : 90%;
 }
 
 .orderList {
-    margin: 0px;
+    margin : 0px;
     padding: 0px;
-    width: 90%;
+    width  : 90%;
+}
+
+.orderingBasketList {
+    margin : 0px;
+    padding: 0px;
+    width  : 100%;
 }
