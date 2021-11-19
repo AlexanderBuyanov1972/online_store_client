@@ -3,15 +3,19 @@ import styles from './AddressBook.module.css'
 import { Button, Form, ListGroup } from 'react-bootstrap'
 import { validation } from '../../../utils/validations'
 import { Context } from '../../..'
-import { createAddress, deleteAddress, getAddress, getAllAddresses, updateAddress } from '../../../http/addressAPI'
+import { createAddress, deleteAddress, getAllAddresses, updateAddress } from '../../../http/addressAPI'
 import Validation from '../../../components/validation/Validation'
 import { useValidInput } from '../../../hooks/useValidInput'
+import { getBooleonFromArrayFlags, setFieldsOfObjectIntoArray } from '../../../utils/helpFunctions'
 
 const AddressBook = () => {
     const { userStore } = useContext(Context)
-
     const validFalse = { flag: false, message: '' }
     const validTrue = { flag: true, message: 'Ok' }
+    const addressEmpty = {
+        nameRecipient: '', familyRecipient: '', emailRecipient: '',
+        phoneNumberRecipient: '', city: '', street: '', house: '', apatment: '', index: ''
+    }
 
     const nameRecipient = useValidInput('', validFalse, validation.validFieldName)
     const familyRecipient = useValidInput('', validFalse, validation.validFieldName)
@@ -23,11 +27,23 @@ const AddressBook = () => {
     const apatment = useValidInput('', validFalse, validation.validFieldApatment)
     const index = useValidInput('', validFalse, validation.validFieldIndex)
 
-    const [addressId, setAddressId] = useState('')
-    const [address, setAddress] = useState({})
+    const functionsValidField = [
+        validation.validFieldName, validation.validFieldName, validation.validFieldEmail,
+        validation.validFieldPhoneNumber, validation.validFieldCityStreet, validation.validFieldCityStreet,
+        validation.validFieldHouse, validation.validFieldApatment, validation.validFieldIndex
+    ]
+    const [arrayInput, setArrayInput] = useState([nameRecipient, familyRecipient, emailRecipient,
+        phoneNumberRecipient, city, street, house, apatment, index])
+
+    const addressDefault = userStore.address || addressEmpty
     const [addresses, setAddresses] = useState([])
+    const [addressId, setAddressId] = useState('')
+
     const [flagButton, setFlagButtom] = useState(false)
     const [reloader, setReloader] = useState(false)
+
+
+
 
     useEffect(() => {
         getAllAddresses(userStore.user.id).then(data => {
@@ -36,23 +52,12 @@ const AddressBook = () => {
     }, [reloader])
 
     useEffect(() => {
-        getAddress(addressId).then(data => setAddress(data))
-    }, [addressId])
+        setFlagButtom(getBooleonFromArrayFlags(arrayInput))
+    }, arrayInput)
 
     useEffect(() => {
-        setFlagButtom(
-            nameRecipient.valid.flag &&
-            familyRecipient.valid.flag &&
-            emailRecipient.valid.flag &&
-            phoneNumberRecipient.valid.flag &&
-            city.valid.flag &&
-            street.valid.flag &&
-            house.valid.flag &&
-            apatment.valid.flag &&
-            index.valid.flag
-        )
-    }, [nameRecipient, familyRecipient, emailRecipient, phoneNumberRecipient,
-        city, street, house, apatment, index])
+        setArrayInput(arrayInput)
+    }, [addressId])
 
     const save = () => {
         const formData = new FormData()
@@ -69,12 +74,10 @@ const AddressBook = () => {
 
         if (addressId && addressId !== '') {
             updateAddress(addressId, formData).then(data => {
-                setReloader(!reloader)
                 cleanForm()
             })
         } else {
             createAddress(formData).then(data => {
-                setReloader(!reloader)
                 cleanForm()
             })
         }
@@ -88,13 +91,21 @@ const AddressBook = () => {
         setReloader(!reloader)
     }
     const editItem = (item) => {
-        setAddress(item)
+        setAddressId(item.id)
+        setArrayInput(setFieldsOfObjectIntoArray(item, arrayInput, validTrue))
+        setReloader(!reloader)
     }
     const cleanForm = () => {
-        setAddress({
-            nameRecipient: '', familyRecipient: '', emailRecipient: '', phoneNumberRecipient: '',
-            city: '', street: '', house: '', apatment: '', index: ''
-        })
+        cleanInputs(arrayInput, validFalse)
+        setAddressId('')
+        setReloader(!reloader)
+    }
+
+    const cleanInputs = (array, valid) => {
+        for (let i = 0; i < array.length; i++) {
+            array[i].value = ''
+            array[i].valid = valid
+        }
     }
 
 
@@ -122,61 +133,58 @@ const AddressBook = () => {
             <div className={styles.col + ' ' + styles.b1}>
                 {addressId ? <h5>Обновление адресса</h5> : <h5>Добавление нового адресса</h5>}
             </div>
-
             <div className={styles.col + ' ' + styles.b2}>
                 <Form.Control type="text" placeholder='Имя Получателя'
-                    value={nameRecipient.value || address.nameRecipient} 
-                    onChange={nameRecipient.onChange} onClick={nameRecipient.onChange}/>
+                    value={nameRecipient.value}
+                    onChange={nameRecipient.onChange} onClick={nameRecipient.onChange} />
                 <Validation message='' value={nameRecipient.value} valid={nameRecipient.valid} />
             </div>
             <div className={styles.col + ' ' + styles.b3}>
                 <Form.Control type="text" placeholder='Фамилия Получателя'
-                    value={familyRecipient.value || address.familyRecipient}
-                     onChange={familyRecipient.onChange}  onClick={familyRecipient.onChange}/>
+                    value={familyRecipient.value} onChange={familyRecipient.onChange} onClick={familyRecipient.onChange} />
                 <Validation message='' value={familyRecipient.value} valid={familyRecipient.valid} />
             </div>
             <div className={styles.col + ' ' + styles.b4}>
                 <Form.Control type="text" placeholder='Email Получателя'
-                    value={emailRecipient.value || address.emailRecipient} 
-                    onChange={emailRecipient.onChange}  onClick={emailRecipient.onChange}/>
+                    value={emailRecipient.value} onChange={emailRecipient.onChange} onClick={emailRecipient.onChange} />
                 <Validation message='' value={emailRecipient.value} valid={emailRecipient.valid} />
             </div>
             <div className={styles.col + ' ' + styles.b5}></div>
             <div className={styles.col + ' ' + styles.b6}>
                 <Button variant="outline-info" onClick={cleanForm} className={styles.button}
-                    hidden={address.nameRecipient === ''}>Очистить</Button>
+                    hidden={addressId === ''}>Очистить</Button>
             </div>
             <div className={styles.col + ' ' + styles.c1}></div>
             <div className={styles.col + ' ' + styles.c2}>
                 <Form.Control type="text" placeholder='Телефон Получателя'
-                    value={phoneNumberRecipient.value || address.phoneNumberRecipient}
-                     onChange={phoneNumberRecipient.onChange}  onClick={phoneNumberRecipient.onChange}/>
+                    value={phoneNumberRecipient.value}
+                    onChange={phoneNumberRecipient.onChange} onClick={phoneNumberRecipient.onChange} />
                 <Validation message='' value={phoneNumberRecipient.value} valid={phoneNumberRecipient.valid} />
             </div>
             <div className={styles.col + ' ' + styles.c3}>
-                <Form.Control type="text" placeholder='Город' value={city.value || address.city}
-                 onChange={city.onChange}  onClick={city.onChange}/>
+                <Form.Control type="text" placeholder='Город' value={city.value}
+                    onChange={city.onChange} onClick={city.onChange} />
                 <Validation message='' value={city.value} valid={city.valid} />
             </div>
             <div className={styles.col + ' ' + styles.c4}>
-                <Form.Control type="text" placeholder='Улица' value={street.value || address.street}
-                 onChange={street.onChange}  onClick={street.onChange}/>
+                <Form.Control type="text" placeholder='Улица' value={street.value}
+                    onChange={street.onChange} onClick={street.onChange} />
                 <Validation message='' value={street.value} valid={street.valid} />
             </div>
             <div className={styles.col + ' ' + styles.c5}>
                 <div className={styles.col + ' ' + styles.c51}>
-                    <Form.Control type="text" placeholder='Дом' value={house.value || address.house}
-                     onChange={house.onChange}  onClick={house.onChange}/>
+                    <Form.Control type="text" placeholder='Дом' value={house.value}
+                        onChange={house.onChange} onClick={house.onChange} />
                     <Validation message='' value={house.value} valid={house.valid} />
                 </div>
                 <div className={styles.col + ' ' + styles.c52}>
-                    <Form.Control type="text" placeholder='Квартира' value={apatment.value || address.apatment} 
-                    onChange={apatment.onChange}  onClick={apatment.onChange}/>
+                    <Form.Control type="text" placeholder='Квартира' value={apatment.value}
+                        onChange={apatment.onChange} onClick={apatment.onChange} />
                     <Validation message='' value={apatment.value} valid={apatment.valid} />
                 </div>
                 <div className={styles.col + ' ' + styles.c53}>
-                    <Form.Control type="text" placeholder='Индекс' value={index.value || address.index}
-                     onChange={index.onChange}  onClick={index.onChange}/>
+                    <Form.Control type="text" placeholder='Индекс' value={index.value}
+                        onChange={index.onChange} onClick={index.onChange} />
                     <Validation message='' value={index.value} valid={index.valid} />
                 </div>
             </div>
