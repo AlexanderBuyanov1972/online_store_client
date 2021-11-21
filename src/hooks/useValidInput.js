@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export const useValidInput = (initialValue, initialValid, validFieldName) => {
+export const useValidInput = (initialValue, initialValid, callback) => {
 
     const [value, setValue] = useState(initialValue)
     const [valid, setValid] = useState(initialValid)
@@ -9,7 +9,7 @@ export const useValidInput = (initialValue, initialValid, validFieldName) => {
     const onClick = e => setValue(e.target.value)
 
     useEffect(() => {
-        validFieldName(value).then(data => setValid(data))
+        callback(value).then(data => setValid(data))
     }, [value])
 
     return { value, onChange, onClick, valid }

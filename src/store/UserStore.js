@@ -5,10 +5,10 @@ export default class UserStore {
         this._isAuth = false
         this._isAdmin = false
         this._user = {}
-        this._address = {nameRecipient: '', familyRecipient: '', emailRecipient: '', phoneNumberRecipient: '',
-        city: '', street: '', house: '', apatment: '', index: ''}
+        this._addressDefaultId = ''
         makeAutoObservable(this)
     }
+
 
     setIsAuth(bool) {
         this._isAuth = bool
@@ -19,9 +19,11 @@ export default class UserStore {
     setUser(user) {
         this._user = user
     }
-    setAddress(address) {
-        this._address = address
+    setAddressDefaultId(id) {
+        this._addressDefaultId = id
     }
+
+
     get isAuth() {
         return this._isAuth
     }
@@ -31,8 +33,8 @@ export default class UserStore {
     get user() {
         return this._user
     }
-    get address() {
-        return this._address
+    get addressDefaultId() {
+        return this._addressDefaultId
     }
 
 }

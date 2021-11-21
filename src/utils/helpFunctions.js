@@ -29,55 +29,67 @@ export const getClassForList = (value, styles) => {
 }
 
 export const getBooleonFromArrayFlags = (array) => {
-    let result = true
+    let result = 1
+    console.log('array--->', array)
     for (let i = 0; i < array.length; i++) {
-        result = result * array[i].valid.flag
+        result = result * array[i]
     }
+    console.log('flagButton--->', result)
     return result
 }
 
-export const setFieldsOfObjectIntoArray = (item, array, valid) => {
-    for (let key in item) {
-        switch (key) {
-            case 'nameRecipient':
-                array[0].value = item[key];
-                array[0].valid = valid;
-                break;
-            case 'familyRecipient':
-                array[1].value = item[key];
-                array[1].valid = valid;
-                break;
-            case 'emailRecipient':
-                array[2].value = item[key];
-                array[2].valid = valid;
-                break;
-            case 'phoneNumberRecipient':
-                array[3].value = item[key];
-                array[3].valid = valid;
-                break;
-            case 'city':
-                array[4].value = item[key];
-                array[4].valid = valid;
-                break;
-            case 'street':
-                array[5].value = item[key];
-                array[5].valid = valid;
-                break;
-            case 'house':
-                array[6].value = item[key];
-                array[6].valid = valid;
-                break;
-            case 'apatment':
-                array[7].value = item[key];
-                array[7].valid = valid;
-                break;
-            case 'index':
-                array[8].value = item[key];
-                array[8].valid = valid;
-                break;
-            default:
-        }
-    }
-    return array
-}
 
+// export const updateStateObjectInput = (state, hook, values, valid, callBacks) => {
+//     for (let key in Object.keys(state)) {
+//         state[key] = hook(values[key], valid, callBacks[key])
+//     }
+//     console.log('state--->', state)
+//     return state
+// }
+
+// export const setValuesFromObjectIntoArray = (item, arrayObjects, valid) => {
+//     for (let key in item) {
+//         switch (key) {
+//             case 'nameRecipient':
+//                 arrayObjects[0][key].value = item[key];
+//                 arrayObjects[0][key].valid = valid;
+//                 break;
+//             case 'familyRecipient':
+//                 arrayObjects[1][key].value = item[key];
+//                 arrayObjects[1][key].valid = valid;
+//                 break;
+//             case 'emailRecipient':
+//                 arrayObjects[2][key].value = item[key];
+//                 arrayObjects[2][key].valid = valid;
+//                 break;
+//             case 'phoneNumberRecipient':
+//                 arrayObjects[3][key].value = item[key];
+//                 arrayObjects[3][key].valid = valid;
+//                 break;
+//             case 'city':
+//                 arrayObjects[4][key].value = item[key];
+//                 arrayObjects[4][key].valid = valid;
+//                 break;
+//             case 'street':
+//                 arrayObjects[5][key].value = item[key];
+//                 arrayObjects[5][key].valid = valid;
+//                 break;
+//             case 'house':
+//                 arrayObjects[6][key].value = item[key];
+//                 arrayObjects[6][key].valid = valid;
+//                 break;
+//             case 'apatment':
+//                 arrayObjects[7][key].value = item[key];
+//                 arrayObjects[7][key].valid = valid;
+//                 break;
+//             case 'index':
+//                 arrayObjects[8][key].value = item[key];
+//                 arrayObjects[8][key].valid = valid;
+//                 break;
+//             default:
+//         }
+//     }
+//     console.log('***************************')
+//     console.log('arrayObjects--->', arrayObjects)
+//     return arrayObjects
+// }
