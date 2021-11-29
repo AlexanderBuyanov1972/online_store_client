@@ -5,7 +5,6 @@ export default class UserStore {
         this._isAuth = false
         this._isAdmin = false
         this._user = {}
-        this._addressDefaultId = ''
         makeAutoObservable(this)
     }
 
@@ -19,10 +18,6 @@ export default class UserStore {
     setUser(user) {
         this._user = user
     }
-    setAddressDefaultId(id) {
-        this._addressDefaultId = id
-    }
-
 
     get isAuth() {
         return this._isAuth
@@ -32,9 +27,6 @@ export default class UserStore {
     }
     get user() {
         return this._user
-    }
-    get addressDefaultId() {
-        return this._addressDefaultId
     }
 
 }

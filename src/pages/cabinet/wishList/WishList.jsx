@@ -6,28 +6,22 @@ import { fetchAllFavoriteDevice } from '../../../http/favoriteDeviceAPI'
 import styles from './WishList.module.css'
 
 const WishList = () => {
-    const {userStore} = useContext(Context)
-    const[devices, setDevices] = useState([])
+    const { userStore } = useContext(Context)
+    const [objectsJSX, setObjectsJSX] = useState([])
 
-    useEffect(()=> {
-        fetchAllFavoriteDevice(userStore.user.id).then(data =>
-            {  
-                const objectsJSX = []
-                for (let i = 0; i < data.length; i++) {
-                    objectsJSX.push(<WishDeviceItem object={data[i]} />)
-                }  
-                setDevices(objectsJSX) 
-            })
+    useEffect(() => {
+        fetchAllFavoriteDevice(userStore.user.id).then(data => {
+            let array = []
+            data.forEach(element =>
+                array.push(<WishDeviceItem object={element} />)
+            );
+            setObjectsJSX(array)
+        })
     }, [])
 
-    // const objectsJSX = []
-    // for (let i = 0; i < devices.length; i++) {
-    //     objectsJSX.push(<WishDeviceItem object={devices[i]} />)
-    // }
-
-    return(
+    return (
         <div className={styles.container}>
-            <ObjectList objectsJSX={devices} list={'wishList'} />
+            <ObjectList objectsJSX={objectsJSX} list={'wishList'} />
         </div>
     )
 }

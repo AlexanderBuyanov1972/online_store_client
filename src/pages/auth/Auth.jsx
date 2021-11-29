@@ -6,8 +6,9 @@ import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "../../routes/routes
 import { login, registration } from "../../http/authAPI";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
-import { validFieldEmail, validFieldPassword, validFieldConfirmPassword } from '../../utils/validations'
+import { validation } from '../../utils/validations'
 import Validation from '../../components/validation/Validation';
+import { useValidInput } from '../../hooks/useValidInput';
 
 const Auth = observer(() => {
     const { userStore } = useContext(Context)
@@ -18,32 +19,28 @@ const Auth = observer(() => {
     const [message, setMessage] = useState('')
     const [hiddenAlert, setHiddenAlert] = useState(true)
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-
-    const [validEmail, setValidEmail] = useState({ flag: false, message: '' })
-    const [validPassword, setValidPassword] = useState({ flag: false, message: '' })
-    const [validConfirmPassword, setValidConfirmPassword] = useState({ flag: false, message: '' })
+    const email = useValidInput('', validation.validFieldEmail)
+    const password = useValidInput('', validation.validFieldPassword)
+    const confirmPassword = useValidInput('', validation.validFieldConfirmPassword)
 
     const [flagButtonSubmit, setFlagButtonSubmit] = useState(true)
 
     useEffect(() => {
         if (isPathLogin) {
-            setFlagButtonSubmit(validEmail.flag && validPassword.flag)
+            setFlagButtonSubmit(email.valid.flag && password.valid.flag)
         } else {
-            setFlagButtonSubmit(validEmail.flag && validPassword.flag && validConfirmPassword.flag)
+            setFlagButtonSubmit(email.valid.flag && password.valid.flag && confirmPassword.valid.flag)
         }
-    }, [validEmail, validPassword, validConfirmPassword])
+    }, [email, password, confirmPassword])
 
 
     const submit = async () => {
         let data
         try {
             if (isPathLogin) {
-                data = await login(email, password)
+                data = await login(email.value, password.value)
             } else {
-                data = await registration(email, password)
+                data = await registration(email.value, password.value)
             }
             if (!data.message) {
                 userStore.setUser(data)
@@ -51,7 +48,7 @@ const Auth = observer(() => {
                 if (data.role === 'ADMIN')
                     userStore.setIsAdmin(true)
                 history.push(SHOP_ROUTE)
-                window.location.reload()
+                //window.location.reload()
             } else {
                 setHiddenAlert(false)
                 setMessage(data.message)
@@ -62,28 +59,6 @@ const Auth = observer(() => {
         }
     }
 
-    const onChangeEmail = async (value) => {
-        setEmail(value)
-        validFieldEmail(value).then(data =>
-            setValidEmail(data)
-        )
-    }
-
-    const onChangePassword = async (value) => {
-        if (value === '')
-            setHiddenAlert(true)
-        setPassword(value)
-        validFieldPassword(value).then(data =>
-            setValidPassword(data)
-        )
-    }
-
-    const onChangeConfirmPassword = async (value) => {
-        setConfirmPassword(value)
-        validFieldConfirmPassword(password, value).then(data =>
-            setValidConfirmPassword(data)
-        )
-    }
 
     return (
         <Container
@@ -94,32 +69,17 @@ const Auth = observer(() => {
                 <h2 className='m-auto'>{isPathLogin ? 'Авторизация' : 'Регистрация'}</h2>
                 <Form className="d-flex flex-column"
                 >
-                    <Form.Control
-                        className={styles.control}
-                        placeholder="Введите ваш e-mail ..."
-                        value={email}
-                        onChange={event => onChangeEmail(event.target.value.trim())}
-                        type="text"
-                    />
-                    <Validation valid={validEmail} value={email} message={''} />
-                    <Form.Control
-                        className={styles.control}
-                        placeholder="Введите ваш пароль ..."
-                        value={password}
-                        onChange={event => onChangePassword(event.target.value.trim())}
-                        type="text"
-                    />
-                    <Validation valid={validPassword} value={password}
+                    <Form.Control className={styles.control} type="text" placeholder="Введите ваш e-mail ..."
+                        value={email.value} onChange={email.onChange} />
+                    <Validation valid={email.valid} value={email.value} message={''} />
+                    <Form.Control className={styles.control} type="text" placeholder="Введите ваш пароль ..."
+                        value={password.value} onChange={password.onChange} />
+                    <Validation valid={password.valid} value={password.value}
                         message={'Пароль может содержать цифры, английские буквы верхнего и нижнего регистров, точку.'} />
-                    <Form.Control
-                        className={styles.control}
-                        placeholder="Подтвердите ваш пароль ..."
-                        value={confirmPassword}
-                        onChange={event => onChangeConfirmPassword(event.target.value.trim())}
-                        type="text"
-                        hidden={isPathLogin}
-                    />
-                    <Validation valid={validConfirmPassword} value={confirmPassword} message={''} />
+                    <Form.Control className={styles.control} placeholder="Подтвердите ваш пароль ..." type="text"
+                        value={confirmPassword.value} onChange={confirmPassword.onChange}
+                        hidden={isPathLogin} />
+                    <Validation valid={confirmPassword.valid} value={confirmPassword.value} message={''} />
 
                     <Alert variant='danger' hidden={hiddenAlert}>{message}</Alert>
 
@@ -133,12 +93,10 @@ const Auth = observer(() => {
                             </div>
                         }
                         <div>
-                            <Button onClick={submit}
-                                disabled={!flagButtonSubmit}
-                                className='mt-3'
-                                variant={"outline-success"}
-                            >
-                                {isPathLogin ? 'Войти' : 'Регистрация'} </Button>
+                            <Button
+                                onClick={submit} disabled={!flagButtonSubmit} className='mt-3' variant={"outline-success"}>
+                                {isPathLogin ? 'Войти' : 'Регистрация'}
+                            </Button>
                         </div>
                     </Row>
                 </Form>

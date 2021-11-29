@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export const useValidInput = (initialValue, callbackValidation) => {
+export const useValidConfirmPassword = (initialValue, callbackValidation, str) => {
 
     const validFalse = { flag: false, message: '' }
     const [value, setValue] = useState(initialValue)
@@ -10,14 +10,13 @@ export const useValidInput = (initialValue, callbackValidation) => {
     const onSetInput = (string) => setValue(string)
 
     useEffect(() => {
-        if(value){
-            callbackValidation(value).then(data => setValid(data))
+        if (str && value) {
+            callbackValidation(value, str).then(data => setValid(data))
         } else {
             setValid(validFalse)
         }
-        
-    },
-        [value])
+
+    }, [value, str])
 
     return { value, valid, onChange, onSetInput }
 }

@@ -3,74 +3,62 @@ import { Form, Button } from 'react-bootstrap'
 import { Context } from '../..'
 import styles from './Ordering.module.css'
 import { fetchAllBasketDevice } from '../../http/basketDeviceAPI'
-import { firmsPost, cities, paymentMethod, optionsDelivery } from '../../utils/helpArrays'
+import { firmsPost, cities, paymentMethod, optionsDelivery, addresesBranchParcelMachine } from '../../utils/helpArrays'
 import ObjectList from '../../components/objectList/ObjectList'
 import BasketDeviceItem from '../../components/items/basketDeviceItem/BasketDeviceItem'
 import { beautifulViewPrice } from '../../utils/helpFunctions'
 import { observer } from 'mobx-react-lite'
-import { getAddress } from '../../http/addressAPI'
+import addressHttp from '../../http/addressAPI'
 import Validation from '../../components/validation/Validation'
-import { validFieldApatment, validFieldCityStreet, validFieldEmail, validFieldHouse, validFieldName, validFieldPhoneNumber, validFieldText } from '../../utils/validations'
+import { validation } from '../../utils/validations'
 import { createOrder } from '../../http/orderingAPI'
+import { useValidInput } from '../../hooks/useValidInput'
 
 const Ordering = observer(() => {
     const { userStore, deviceStore } = useContext(Context)
-    const [basketDevices, setBasketDevices] = useState([])
     const [objectsJSX, setObjectsJSX] = useState([])
+
+    const name = useValidInput('', validation.validFieldName)
+    const family = useValidInput('', validation.validFieldName)
+    const email = useValidInput('', validation.validFieldEmail)
+    const phoneNumber = useValidInput('', validation.validFieldPhoneNumber)
+    const comments = useValidInput('', validation.validFieldText)
+    const street = useValidInput('', validation.validFieldCityStreet)
+    const house = useValidInput('', validation.validFieldHouse)
+    const apatment = useValidInput('', validation.validFieldApatment)
 
     const [payment, setPayment] = useState('')
     const [post, setPost] = useState('')
     const [options, setOptions] = useState('')
     const [city, setCity] = useState('')
     const [branchParcelMachine, setBranchParcelMachine] = useState('')
-    const [street, setStreet] = useState('')
-    const [house, setHouse] = useState('')
-    const [apatment, setApatment] = useState('')
 
-    const [name, setName] = useState('')
-    const [family, setFamily] = useState('')
-    const [phoneNumber, setPhoneNumber] = useState('')
-    const [email, setEmail] = useState('')
-    const [comments, setComments] = useState('')
+
+
     const [sendBill, setSendBill] = useState(false)
-
     const [isBranch, setIsBranch] = useState(false)
     const [isCourier, setIsCourier] = useState(false)
+    const [flagSubmit, setFlagSubmit] = useState(false)
 
     const totalPrice = deviceStore.totalPrice
 
-    const validFalse = { flag: false, message: '' }
-    const validTrue = { flag: true, message: 'Ok' }
-
-    const [validName, setValidName] = useState(validFalse)
-    const [validFamily, setValidFamily] = useState(validFalse)
-    const [validPhoneNumber, setValidPhoneNumber] = useState(validFalse)
-    const [validEmail, setValidEmail] = useState(validFalse)
-    const [validComments, setValidComments] = useState(validFalse)
-    const [validStreet, setValidStreet] = useState(validFalse)
-    const [validHouse, setValidHouse] = useState(validFalse)
-    const [validApatment, setValidApatment] = useState(validFalse)
-    const [flagSubmit, setFlagSubmit] = useState(false)
-
     useEffect(() => {
-        getAddress(userStore.addressId).then(address => {
+        addressHttp.getAddress(userStore.addressId).then(address => {
             setCity(address.city)
-            setStreet(address.street)
-            setHouse(address.house)
-            setApatment(address.apatment)
-            setName(address.nameRecipient)
-            setFamily(address.familyRecipient)
-            setPhoneNumber(address.phoneNumberRecipient)
-            setEmail(address.emailRecipient)
-            flagValidForFields(validTrue)
+            street.onSetInput(address.street)
+            house.onSetInput(address.house)
+            apatment.onSetInput(address.apatment)
+            name.onSetInput(address.nameRecipient)
+            family.onSetInput(address.familyRecipient)
+            phoneNumber.onSetInput(address.phoneNumberRecipient)
+            email.onSetInput(address.emailRecipient)
         })
 
         fetchAllBasketDevice(userStore.user.id).then(data => {
-            setBasketDevices(data.result)
             const array = []
-            for (let i = 0; i < data.result.length; i++) {
-                array.push(<BasketDeviceItem object={data.result[i]} typeItem='typeItem' />)
-            }
+            data.result.forEach(element => {
+                array.push(<BasketDeviceItem object={element} typeItem='typeItem' />)
+            });
             setObjectsJSX(array)
             deviceStore.setTotalPrice(data.totalPrice)
         })
@@ -78,37 +66,9 @@ const Ordering = observer(() => {
 
     useEffect(() => {
         setFlagSubmit(
-            validName.flag && validFamily.flag && validPhoneNumber.flag && validEmail.flag &&
-            validComments.flag && validStreet.flag && validHouse.flag && validApatment.flag)
-    }, [validName, validFamily, validPhoneNumber, validEmail, validComments, validStreet,
-        validHouse, validApatment])
-
-    const flagValidForFields = (valid) => {
-        setValidName(valid)
-        setValidFamily(valid)
-        setValidPhoneNumber(valid)
-        setValidEmail(valid)
-        setValidComments(valid)
-        setValidStreet(valid)
-        setValidHouse(valid)
-        setValidApatment(valid)
-    }
-
-    const onChangePayment = (value) => {
-        setPayment(value)
-    }
-
-    const onChangePost = (value) => {
-        setPost(value)
-    }
-
-    const onChangeCity = (value) => {
-        setCity(value)
-    }
-
-    const onChangeBranchParcelMachine = (value) => {
-        setBranchParcelMachine(value)
-    }
+            name.valid.flag && family.valid.flag && phoneNumber.valid.flag && email.valid.flag &&
+            comments.valid.flag && street.valid.flag && house.valid.flag && apatment.valid.flag)
+    }, [name, family, phoneNumber, email, comments, street, house, apatment])
 
     const onChangeOptions = (value) => {
         if (value === 'Самовывоз из отделения') {
@@ -125,42 +85,8 @@ const Ordering = observer(() => {
         }
         setOptions(value)
     }
-    const onChangeStreet = (value) => {
-        setStreet(value)
-        validFieldCityStreet(value).then(data => setValidStreet(data))
-    }
-    const onChangeHouse = (value) => {
-        setHouse(value)
-        validFieldHouse(value).then(data => setValidHouse(data))
-    }
-    const onChangeApatment = (value) => {
-        setApatment(value)
-        validFieldApatment(value).then(data => setValidApatment(data))
-    }
-    const onChangeName = (value) => {
-        setName(value)
-        validFieldName(value).then(data => setValidName(data))
-    }
-    const onChangeFamily = (value) => {
-        setFamily(value)
-        validFieldName(value).then(data => setValidFamily(data))
-    }
-    const onChangePhoneNumber = (value) => {
-        setPhoneNumber(value)
-        validFieldPhoneNumber(value).then(data => setValidPhoneNumber(data))
-    }
-    const onChangeEmail = (value) => {
-        setEmail(value)
-        validFieldEmail(value).then(data => setValidEmail(data))
-    }
-    const onChangeComments = (value) => {
-        setComments(value)
-        validFieldText(value).then(data => setValidComments(data))
-    }
 
-    const onClickSendBill = () => {
-        setSendBill(!sendBill)
-    }
+    const onClickSendBill = () => setSendBill(!sendBill)
 
     const submit = () => {
         const formData = new FormData()
@@ -169,17 +95,19 @@ const Ordering = observer(() => {
         formData.append('options', options)
         formData.append('city', city)
         formData.append('branchParcelMachine', branchParcelMachine)
-        formData.append('street', street)
-        formData.append('house', house)
-        formData.append('apatment', apatment)
-        formData.append('name', name)
-        formData.append('family', family)
-        formData.append('phoneNumber', phoneNumber)
-        formData.append('email', email)
-        formData.append('comments', comments)
+        formData.append('street', street.value)
+        formData.append('house', house.value)
+        formData.append('apatment', apatment.value)
+        formData.append('name', name.value)
+        formData.append('family', family.value)
+        formData.append('phoneNumber', phoneNumber.value)
+        formData.append('email', email.value)
+        formData.append('comments', comments.value)
         formData.append('sendBill', sendBill)
 
-        createOrder(formData).then(data => console.log(data))
+        createOrder(formData)
+            .then(data => console.log(data))
+            .catch(error => alert(error.message))
     }
 
     return (
@@ -187,77 +115,79 @@ const Ordering = observer(() => {
             <div className={styles.col + " " + styles.a}>
                 <hr />
                 <Form.Label>Способ оплаты</Form.Label>
-                <Form.Select className={styles.select} onChange={e => onChangePayment(e.target.value)}>
+                <Form.Select className={styles.select} onChange={(e) => setPayment(e.target.value)}>
                     {paymentMethod.map(item => <option key={item.id} value={item.name}>{item.name}</option>)
                     }
                 </Form.Select>
                 <hr />
                 <Form.Label>Почтовый оператор</Form.Label>
-                <Form.Select className={styles.select} onChange={e => onChangePost(e.target.value)}>
+                <Form.Select className={styles.select} onChange={(e) => setPost(e.target.value)}>
                     {firmsPost.map(item => <option key={item.id} value={item.name}>{item.name}</option>)
                     }
                 </Form.Select>
                 <Form.Label>Способ доставки</Form.Label>
-                <Form.Select className={styles.select} onChange={e => onChangeOptions(e.target.value)}>
+                <Form.Select className={styles.select} onChange={(e) => onChangeOptions(e.target.value)}>
                     {optionsDelivery.map(item => <option key={item.id} value={item.name}>{item.name}</option>)
                     }
                 </Form.Select>
                 <Form.Label>Город</Form.Label>
-                <Form.Select className={styles.select} onChange={e => onChangeCity(e.target.value)}>
+                <Form.Select className={styles.select} onChange={(e) => setCity(e.target.value)}>
                     {cities.map(item => <option key={item.id} value={item.name}>{item.name}</option>)
                     }
                 </Form.Select>
                 <Form.Label hidden={isCourier}>{isBranch ? 'Отделение' : 'Почтомат'}</Form.Label>
-                <Form.Select hidden={isCourier} className={styles.select} onChange={e => onChangeBranchParcelMachine(e.target.value)}>
-
+                <Form.Select hidden={isCourier} className={styles.select} onChange={(e) => setBranchParcelMachine(e.target.value)}>
+                    {addresesBranchParcelMachine.map(item => <option key={item.id} value={item.name}>{item.name}</option>)
+                    }
                 </Form.Select>
                 <div hidden={!isCourier} className={styles.courier}>
                     <div className={styles.input + " " + styles.street}>
-                        <Form.Control value={street} type="text" placeholder="Улица"
-                            onChange={e => onChangeStreet(e.target.value)} />
-                        < Validation valid={validStreet} value={street} message={''} />
+                        <Form.Control type="text" placeholder="Улица"
+                            value={street.value} onChange={street.onChange} />
+                        < Validation valid={street.valid} value={street.value} message={''} />
                     </div>
                     <div className={styles.input + ' ' + styles.house}>
-                        <Form.Control value={house} type="text" placeholder="Дом"
-                            onChange={e => onChangeHouse(e.target.value)} />
-                        < Validation valid={validHouse} value={house} message={''} />
+                        <Form.Control type="text" placeholder="Дом"
+                            value={house.value} onChange={house.onChange} />
+                        < Validation valid={house.valid} value={house.value} message={''} />
                     </div>
                     <div className={styles.input + ' ' + styles.apatment}>
-                        <Form.Control value={apatment} type="text" placeholder="Кв."
-                            onChange={e => onChangeApatment(e.target.value)} />
-                        < Validation valid={validApatment} value={apatment} message={''} />
+                        <Form.Control type="text" placeholder="Кв."
+                            value={apatment.value} onChange={apatment.onChange} />
+                        < Validation valid={apatment.valid} value={apatment.value} message={''} />
                     </div>
                 </div>
                 <hr />
                 <p>Информация о получателе:</p>
-                <Form.Group className={styles.input} controlId="formBasicPassword">
+                <Form.Group className={styles.input}>
                     <Form.Label>Имя</Form.Label>
-                    <Form.Control value={name} type="text" placeholder="Имя" onChange={e => onChangeName(e.target.value)} />
-                    < Validation valid={validName} value={name} message={''} />
+                    <Form.Control type="text" placeholder="Имя"
+                        value={name.value} onChange={name.onChange} />
+                    < Validation valid={name.valid} value={name.value} message={''} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className="mb-3">
                     <Form.Label>Фамилия</Form.Label>
-                    <Form.Control value={family} type="text" placeholder="Фамилия"
-                        onChange={e => onChangeFamily(e.target.value)} />
-                    < Validation valid={validFamily} value={family} message={''} />
+                    <Form.Control type="text" placeholder="Фамилия"
+                        value={family.value} onChange={family.onChange} />
+                    < Validation valid={family.valid} value={family.value} message={''} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className="mb-3">
                     <Form.Label>Телефон</Form.Label>
-                    <Form.Control value={phoneNumber} type="text" placeholder="Телефон"
-                        onChange={e => onChangePhoneNumber(e.target.value)} />
-                    < Validation valid={validPhoneNumber} value={phoneNumber} message={''} />
+                    <Form.Control type="text" placeholder="Телефон"
+                        value={phoneNumber.value} onChange={phoneNumber.onChange} />
+                    < Validation valid={phoneNumber.valid} value={phoneNumber.value} message={''} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control value={email} type="email" placeholder="Email"
-                        onChange={e => onChangeEmail(e.target.value)} />
-                    < Validation valid={validEmail} value={email} message={''} />
+                    <Form.Control type="email" placeholder="Email"
+                        value={email.value} onChange={email.onChange} />
+                    < Validation valid={email.valid} value={email.value} message={''} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                <Form.Group className="mb-3">
                     <Form.Label>Комментарий</Form.Label>
-                    <Form.Control value={comments} as="textarea" rows={3} placeholder="Уточнение к заказу"
-                        onChange={e => onChangeComments(e.target.value)} />
-                    < Validation valid={validComments} value={comments} message={''} />
+                    <Form.Control as="textarea" rows={3} placeholder="Уточнение к заказу"
+                        value={comments.value} onChange={comments.onChange} />
+                    < Validation valid={comments.valid} value={comments.value} message={''} />
                 </Form.Group>
                 <hr />
                 <Form.Check checked={!sendBill} onClick={() => onClickSendBill()} type="checkbox" label="Выслать счёт на оплату" />

@@ -3,7 +3,7 @@ import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { Context } from '../../..';
 import { fetchBrands } from '../../../http/brandAPI';
 import { fetchTypes } from '../../../http/typeAPI';
-import { validTypeBrand } from '../../../utils/validations'
+import { validation } from '../../../utils/validations'
 import Validation from '../../validation/Validation'
 import styles from './CreateUpdateTypeBrand.module.css'
 
@@ -33,7 +33,7 @@ const CreateUpdateTypeBrand = ({ show, onHide, cb, textTitle, textButton }) => {
 
     const onChangeName = (str) => {
         setName(str)
-        validTypeBrand(str).then(data => setValidName(data))
+        validation.validTypeBrand(str).then(data => setValidName(data))
     }
 
 

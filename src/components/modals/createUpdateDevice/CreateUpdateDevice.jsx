@@ -6,14 +6,7 @@ import { observer } from "mobx-react-lite";
 import { getStartFormInfoByType } from "../../../utils/getStartFormInfoByType";
 import { fetchOneType, fetchTypes } from "../../../http/typeAPI";
 import { fetchBrands, fetchOneBrand } from "../../../http/brandAPI";
-import {
-    validFieldNameDevice,
-    validFieldPrice,
-    validFieldRating,
-    validFieldFile,
-    validIdTypeBrand,
-    validFieldProperties
-} from '../../../utils/validations'
+import { validation } from '../../../utils/validations'
 import Validation from '../../validation/Validation'
 
 const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
@@ -46,21 +39,21 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
         if (device.typeId)
             fetchOneType(device.typeId).then(data => {
                 setType(data)
-                validIdTypeBrand(data).then(data => setValidType(data))
+                validation.validIdTypeBrand(data).then(data => setValidType(data))
             })
         if (device.brandId)
             fetchOneBrand(device.brandId).then(data => {
                 setBrand(data)
-                validIdTypeBrand(data).then(data => setValidBrand(data))
+                validation.validIdTypeBrand(data).then(data => setValidBrand(data))
             })
         if (device.name)
-            validFieldNameDevice(device.name).then(data => setValidName(data))
+        validation.validFieldNameDevice(device.name).then(data => setValidName(data))
         if (device.price)
-            validFieldPrice(device.price).then(data => setValidPrice(data))
+        validation.validFieldPrice(device.price).then(data => setValidPrice(data))
         if (device.rating)
-            validFieldRating(device.rating).then(data => setValidRating(data))
+        validation.validFieldRating(device.rating).then(data => setValidRating(data))
         if (device.img)
-            validFieldFile(device.img).then(data => setValidFile(data))
+        validation.validFieldFile(device.img).then(data => setValidFile(data))
         fillInArrayValids(device.info)
     }, [])
 
@@ -98,7 +91,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
 
     const onChangeType = (value) => {
         setType(value)
-        validIdTypeBrand(value).then(data => setValidType(data))
+        validation.validIdTypeBrand(value).then(data => setValidType(data))
         const data = getStartFormInfoByType(value)
         setInfo(data)
         fillInArrayValids(data)
@@ -106,25 +99,25 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
 
     const onChangeBrand = (value) => {
         setBrand(value)
-        validIdTypeBrand(value).then(data => setValidBrand(data))
+        validation.validIdTypeBrand(value).then(data => setValidBrand(data))
     }
 
     const onChangeName = (value) => {
         setName(value)
-        validFieldNameDevice(value).then(data => setValidName(data))
+        validation.validFieldNameDevice(value).then(data => setValidName(data))
     }
 
     const onChangePrice = (value) => {
         setPrice(value)
-        validFieldPrice(value).then(data => setValidPrice(data))
+        validation.validFieldPrice(value).then(data => setValidPrice(data))
     }
     const onChangeRating = (value) => {
         setRating(value)
-        validFieldRating(value).then(data => setValidRating(data))
+        validation.validFieldRating(value).then(data => setValidRating(data))
     }
     const onChangeFile = (value) => {
         setFile(value)
-        validFieldFile(value).then(data => setValidFile(data))
+        validation.validFieldFile(value).then(data => setValidFile(data))
     }
 
     const addInfo = () => {
@@ -149,7 +142,7 @@ const CreateUpdateDevice = observer(({ show, onHide, device, title, cb }) => {
 
     const changeInfo = (key, value, number) => {
         setInfo(info.map(item => item.id === number ? { ...item, [key]: value } : item))
-        validFieldProperties(value).then(data => {
+        validation.validFieldProperties(value).then(data => {
             let newData = { id: number, flag: data.flag, message: data.message }
             if (key === 'title') {
                 setValidInfoTitle([...validInfoTitle.filter(i => i.id !== number), newData])

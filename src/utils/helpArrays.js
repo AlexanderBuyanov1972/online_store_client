@@ -4,6 +4,7 @@ export const array = [
     {id: '3', title:'Наш выбор!!!'}
 ]
 export const paymentMethod = [
+    { id: '0', name: '' },
     { id: '1', name: 'Наложный платёж Justin' },
     { id: '2', name: 'Наложный платёж Новая Почта' },
     { id: '3', name: 'Наличными' },
@@ -12,6 +13,7 @@ export const paymentMethod = [
 ]
 
 export const firmsPost = [
+    { id: '0', name: '' },
     { id: '1', name: 'Забрать у нас в офисе' },
     { id: '2', name: 'Meest' },
     { id: '3', name: 'Новая почта' },
@@ -21,12 +23,20 @@ export const firmsPost = [
 ]
 
 export const optionsDelivery = [
+    { id: '01', name: '' },
     { id: '1', name: 'Самовывоз из отделения' },
     { id: '2', name: 'Почтомат' },
     { id: '3', name: 'Доставка курьером' },
 ]
+export const addresesBranchParcelMachine = [
+    { id: '0', name: '' },
+    { id: '1', name: 'Отделение №1, ул.Гройсмана 18' },
+    { id: '2', name: 'Отделение №2, ул.Фишмана 59' },
+    { id: '3', name: 'Отделение №3, ул.Кацмана 35' },
+]
 
 export const cities = [
+    { id: '0', name: '' },
     { id: '1', name: 'Киев' },
     { id: '2', name: 'Харьков' },
     { id: '3', name: 'Днепр' },

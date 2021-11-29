@@ -1,65 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import styles from './BackCall.module.css'
 import { Button, Modal, FormControl } from "react-bootstrap";
-import { validFieldName, validFieldPhoneNumber, validFieldText } from '../../../utils/validations';
+import { validation } from '../../../utils/validations';
 import Validation from '../../validation/Validation'
+import { useValidInput } from '../../../hooks/useValidInput';
 
 
 const BackCall = ({ show, onHide }) => {
-    const objectValidStart = { flag: false, message: '' }
-    const [name, setName] = useState('')
-    const [phoneNumber, setPhoneNumber] = useState('')
-    const [text, setText] = useState('')
-
-    const [validName, setValidName] = useState(objectValidStart)
-    const [validPhoneNumber, setValidPhoneNumber] = useState(objectValidStart)
-    const [validText, setValidText] = useState(objectValidStart)
-
+    const name = useValidInput('', validation.validFieldName)
+    const phoneNumber = useValidInput('', validation.validFieldPhoneNumber)
+    const text = useValidInput('', validation.validFieldText)
     const [flagButtonSubmit, setFlagButtonSubmit] = useState(false)
 
-    const onChangeName = (value) => {
-        setName(value)
-        validFieldName(value).then(data =>
-            setValidName(data)
-        )
-    }
-
-    const onChangePhoneNumber = (value) => {
-        setPhoneNumber(value)
-        validFieldPhoneNumber(value).then(data =>
-            setValidPhoneNumber(data)
-        )
-    }
-
-    const onChangeText = (value) => {
-        setText(value)
-        validFieldText(value).then(data =>
-            setValidText(data)
-        )
-    }
-
     useEffect(() => {
-        setFlagButtonSubmit(validName.flag && validPhoneNumber.flag && validText.flag)
-    }, [validName, validPhoneNumber, validText])
+        setFlagButtonSubmit(name.valid.flag && phoneNumber.valid.flag && text.valid.flag)
+    }, [name, phoneNumber, text])
 
     const submit = () => {
-        alert(JSON.stringify({ name, phoneNumber, text }))
-        clean()
-        onHide()
+        alert(JSON.stringify({ name: name.value, phoneNumber: phoneNumber.value, text: text.value }))
+        //close()
     }
 
     const clean = () => {
-        setName('')
-        setPhoneNumber('')
-        setText('')
-        setValidName(objectValidStart)
-        setValidPhoneNumber(objectValidStart)
-        setValidText(objectValidStart)
-        setFlagButtonSubmit(false)
-
+        name.onSetInput('')
+        phoneNumber.onSetInput('')
+        text.onSetInput('')
     }
 
     const close = () => {
+        clean()
         onHide()
     }
 
@@ -69,30 +38,22 @@ const BackCall = ({ show, onHide }) => {
                 <Modal.Title >Мы перезвоним вам сами</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <FormControl
-                    className={styles.control}
-                    placeholder="Ваше имя"
-                    type='text'
-                    value={name}
-                    onChange={(event) => onChangeName(event.target.value.trim())}
+                <FormControl className={styles.control} placeholder="Ваше имя" type='text'
+                    value={name.value}
+                    onChange={name.onChange}
                 />
-                <Validation valid={validName} valid={name} message={'Имя с заглавной буквы не более 25 символов.'} />
-                <FormControl
-                    className={styles.control}
-                    placeholder="Телефон"
-                    value={phoneNumber}
-                    onChange={(event) => onChangePhoneNumber(event.target.value.trim())}
+                <Validation valid={name.valid} value={name.value} message={'Имя с заглавной буквы не более 25 символов.'} />
+                <FormControl className={styles.control} placeholder="Телефон" type='text'
+                    value={phoneNumber.value}
+                    onChange={phoneNumber.onChange}
                 />
-                <Validation valid={validPhoneNumber} value={phoneNumber}
+                <Validation valid={phoneNumber.valid} value={phoneNumber.value}
                     message={'Номер телефона только в формате +38 0XX XXXXXXX или 0XX XXXXXXX без пробелов.'} />
-                <FormControl
-                    className={styles.control}
-                    placeholder="Текст сообщения"
-                    as="textarea"
-                    value={text}
-                    onChange={(event) => onChangeText(event.target.value)}
+                <FormControl className={styles.control} placeholder="Текст сообщения" as="textarea"
+                    value={text.value}
+                    onChange={text.onChange}
                 />
-                <Validation valid={validText} value={text} message={'Длина текста не более 300 символов.'} />
+                <Validation valid={text.valid} value={text.value} message={'Длина текста не более 300 символов.'} />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={close}>Закрыть</Button>

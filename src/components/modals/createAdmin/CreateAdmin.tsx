@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
 import { Context } from '../../..';
 import { registration } from '../../../http/authAPI';
-import { validFieldConfirmPassword, validFieldEmail, validFieldPassword } from '../../../utils/validations';
+import { validation } from '../../../utils/validations';
 import Validation from '../../validation/Validation';
 import styles from './CreateAdmin.module.css'
 
@@ -41,21 +41,21 @@ const CreateAdmin = ({ show, onHide }) => {
 
     const onChangeEmail = async (value) => {
         setEmail(value)
-        validFieldEmail(value).then(data =>
+        validation.validFieldEmail(value).then(data =>
             setValidEmail(data)
         )
     }
 
     const onChangePassword = async (value) => {
         setPassword(value)
-        validFieldPassword(value).then(data =>
+        validation.validFieldPassword(value).then(data =>
             setValidPassword(data)
         )
     }
 
     const onChangeConfirmPassword = async (value) => {
         setConfirmPassword(value)
-        validFieldConfirmPassword(password, value).then(data =>
+        validation.validFieldConfirmPassword(password, value).then(data =>
             setValidConfirmPassword(data)
         )
     }
