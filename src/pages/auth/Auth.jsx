@@ -9,6 +9,7 @@ import { Context } from "../../index";
 import { validation } from '../../utils/validations'
 import Validation from '../../components/validation/Validation';
 import { useValidInput } from '../../hooks/useValidInput';
+import { useValidConfirmPassword } from '../../hooks/useValidConfirmPassword';
 
 const Auth = observer(() => {
     const { userStore } = useContext(Context)
@@ -21,7 +22,7 @@ const Auth = observer(() => {
 
     const email = useValidInput('', validation.validFieldEmail)
     const password = useValidInput('', validation.validFieldPassword)
-    const confirmPassword = useValidInput('', validation.validFieldConfirmPassword)
+    const confirmPassword = useValidConfirmPassword('', validation.validFieldConfirmPassword, password.value)
 
     const [flagButtonSubmit, setFlagButtonSubmit] = useState(true)
 
@@ -48,7 +49,6 @@ const Auth = observer(() => {
                 if (data.role === 'ADMIN')
                     userStore.setIsAdmin(true)
                 history.push(SHOP_ROUTE)
-                //window.location.reload()
             } else {
                 setHiddenAlert(false)
                 setMessage(data.message)

@@ -29,7 +29,7 @@ const Ordering = observer(() => {
 
     const [payment, setPayment] = useState('')
     const [post, setPost] = useState('')
-    const [options, setOptions] = useState('')
+    const [deliveryMethod, setDeliveryMethod] = useState('')
     const [city, setCity] = useState('')
     const [branchParcelMachine, setBranchParcelMachine] = useState('')
 
@@ -65,9 +65,16 @@ const Ordering = observer(() => {
     }, [])
 
     useEffect(() => {
-        setFlagSubmit(
-            name.valid.flag && family.valid.flag && phoneNumber.valid.flag && email.valid.flag &&
-            comments.valid.flag && street.valid.flag && house.valid.flag && apatment.valid.flag)
+        if(isCourier){
+            setFlagSubmit(
+                name.valid.flag && family.valid.flag && phoneNumber.valid.flag && email.valid.flag &&
+                comments.valid.flag && street.valid.flag && house.valid.flag && apatment.valid.flag)
+        } else {
+            setFlagSubmit(
+                name.valid.flag && family.valid.flag && phoneNumber.valid.flag && email.valid.flag &&
+                comments.valid.flag)
+        }
+        
     }, [name, family, phoneNumber, email, comments, street, house, apatment])
 
     const onChangeOptions = (value) => {
@@ -83,7 +90,7 @@ const Ordering = observer(() => {
             setIsCourier(true)
             setIsBranch(false)
         }
-        setOptions(value)
+        setDeliveryMethod(value)
     }
 
     const onClickSendBill = () => setSendBill(!sendBill)
@@ -92,7 +99,7 @@ const Ordering = observer(() => {
         const formData = new FormData()
         formData.append('payment', payment)
         formData.append('post', post)
-        formData.append('options', options)
+        formData.append('deliveryMethod', deliveryMethod)
         formData.append('city', city)
         formData.append('branchParcelMachine', branchParcelMachine)
         formData.append('street', street.value)
@@ -104,6 +111,7 @@ const Ordering = observer(() => {
         formData.append('email', email.value)
         formData.append('comments', comments.value)
         formData.append('sendBill', sendBill)
+        formData.append('userId', userStore.user.id)
 
         createOrder(formData)
             .then(data => console.log(data))

@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import AddressBook from './addressBook/AddressBook'
@@ -6,7 +7,7 @@ import ContactInformation from './contactInformation/ContactInformation'
 import HistoryOrders from './historyOrders/HistoryOrders'
 import WishList from './wishList/WishList'
 
-const Cabinet = () => {
+const Cabinet = observer(() => {
 
     return (
         <div className={styles.container}>
@@ -38,6 +39,6 @@ const Cabinet = () => {
         </div>
     )
 
-}
+})
 
 export default Cabinet

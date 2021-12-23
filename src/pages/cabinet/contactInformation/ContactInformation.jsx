@@ -7,11 +7,13 @@ import { validation } from '../../../utils/validations'
 import { Context } from '../../..'
 import { useValidInput } from '../../../hooks/useValidInput'
 import { useValidConfirmPassword } from '../../../hooks/useValidConfirmPassword'
+import { observer } from 'mobx-react-lite'
 
-const ContactInformation = () => {
+
+const ContactInformation = observer(() => {
     const { userStore } = useContext(Context)
     const contactEmpty = {
-        name: '', family: '', email: '', dateBirth: '', phoneNumber: '', passwordOld: '', passwordNew: '',passwordConfirm: ''
+        name: '', family: '', email: '', dateBirth: '', phoneNumber: '', passwordOld: '', passwordNew: '', passwordConfirm: ''
     }
 
     const name = useValidInput('', validation.validFieldName)
@@ -28,13 +30,20 @@ const ContactInformation = () => {
 
     useEffect(() => {
         getUser(userStore.user.id).then(data => {
-            name.onSetInput(data.name)
-            family.onSetInput(data.family)
-            email.onSetInput(data.email)
-            dateBirth.onSetInput(data.dateBirth)
-            phoneNumber.onSetInput(data.phoneNumber)
+            if (data.name)
+                name.onSetInput(data.name)
+            if (data.family)
+                family.onSetInput(data.family)
+            if (data.email)
+                email.onSetInput(data.email)
+            if (data.dateBirth)
+                dateBirth.onSetInput(data.dateBirth)
+            if (data.phoneNumber)
+                phoneNumber.onSetInput(data.phoneNumber)
+                if(data)
+                userStore.setUser(data)
         })
-    }, [])
+    }, [reload])
 
     useEffect(() => {
         setFlagButtom(name.valid.flag && family.valid.flag && email.valid.flag && dateBirth.valid.flag &&
@@ -55,11 +64,10 @@ const ContactInformation = () => {
 
         updateUser(formData, userStore.user.id)
             .then(data => {
-                userStore.setUser(data)
+                setReload(!reload)
                 setForm(contactEmpty)
-                
-
-            }).catch(error => alert(error.message))
+            })
+            .catch(error => alert(error.message))
     }
 
 
@@ -72,7 +80,7 @@ const ContactInformation = () => {
         passwordOld.onSetInput(object.passwordOld)
         passwordNew.onSetInput(object.passwordNew)
         passwordConfirm.onSetInput(object.passwordConfirm)
-       
+
     }
 
     return (
@@ -136,6 +144,6 @@ const ContactInformation = () => {
             </div>
         </div>
     )
-}
+})
 
 export default ContactInformation

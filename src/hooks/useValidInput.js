@@ -7,15 +7,15 @@ export const useValidInput = (initialValue, callbackValidation) => {
     const [valid, setValid] = useState(validFalse)
 
     const onChange = e => setValue(e.target.value)
-    const onSetInput = (string) => setValue(string)
+    const onSetInput = (str) => setValue(str)
 
     useEffect(() => {
-        if(value){
+        if (value) {
             callbackValidation(value).then(data => setValid(data))
         } else {
             setValid(validFalse)
         }
-        
+
     },
         [value])
 

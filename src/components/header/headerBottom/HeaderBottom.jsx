@@ -3,7 +3,7 @@ import styles from './HeaderBottom.module.css'
 import { Context } from "../../../index";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE} from "../../../routes/routesConsts";
+import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE } from "../../../routes/routesConsts";
 import { observer } from "mobx-react-lite";
 import { useHistory, useLocation } from "react-router-dom";
 import BackCall from '../../modals/backCall/BackCall'
@@ -23,7 +23,6 @@ const HeaderBottom = observer(() => {
         userStore.setIsAdmin(false)
         localStorage.removeItem('token')
         history.push(MAIN_ROUTE)
-        window.location.reload()
     }
 
     const resetTypeBrand = () => {
@@ -48,7 +47,6 @@ const HeaderBottom = observer(() => {
                         > {isShop ? '' : 'В магазин'}
 
                         </NavLink>
-
                     </Nav>
                     <Nav className="ml-auto" style={{ color: "white" }}>
                         {userStore.isAdmin &&

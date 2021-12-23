@@ -101,7 +101,7 @@ export const validation = {
         if (confirmPassword && password) {
             return password !== confirmPassword ? { flag: false, message: 'Пароли не совпадают' } : { flag: true, message: 'Ок' }
         } else {
-            return { flag: false, message: '' }
+            return { flag: false, message: 'Есть проблемы' }
         }
 
     },

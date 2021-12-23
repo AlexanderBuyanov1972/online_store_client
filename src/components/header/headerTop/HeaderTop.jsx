@@ -4,10 +4,11 @@ import { Container, Nav, Navbar, NavLink } from 'react-bootstrap'
 import { STOKE_ROUTE, SHIPPING_AND_PAYMENT_ROUTE, ABOUT_STORE_ROUTE, CABINET_ROUTE } from '../../../routes/routesConsts'
 import { useHistory } from 'react-router'
 import { Context } from '../../..'
+import { observer } from "mobx-react-lite";
 
 
 
-const HeaderTop = () => {
+const HeaderTop = observer(() => {
   const { userStore } = useContext(Context)
   const history = useHistory()
   return (
@@ -22,11 +23,13 @@ const HeaderTop = () => {
               <NavLink onClick={() => history.push(CABINET_ROUTE)}>Личный кабинет</NavLink>
             }
           </Nav>
+          {userStore.user.name && userStore.user.name !== '' &&
+          <div className={styles.title}>{'Здравствуйте, ' + userStore.user.name}</div>}
         </Container>
       </Navbar>
     </div>
 
   )
-}
+})
 
 export default HeaderTop

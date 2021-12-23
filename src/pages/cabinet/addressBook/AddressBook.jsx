@@ -70,11 +70,17 @@ const AddressBook = () => {
 
         if (addressIdForUpdate !== '') {
             addressHttp.updateAddress(addressIdForUpdate, formData)
-                .then(data => cleanForm())
+                .then(data => {
+                    cleanForm()
+                    setReload(!reload)
+                })
                 .catch(error => alert(error.message))
         } else {
             addressHttp.createAddress(formData)
-                .then(data => cleanForm())
+                .then(data => {
+                    cleanForm()
+                    setReload(!reload)
+                })
                 .catch(error => alert(error.message))
         }
     }
